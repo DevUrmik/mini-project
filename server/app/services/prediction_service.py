@@ -60,6 +60,13 @@ class PredictionService:
 
         if PREPROCESSOR_PIPELINE_PATH.exists():
             self._preprocessor = joblib.load(PREPROCESSOR_PIPELINE_PATH)
+            # Patch cross-version scikit-learn SimpleImputer attribute incompatibility
+            if hasattr(self._preprocessor, "transformers_"):
+                for _, trans, _ in self._preprocessor.transformers_:
+                    if hasattr(trans, "named_steps"):
+                        for step in trans.named_steps.values():
+                            if hasattr(step, "statistics_") and not hasattr(step, "_fill_dtype"):
+                                step._fill_dtype = step.statistics_.dtype
             print(f"[PREDICTION SERVICE] Loaded Preprocessor from {PREPROCESSOR_PIPELINE_PATH}")
         else:
             print("[PREDICTION SERVICE WARNING] Preprocessor pipeline not found.")
