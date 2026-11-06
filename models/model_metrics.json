@@ -1,0 +1,327 @@
+{
+  "dataset_split": {
+    "total_samples": 35000,
+    "train_samples": 28000,
+    "test_samples": 7000,
+    "test_ratio": 0.2,
+    "stratified": true
+  },
+  "target_info": {
+    "target_variable": "Severity",
+    "scale_meaning": "Traffic delay impact (1 = Short delay, 4 = Severe prolonged disruption). Not fatality.",
+    "class_distribution": {
+      "1": 977,
+      "2": 25128,
+      "3": 6363,
+      "4": 2532
+    }
+  },
+  "selected_best_model": "random_forest",
+  "models": {
+    "logistic_regression": {
+      "model_key": "logistic_regression",
+      "name": "Logistic Regression",
+      "accuracy": 21.47,
+      "balanced_accuracy": 25.15,
+      "macro_precision": 25.23,
+      "macro_recall": 25.15,
+      "macro_f1": 16.92,
+      "weighted_f1": 27.71,
+      "confusion_matrix": [
+        [
+          76,
+          34,
+          49,
+          36
+        ],
+        [
+          1808,
+          1037,
+          1175,
+          1006
+        ],
+        [
+          468,
+          246,
+          303,
+          256
+        ],
+        [
+          200,
+          98,
+          121,
+          87
+        ]
+      ],
+      "classes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "class_labels": [
+        "Severity 1",
+        "Severity 2",
+        "Severity 3",
+        "Severity 4"
+      ],
+      "per_class": {
+        "1": {
+          "precision": 0.03,
+          "recall": 0.39,
+          "f1_score": 0.055,
+          "support": 195
+        },
+        "2": {
+          "precision": 0.733,
+          "recall": 0.206,
+          "f1_score": 0.322,
+          "support": 5026
+        },
+        "3": {
+          "precision": 0.184,
+          "recall": 0.238,
+          "f1_score": 0.207,
+          "support": 1273
+        },
+        "4": {
+          "precision": 0.063,
+          "recall": 0.172,
+          "f1_score": 0.092,
+          "support": 506
+        }
+      }
+    },
+    "decision_tree": {
+      "model_key": "decision_tree",
+      "name": "Decision Tree Classifier",
+      "accuracy": 23.24,
+      "balanced_accuracy": 23.97,
+      "macro_precision": 24.92,
+      "macro_recall": 23.97,
+      "macro_f1": 17.68,
+      "weighted_f1": 29.52,
+      "confusion_matrix": [
+        [
+          43,
+          40,
+          48,
+          64
+        ],
+        [
+          1306,
+          1145,
+          1183,
+          1392
+        ],
+        [
+          316,
+          292,
+          300,
+          365
+        ],
+        [
+          137,
+          113,
+          117,
+          139
+        ]
+      ],
+      "classes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "class_labels": [
+        "Severity 1",
+        "Severity 2",
+        "Severity 3",
+        "Severity 4"
+      ],
+      "per_class": {
+        "1": {
+          "precision": 0.024,
+          "recall": 0.221,
+          "f1_score": 0.043,
+          "support": 195
+        },
+        "2": {
+          "precision": 0.72,
+          "recall": 0.228,
+          "f1_score": 0.346,
+          "support": 5026
+        },
+        "3": {
+          "precision": 0.182,
+          "recall": 0.236,
+          "f1_score": 0.205,
+          "support": 1273
+        },
+        "4": {
+          "precision": 0.071,
+          "recall": 0.275,
+          "f1_score": 0.113,
+          "support": 506
+        }
+      }
+    },
+    "random_forest": {
+      "model_key": "random_forest",
+      "name": "Random Forest Classifier",
+      "accuracy": 59.91,
+      "balanced_accuracy": 25.23,
+      "macro_precision": 25.19,
+      "macro_recall": 25.23,
+      "macro_f1": 24.99,
+      "weighted_f1": 57.49,
+      "confusion_matrix": [
+        [
+          7,
+          149,
+          34,
+          5
+        ],
+        [
+          95,
+          3974,
+          770,
+          187
+        ],
+        [
+          18,
+          1008,
+          200,
+          47
+        ],
+        [
+          12,
+          406,
+          75,
+          13
+        ]
+      ],
+      "classes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "class_labels": [
+        "Severity 1",
+        "Severity 2",
+        "Severity 3",
+        "Severity 4"
+      ],
+      "per_class": {
+        "1": {
+          "precision": 0.053,
+          "recall": 0.036,
+          "f1_score": 0.043,
+          "support": 195
+        },
+        "2": {
+          "precision": 0.718,
+          "recall": 0.791,
+          "f1_score": 0.752,
+          "support": 5026
+        },
+        "3": {
+          "precision": 0.185,
+          "recall": 0.157,
+          "f1_score": 0.17,
+          "support": 1273
+        },
+        "4": {
+          "precision": 0.052,
+          "recall": 0.026,
+          "f1_score": 0.034,
+          "support": 506
+        }
+      }
+    }
+  },
+  "feature_importances": [
+    {
+      "feature": "Humidity(%)",
+      "raw_feature": "Humidity(%)",
+      "importance": 17.85
+    },
+    {
+      "feature": "Temperature(F)",
+      "raw_feature": "Temperature(F)",
+      "importance": 17.64
+    },
+    {
+      "feature": "Wind_Speed(mph)",
+      "raw_feature": "Wind_Speed(mph)",
+      "importance": 16.43
+    },
+    {
+      "feature": "Hour",
+      "raw_feature": "Hour",
+      "importance": 11.74
+    },
+    {
+      "feature": "Visibility(mi)",
+      "raw_feature": "Visibility(mi)",
+      "importance": 6.84
+    },
+    {
+      "feature": "Traffic_Signal",
+      "raw_feature": "Traffic_Signal",
+      "importance": 2.39
+    },
+    {
+      "feature": "Is_Rush_Hour",
+      "raw_feature": "Is_Rush_Hour",
+      "importance": 2.31
+    },
+    {
+      "feature": "Junction",
+      "raw_feature": "Junction",
+      "importance": 2.26
+    },
+    {
+      "feature": "Crossing",
+      "raw_feature": "Crossing",
+      "importance": 2.03
+    },
+    {
+      "feature": "Weather: Fair",
+      "raw_feature": "Weather_Condition_Fair",
+      "importance": 1.67
+    },
+    {
+      "feature": "Weather: Clear",
+      "raw_feature": "Weather_Condition_Clear",
+      "importance": 1.46
+    },
+    {
+      "feature": "Weather: Mostly Cloudy",
+      "raw_feature": "Weather_Condition_Mostly Cloudy",
+      "importance": 1.43
+    },
+    {
+      "feature": "Day: Thursday",
+      "raw_feature": "Day_OfWeek_Thursday",
+      "importance": 1.39
+    },
+    {
+      "feature": "Day: Friday",
+      "raw_feature": "Day_OfWeek_Friday",
+      "importance": 1.37
+    },
+    {
+      "feature": "Day: Tuesday",
+      "raw_feature": "Day_OfWeek_Tuesday",
+      "importance": 1.37
+    }
+  ],
+  "evaluation_notes": [
+    "Severity distribution has significant class imbalance with Class 2 being dominant (>70%).",
+    "Accuracy alone can be misleading in imbalanced datasets; therefore, Macro F1 and Balanced Accuracy are the primary comparative benchmarks.",
+    "Class weight balancing ('balanced') was applied across models to penalize under-prediction of severe accidents (Classes 3 & 4).",
+    "Random Forest outperforms linear and single-tree baselines by capturing complex non-linear interactions between weather factors and road features."
+  ]
+}

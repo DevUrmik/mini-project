@@ -1,0 +1,612 @@
+{
+  "k_5": {
+    "k": 5,
+    "inertia": 432.3,
+    "clusters": [
+      {
+        "cluster_id": 0,
+        "center_lat": 34.0524,
+        "center_lng": -118.24415,
+        "accident_count": 10568,
+        "accident_percentage": 52.84,
+        "average_severity": 2.3,
+        "spread_radius_km": 15.38,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 1,
+        "center_lat": 37.77448,
+        "center_lng": -122.41982,
+        "accident_count": 3561,
+        "accident_percentage": 17.8,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.14,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 4,
+        "center_lat": 37.33792,
+        "center_lng": -121.88666,
+        "accident_count": 2338,
+        "accident_percentage": 11.69,
+        "average_severity": 2.31,
+        "spread_radius_km": 11.29,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 2,
+        "center_lat": 32.71672,
+        "center_lng": -117.16224,
+        "accident_count": 2325,
+        "accident_percentage": 11.62,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.24,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 3,
+        "center_lat": 38.58342,
+        "center_lng": -121.49337,
+        "accident_count": 1208,
+        "accident_percentage": 6.04,
+        "average_severity": 2.32,
+        "spread_radius_km": 8.81,
+        "dominant_city": "Sacramento"
+      }
+    ]
+  },
+  "k_8": {
+    "k": 8,
+    "inertia": 238.01,
+    "clusters": [
+      {
+        "cluster_id": 1,
+        "center_lat": 37.77448,
+        "center_lng": -122.41982,
+        "accident_count": 3561,
+        "accident_percentage": 17.8,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.14,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 2,
+        "center_lat": 33.94815,
+        "center_lng": -118.27913,
+        "accident_count": 3110,
+        "accident_percentage": 15.55,
+        "average_severity": 2.32,
+        "spread_radius_km": 9.28,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 5,
+        "center_lat": 34.17269,
+        "center_lng": -118.19191,
+        "accident_count": 2791,
+        "accident_percentage": 13.96,
+        "average_severity": 2.29,
+        "spread_radius_km": 9.39,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 7,
+        "center_lat": 34.10565,
+        "center_lng": -118.38315,
+        "accident_count": 2426,
+        "accident_percentage": 12.13,
+        "average_severity": 2.3,
+        "spread_radius_km": 9.36,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 4,
+        "center_lat": 37.33792,
+        "center_lng": -121.88666,
+        "accident_count": 2338,
+        "accident_percentage": 11.69,
+        "average_severity": 2.31,
+        "spread_radius_km": 11.29,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 0,
+        "center_lat": 32.71672,
+        "center_lng": -117.16224,
+        "accident_count": 2325,
+        "accident_percentage": 11.62,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.24,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 6,
+        "center_lat": 33.98737,
+        "center_lng": -118.10085,
+        "accident_count": 2241,
+        "accident_percentage": 11.21,
+        "average_severity": 2.3,
+        "spread_radius_km": 9.33,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 3,
+        "center_lat": 38.58342,
+        "center_lng": -121.49337,
+        "accident_count": 1208,
+        "accident_percentage": 6.04,
+        "average_severity": 2.32,
+        "spread_radius_km": 8.81,
+        "dominant_city": "Sacramento"
+      }
+    ]
+  },
+  "k_10": {
+    "k": 10,
+    "inertia": 204.68,
+    "clusters": [
+      {
+        "cluster_id": 4,
+        "center_lat": 37.77448,
+        "center_lng": -122.41982,
+        "accident_count": 3561,
+        "accident_percentage": 17.8,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.14,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 0,
+        "center_lat": 34.08178,
+        "center_lng": -118.25783,
+        "accident_count": 2561,
+        "accident_percentage": 12.8,
+        "average_severity": 2.29,
+        "spread_radius_km": 6.18,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 1,
+        "center_lat": 37.33792,
+        "center_lng": -121.88666,
+        "accident_count": 2338,
+        "accident_percentage": 11.69,
+        "average_severity": 2.31,
+        "spread_radius_km": 11.29,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 2,
+        "center_lat": 32.71672,
+        "center_lng": -117.16224,
+        "accident_count": 2325,
+        "accident_percentage": 11.62,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.24,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 6,
+        "center_lat": 34.01398,
+        "center_lng": -118.10158,
+        "accident_count": 1900,
+        "accident_percentage": 9.5,
+        "average_severity": 2.3,
+        "spread_radius_km": 8.06,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 8,
+        "center_lat": 33.9777,
+        "center_lng": -118.37656,
+        "accident_count": 1698,
+        "accident_percentage": 8.49,
+        "average_severity": 2.34,
+        "spread_radius_km": 8.14,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 5,
+        "center_lat": 33.88356,
+        "center_lng": -118.2211,
+        "accident_count": 1595,
+        "accident_percentage": 7.98,
+        "average_severity": 2.3,
+        "spread_radius_km": 8.22,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 7,
+        "center_lat": 34.20184,
+        "center_lng": -118.14834,
+        "accident_count": 1450,
+        "accident_percentage": 7.25,
+        "average_severity": 2.3,
+        "spread_radius_km": 8.51,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 9,
+        "center_lat": 34.18944,
+        "center_lng": -118.38092,
+        "accident_count": 1364,
+        "accident_percentage": 6.82,
+        "average_severity": 2.31,
+        "spread_radius_km": 8.63,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 3,
+        "center_lat": 38.58342,
+        "center_lng": -121.49337,
+        "accident_count": 1208,
+        "accident_percentage": 6.04,
+        "average_severity": 2.32,
+        "spread_radius_km": 8.81,
+        "dominant_city": "Sacramento"
+      }
+    ]
+  },
+  "k_15": {
+    "k": 15,
+    "inertia": 149.84,
+    "clusters": [
+      {
+        "cluster_id": 12,
+        "center_lat": 34.04642,
+        "center_lng": -118.26968,
+        "accident_count": 2602,
+        "accident_percentage": 13.01,
+        "average_severity": 2.29,
+        "spread_radius_km": 6.04,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 2,
+        "center_lat": 32.71672,
+        "center_lng": -117.16224,
+        "accident_count": 2325,
+        "accident_percentage": 11.62,
+        "average_severity": 2.3,
+        "spread_radius_km": 10.24,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 0,
+        "center_lat": 34.06912,
+        "center_lng": -118.09438,
+        "accident_count": 1632,
+        "accident_percentage": 8.16,
+        "average_severity": 2.29,
+        "spread_radius_km": 7.55,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 11,
+        "center_lat": 33.91416,
+        "center_lng": -118.15497,
+        "accident_count": 1532,
+        "accident_percentage": 7.66,
+        "average_severity": 2.31,
+        "spread_radius_km": 7.83,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 6,
+        "center_lat": 34.21242,
+        "center_lng": -118.17744,
+        "accident_count": 1308,
+        "accident_percentage": 6.54,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.98,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 14,
+        "center_lat": 37.70112,
+        "center_lng": -122.39093,
+        "accident_count": 1291,
+        "accident_percentage": 6.46,
+        "average_severity": 2.29,
+        "spread_radius_km": 6.84,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 8,
+        "center_lat": 34.19346,
+        "center_lng": -118.34108,
+        "accident_count": 1285,
+        "accident_percentage": 6.42,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.32,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 7,
+        "center_lat": 33.89509,
+        "center_lng": -118.3363,
+        "accident_count": 1241,
+        "accident_percentage": 6.21,
+        "average_severity": 2.34,
+        "spread_radius_km": 7.87,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 3,
+        "center_lat": 38.58342,
+        "center_lng": -121.49337,
+        "accident_count": 1208,
+        "accident_percentage": 6.04,
+        "average_severity": 2.32,
+        "spread_radius_km": 8.81,
+        "dominant_city": "Sacramento"
+      },
+      {
+        "cluster_id": 1,
+        "center_lat": 37.84428,
+        "center_lng": -122.37122,
+        "accident_count": 1167,
+        "accident_percentage": 5.83,
+        "average_severity": 2.32,
+        "spread_radius_km": 6.82,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 10,
+        "center_lat": 37.78808,
+        "center_lng": -122.50658,
+        "accident_count": 1103,
+        "accident_percentage": 5.51,
+        "average_severity": 2.29,
+        "spread_radius_km": 6.92,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 5,
+        "center_lat": 34.06152,
+        "center_lng": -118.44486,
+        "accident_count": 968,
+        "accident_percentage": 4.84,
+        "average_severity": 2.31,
+        "spread_radius_km": 7.88,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 13,
+        "center_lat": 37.25691,
+        "center_lng": -121.84678,
+        "accident_count": 806,
+        "accident_percentage": 4.03,
+        "average_severity": 2.32,
+        "spread_radius_km": 7.56,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 9,
+        "center_lat": 37.42044,
+        "center_lng": -121.84095,
+        "accident_count": 804,
+        "accident_percentage": 4.02,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.42,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 4,
+        "center_lat": 37.337,
+        "center_lng": -121.983,
+        "accident_count": 728,
+        "accident_percentage": 3.64,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.57,
+        "dominant_city": "San Jose"
+      }
+    ]
+  },
+  "k_20": {
+    "k": 20,
+    "inertia": 117.41,
+    "clusters": [
+      {
+        "cluster_id": 5,
+        "center_lat": 34.07172,
+        "center_lng": -118.27831,
+        "accident_count": 2034,
+        "accident_percentage": 10.17,
+        "average_severity": 2.3,
+        "spread_radius_km": 5.49,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 0,
+        "center_lat": 34.04468,
+        "center_lng": -118.148,
+        "accident_count": 1542,
+        "accident_percentage": 7.71,
+        "average_severity": 2.31,
+        "spread_radius_km": 5.38,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 10,
+        "center_lat": 33.93693,
+        "center_lng": -118.22323,
+        "accident_count": 1373,
+        "accident_percentage": 6.87,
+        "average_severity": 2.3,
+        "spread_radius_km": 5.65,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 9,
+        "center_lat": 37.69517,
+        "center_lng": -122.43389,
+        "accident_count": 1239,
+        "accident_percentage": 6.19,
+        "average_severity": 2.3,
+        "spread_radius_km": 6.7,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 1,
+        "center_lat": 37.80617,
+        "center_lng": -122.34427,
+        "accident_count": 1216,
+        "accident_percentage": 6.08,
+        "average_severity": 2.31,
+        "spread_radius_km": 6.98,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 3,
+        "center_lat": 38.58342,
+        "center_lng": -121.49337,
+        "accident_count": 1208,
+        "accident_percentage": 6.04,
+        "average_severity": 2.32,
+        "spread_radius_km": 8.81,
+        "dominant_city": "Sacramento"
+      },
+      {
+        "cluster_id": 18,
+        "center_lat": 37.83156,
+        "center_lng": -122.48884,
+        "accident_count": 1106,
+        "accident_percentage": 5.53,
+        "average_severity": 2.29,
+        "spread_radius_km": 6.93,
+        "dominant_city": "San Francisco"
+      },
+      {
+        "cluster_id": 14,
+        "center_lat": 34.22669,
+        "center_lng": -118.21294,
+        "accident_count": 1061,
+        "accident_percentage": 5.3,
+        "average_severity": 2.25,
+        "spread_radius_km": 7.2,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 19,
+        "center_lat": 33.98196,
+        "center_lng": -118.39985,
+        "accident_count": 946,
+        "accident_percentage": 4.73,
+        "average_severity": 2.34,
+        "spread_radius_km": 6.38,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 7,
+        "center_lat": 34.20618,
+        "center_lng": -118.3538,
+        "accident_count": 829,
+        "accident_percentage": 4.15,
+        "average_severity": 2.33,
+        "spread_radius_km": 6.51,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 17,
+        "center_lat": 32.6621,
+        "center_lng": -117.21628,
+        "accident_count": 805,
+        "accident_percentage": 4.03,
+        "average_severity": 2.31,
+        "spread_radius_km": 6.8,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 6,
+        "center_lat": 34.15121,
+        "center_lng": -118.06539,
+        "accident_count": 795,
+        "accident_percentage": 3.98,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.86,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 11,
+        "center_lat": 37.42221,
+        "center_lng": -121.84201,
+        "accident_count": 795,
+        "accident_percentage": 3.98,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.41,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 4,
+        "center_lat": 37.25688,
+        "center_lng": -121.84347,
+        "accident_count": 791,
+        "accident_percentage": 3.96,
+        "average_severity": 2.32,
+        "spread_radius_km": 7.58,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 2,
+        "center_lat": 32.79615,
+        "center_lng": -117.18593,
+        "accident_count": 772,
+        "accident_percentage": 3.86,
+        "average_severity": 2.3,
+        "spread_radius_km": 6.94,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 13,
+        "center_lat": 37.33512,
+        "center_lng": -121.98002,
+        "accident_count": 752,
+        "accident_percentage": 3.76,
+        "average_severity": 2.3,
+        "spread_radius_km": 7.57,
+        "dominant_city": "San Jose"
+      },
+      {
+        "cluster_id": 8,
+        "center_lat": 32.69326,
+        "center_lng": -117.07777,
+        "accident_count": 748,
+        "accident_percentage": 3.74,
+        "average_severity": 2.29,
+        "spread_radius_km": 7.0,
+        "dominant_city": "San Diego"
+      },
+      {
+        "cluster_id": 16,
+        "center_lat": 33.90582,
+        "center_lng": -118.07395,
+        "accident_count": 723,
+        "accident_percentage": 3.62,
+        "average_severity": 2.29,
+        "spread_radius_km": 8.26,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 12,
+        "center_lat": 33.85451,
+        "center_lng": -118.32044,
+        "accident_count": 669,
+        "accident_percentage": 3.35,
+        "average_severity": 2.33,
+        "spread_radius_km": 7.46,
+        "dominant_city": "Los Angeles"
+      },
+      {
+        "cluster_id": 15,
+        "center_lat": 34.11304,
+        "center_lng": -118.45287,
+        "accident_count": 596,
+        "accident_percentage": 2.98,
+        "average_severity": 2.31,
+        "spread_radius_km": 6.93,
+        "dominant_city": "Los Angeles"
+      }
+    ]
+  }
+}

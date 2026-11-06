@@ -1,0 +1,71 @@
+"""
+Accident Hotspot Prediction and Road Safety Intelligence System
+FastAPI Application Entry Point
+"""
+
+from contextlib import asynccontextmanager
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import RedirectResponse
+
+from server.app.config import API_TITLE, API_VERSION, CORS_ORIGINS
+from server.app.services.data_service import DataService
+from server.app.services.hotspot_service import HotspotService
+from server.app.services.prediction_service import PredictionService
+
+from server.app.routes import (
+    dashboard,
+    hotspots,
+    models,
+    predict,
+    analytics
+)
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    # Startup: preload dataset and ML models once into memory
+    print("[STARTUP] Preloading data and machine learning artifacts...")
+    DataService.get_instance()
+    HotspotService.get_instance()
+    PredictionService.get_instance()
+    print("[STARTUP] Services ready.")
+    yield
+    print("[SHUTDOWN] Releasing resources...")
+
+app = FastAPI(
+    title=API_TITLE,
+    version=API_VERSION,
+    description=(
+        "Production-grade Road Safety Intelligence API providing spatial accident "
+        "hotspot clustering (K-Means & DBSCAN with Haversine spherical distance), "
+        "machine learning severity classification, empirical model evaluation, "
+        "and data-driven accident analytics based on the US Accidents dataset."
+    ),
+    lifespan=lifespan
+)
+
+# Configure CORS for Vite + React 19 frontend
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Permits all local Vite ports (5173, 3000, etc.)
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# Register API Route Routers under /api
+app.include_router(dashboard.router, prefix="/api")
+app.include_router(hotspots.router, prefix="/api")
+app.include_router(models.router, prefix="/api")
+app.include_router(predict.router, prefix="/api")
+app.include_router(analytics.router, prefix="/api")
+
+@app.get("/", include_in_schema=False)
+def root():
+    """Redirects base URL directly to interactive Swagger UI documentation."""
+    return RedirectResponse(url="/docs")
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("server.app.main:app", host="127.0.0.1", port=8000, reload=True)
+

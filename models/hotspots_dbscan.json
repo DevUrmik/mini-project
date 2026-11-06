@@ -1,0 +1,66 @@
+{
+  "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+  "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+  "parameters": {
+    "eps_km": 7.5,
+    "eps_radians": 0.001177,
+    "min_samples": 35
+  },
+  "total_analyzed_points": 20000,
+  "identified_clusters_count": 5,
+  "clustered_points_count": 19963,
+  "noise_points_count": 37,
+  "noise_percentage": 0.18,
+  "clusters": [
+    {
+      "cluster_id": 0,
+      "center_lat": 34.05247,
+      "center_lng": -118.24415,
+      "accident_count": 10547,
+      "accident_percentage": 52.73,
+      "average_severity": 2.3,
+      "spread_radius_km": 15.32,
+      "dominant_city": "Los Angeles"
+    },
+    {
+      "cluster_id": 1,
+      "center_lat": 37.77471,
+      "center_lng": -122.41982,
+      "accident_count": 3555,
+      "accident_percentage": 17.77,
+      "average_severity": 2.3,
+      "spread_radius_km": 10.1,
+      "dominant_city": "San Francisco"
+    },
+    {
+      "cluster_id": 4,
+      "center_lat": 37.3374,
+      "center_lng": -121.88706,
+      "accident_count": 2332,
+      "accident_percentage": 11.66,
+      "average_severity": 2.31,
+      "spread_radius_km": 11.24,
+      "dominant_city": "San Jose"
+    },
+    {
+      "cluster_id": 3,
+      "center_lat": 32.71675,
+      "center_lng": -117.16219,
+      "accident_count": 2321,
+      "accident_percentage": 11.61,
+      "average_severity": 2.3,
+      "spread_radius_km": 10.2,
+      "dominant_city": "San Diego"
+    },
+    {
+      "cluster_id": 2,
+      "center_lat": 38.58342,
+      "center_lng": -121.49337,
+      "accident_count": 1208,
+      "accident_percentage": 6.04,
+      "average_severity": 2.32,
+      "spread_radius_km": 8.81,
+      "dominant_city": "Sacramento"
+    }
+  ]
+}

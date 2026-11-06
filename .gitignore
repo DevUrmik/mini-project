@@ -1,0 +1,49 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*/.ipynb_checkpoints/*
+
+# Data (Raw large CSVs should not be tracked by git)
+data/raw/*.csv
+data/raw/*.zip
+data/processed/*.parquet
+
+# Node / React
+client/node_modules/
+client/dist/
+client/.env.local
+client/.env.*.local
+client/npm-debug.log*
+client/yarn-debug.log*
+client/yarn-error.log*
+client/pnpm-debug.log*
+
+# OS and IDE
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
