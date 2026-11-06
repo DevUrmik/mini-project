@@ -1,0 +1,49 @@
+{
+  "data_source": "Development Sample Fixture (Kaggle Schema Compliant)",
+  "is_synthetic": true,
+  "total_raw_records": 35000,
+  "cleaned_records": 35000,
+  "california_sample_records": 33052,
+  "severity_distribution": {
+    "1": 977,
+    "2": 25128,
+    "3": 6363,
+    "4": 2532
+  },
+  "average_severity": 2.3,
+  "high_impact_percentage": 25.41,
+  "top_states": {
+    "CA": 33052,
+    "FL": 1173,
+    "TX": 775
+  },
+  "top_cities": {
+    "Los Angeles": 17481,
+    "San Francisco": 5902,
+    "San Jose": 3887,
+    "San Diego": 3842,
+    "Sacramento": 1940,
+    "Miami": 1173,
+    "Houston": 775
+  },
+  "top_weather_conditions": {
+    "Fair": 14739,
+    "Clear": 7751,
+    "Mostly Cloudy": 4201,
+    "Partly Cloudy": 2773,
+    "Overcast": 2021,
+    "Light Rain": 1408,
+    "Rain": 1085,
+    "Fog": 524
+  },
+  "temporal_range": {
+    "earliest": "2022-01-01 00:35:51",
+    "latest": "2023-12-01 23:52:40"
+  },
+  "road_features_prevalence": {
+    "junction_pct": 14.0,
+    "crossing_pct": 9.0,
+    "traffic_signal_pct": 17.8,
+    "stop_pct": 3.13
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "k_means": {
+    "name": "K-Means",
+    "distance_assumption": "Euclidean on geographic coordinate plane (Cartesian approximation)",
+    "cluster_geometry": "Convex, spherical clusters around centroids",
+    "noise_handling": "Forces all outliers into the nearest centroid",
+    "hyperparameters": "K (number of clusters must be chosen a priori)",
+    "computational_speed": "Fast O(n * K * i)",
+    "primary_use_case": "Partitioning entire geography into administrative or operational service zones"
+  },
+  "dbscan": {
+    "name": "DBSCAN",
+    "distance_assumption": "True Haversine spherical distance on Earth's surface",
+    "cluster_geometry": "Arbitrary geometric shapes following actual freeway corridors and intersections",
+    "noise_handling": "Explicitly separates isolated rural accidents as noise (0.18% isolated)",
+    "hyperparameters": "Epsilon (search radius) and MinPts (density threshold)",
+    "computational_speed": "Requires BallTree spatial indexing O(n log n)",
+    "primary_use_case": "Pinpointing genuine high-density accident corridors and dense highway blackspots"
+  }
+}
