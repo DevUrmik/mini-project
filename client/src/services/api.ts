@@ -35,6 +35,10 @@ export const getAccidents = async (params?: {
   state?: string;
   city?: string;
   severity?: number;
+  min_lat?: number;
+  max_lat?: number;
+  min_lng?: number;
+  max_lng?: number;
 }): Promise<AccidentRecord[]> => {
   const { data } = await api.get<AccidentRecord[]>('/accidents', { params });
   return data;

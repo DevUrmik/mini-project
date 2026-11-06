@@ -1,23 +1,12 @@
-import React, { useEffect, useState } from 'react';
-import {
-  MapPin,
-  Layers,
-  Sliders,
-  Filter,
-  Info,
-  Car,
-  Activity,
-  Compass,
-  ArrowRight
-} from 'lucide-react';
-import { HotspotMap } from '../maps/HotspotMap';
+import React, { useEffect, useState, useCallback, useRef } from 'react';
+import { RotateCcw } from 'lucide-react';
+import { HotspotMap, MapViewMode } from '../maps/HotspotMap';
 import { CardSkeleton } from '../components/LoadingSkeleton';
 import { ErrorBanner } from '../components/ErrorBanner';
 import {
   getKMeansHotspots,
   getDBSCANHotspots,
-  getAccidents,
-  getClusteringComparison
+  getAccidents
 } from '../services/api';
 import {
   HotspotCluster,
@@ -26,56 +15,118 @@ import {
   DBSCANResponse
 } from '../types';
 
+// Preset state coordinates and zoom levels
+const STATE_VIEWPORTS: Record<string, { center: [number, number]; zoom: number }> = {
+  ALL: { center: [37.5, -119.5], zoom: 5 },
+  CA: { center: [36.7783, -119.4179], zoom: 6 },
+  FL: { center: [27.9944, -81.7603], zoom: 7 },
+  TX: { center: [31.9686, -99.9018], zoom: 6 },
+};
+
 export const HotspotExplorer: React.FC = () => {
+  const [viewMode, setViewMode] = useState<MapViewMode>('clusters');
   const [algorithm, setAlgorithm] = useState<'kmeans' | 'dbscan'>('dbscan');
   const [kValue, setKValue] = useState<number>(10);
+  const [selectedState, setSelectedState] = useState<string>('CA');
+  const [selectedCity, setSelectedCity] = useState<string>('All');
+  const [selectedSeverity, setSelectedSeverity] = useState<number | undefined>(undefined);
+
+  const [mapCenter, setMapCenter] = useState<[number, number]>(STATE_VIEWPORTS.CA.center);
+  const [mapZoom, setMapZoom] = useState<number>(STATE_VIEWPORTS.CA.zoom);
+
   const [kmeansData, setKmeansData] = useState<KMeansResponse | null>(null);
   const [dbscanData, setDbscanData] = useState<DBSCANResponse | null>(null);
-  const [comparison, setComparison] = useState<any | null>(null);
   const [rawAccidents, setRawAccidents] = useState<AccidentRecord[]>([]);
-  const [selectedCity, setSelectedCity] = useState<string>('All');
   const [selectedCluster, setSelectedCluster] = useState<HotspotCluster | null>(null);
-  const [mapCenter, setMapCenter] = useState<[number, number]>([36.7783, -119.4179]);
-  const [mapZoom, setMapZoom] = useState<number>(6);
+
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
-  const fetchClusters = async () => {
+  const viewportDebounceTimer = useRef<NodeJS.Timeout | null>(null);
+
+  // Load initial cluster models and accidents
+  const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
-      const [kmRes, dbRes, accRes, compRes] = await Promise.all([
+      const [kmRes, dbRes, accRes] = await Promise.all([
         getKMeansHotspots(kValue),
         getDBSCANHotspots(),
-        getAccidents({ limit: 120 }),
-        getClusteringComparison()
+        getAccidents({
+          state: selectedState === 'ALL' ? undefined : selectedState,
+          city: selectedCity === 'All' ? undefined : selectedCity,
+          severity: selectedSeverity,
+          limit: 600
+        })
       ]);
       setKmeansData(kmRes);
       setDbscanData(dbRes);
       setRawAccidents(accRes);
-      setComparison(compRes);
     } catch (err: any) {
-      setError(err?.message || 'Failed to retrieve spatial clustering models.');
+      setError(err?.message || 'Failed to load map data.');
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    fetchClusters();
-  }, [kValue]);
+    fetchData();
+  }, [kValue, selectedState, selectedCity, selectedSeverity]);
 
-  // Handle switching algorithm or K
+  // Viewport-based fetching on pan/zoom (debounced)
+  const handleViewportChange = useCallback((bounds: { min_lat: number; max_lat: number; min_lng: number; max_lng: number }) => {
+    if (viewMode === 'clusters') return; // Viewport fetching is for raw/density points
+
+    if (viewportDebounceTimer.current) {
+      clearTimeout(viewportDebounceTimer.current);
+    }
+
+    viewportDebounceTimer.current = setTimeout(async () => {
+      try {
+        const records = await getAccidents({
+          min_lat: bounds.min_lat,
+          max_lat: bounds.max_lat,
+          min_lng: bounds.min_lng,
+          max_lng: bounds.max_lng,
+          state: selectedState === 'ALL' ? undefined : selectedState,
+          severity: selectedSeverity,
+          limit: 750
+        });
+        if (records.length > 0) {
+          setRawAccidents(records);
+        }
+      } catch (err) {
+        // Silent fail on viewport drag
+      }
+    }, 350);
+  }, [viewMode, selectedState, selectedSeverity]);
+
+  const handleStateChange = (stateCode: string) => {
+    setSelectedState(stateCode);
+    setSelectedCity('All');
+    setSelectedCluster(null);
+    const vp = STATE_VIEWPORTS[stateCode] || STATE_VIEWPORTS.ALL;
+    setMapCenter(vp.center);
+    setMapZoom(vp.zoom);
+  };
+
+  const handleResetMap = () => {
+    setSelectedState('CA');
+    setSelectedCity('All');
+    setSelectedSeverity(undefined);
+    setSelectedCluster(null);
+    setMapCenter(STATE_VIEWPORTS.CA.center);
+    setMapZoom(STATE_VIEWPORTS.CA.zoom);
+  };
+
   const currentClusters = algorithm === 'kmeans'
     ? (kmeansData?.clusters || [])
     : (dbscanData?.clusters || []);
 
-  // Filter clusters by selected city
   const filteredClusters = selectedCity === 'All'
     ? currentClusters
     : currentClusters.filter((c) => c.dominant_city.toLowerCase() === selectedCity.toLowerCase());
 
-  // Available cities for dropdown
   const uniqueCities = Array.from(new Set(currentClusters.map((c) => c.dominant_city))).filter(Boolean);
 
   const handleSelectCluster = (cluster: HotspotCluster) => {
@@ -84,138 +135,177 @@ export const HotspotExplorer: React.FC = () => {
     setMapZoom(11);
   };
 
-  const handleResetView = () => {
-    setSelectedCluster(null);
-    setSelectedCity('All');
-    setMapCenter([36.7783, -119.4179]);
-    setMapZoom(6);
-  };
-
   if (loading && !kmeansData && !dbscanData) {
     return (
-      <div className="space-y-6">
-        <CardSkeleton count={3} />
-        <div className="h-[550px] bg-slate-900 border border-slate-800 rounded-2xl animate-pulse"></div>
+      <div className="space-y-4">
+        <div className="h-10 bg-white border border-[#E5E7E1] rounded-md animate-pulse"></div>
+        <div className="h-[580px] bg-white border border-[#E5E7E1] rounded-md animate-pulse"></div>
       </div>
     );
   }
 
   if (error && !kmeansData && !dbscanData) {
-    return <ErrorBanner message={error} onRetry={fetchClusters} />;
+    return <ErrorBanner message={error} onRetry={fetchData} />;
   }
 
   return (
-    <div className="space-y-6">
-      {/* Page Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-2 border-b border-slate-800">
+    <div className="space-y-4">
+      {/* Editorial Header */}
+      <div className="pb-1 border-b border-[#E5E7E1] flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
         <div>
-          <h2 className="text-xl font-bold tracking-tight text-white flex items-center gap-2">
-            <MapPin className="w-5 h-5 text-sky-400" />
-            Accident Hotspot Explorer
-          </h2>
-          <p className="text-xs text-slate-400 mt-1">
-            Geospatial concentration identification comparing K-Means centroids and DBSCAN Haversine density clusters.
+          <h1 className="text-xl font-bold tracking-tight text-[#252923]">
+            Accident Map & Hotspots
+          </h1>
+          <p className="text-xs text-[#777D78] mt-0.5">
+            Explore individual incident locations, regional accident density, and machine learning cluster hotspots.
           </p>
-        </div>
-
-        {/* Algorithm Switcher */}
-        <div className="flex items-center gap-1.5 p-1 bg-slate-900 border border-slate-800 rounded-xl">
-          <button
-            onClick={() => { setAlgorithm('dbscan'); setSelectedCluster(null); }}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
-              algorithm === 'dbscan'
-                ? 'bg-sky-500 text-slate-950 shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            DBSCAN (Haversine Density)
-          </button>
-          <button
-            onClick={() => { setAlgorithm('kmeans'); setSelectedCluster(null); }}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-lg transition ${
-              algorithm === 'kmeans'
-                ? 'bg-sky-500 text-slate-950 shadow-sm'
-                : 'text-slate-400 hover:text-white'
-            }`}
-          >
-            K-Means (Centroids)
-          </button>
         </div>
       </div>
 
-      {/* Control Bar: Hyperparameters & Filters */}
-      <div className="bg-[#111827] border border-slate-800 rounded-2xl p-4 flex flex-wrap items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-4">
-          {algorithm === 'kmeans' ? (
-            <div className="flex items-center gap-2">
-              <span className="text-xs text-slate-400 font-medium">Number of Clusters (K):</span>
+      {/* Compact Map Toolbar */}
+      <div className="bg-white border border-[#E5E7E1] rounded-lg p-3 shadow-subtle flex flex-wrap items-center justify-between gap-3 text-xs">
+        {/* Left: Visualization Mode Toggle */}
+        <div className="flex items-center gap-1 bg-[#F0F2ED] p-0.5 rounded-md">
+          <button
+            onClick={() => setViewMode('clusters')}
+            className={`px-3 py-1.5 rounded text-xs font-medium transition ${
+              viewMode === 'clusters'
+                ? 'bg-white text-[#252923] shadow-sm font-semibold'
+                : 'text-[#777D78] hover:text-[#252923]'
+            }`}
+          >
+            Hotspot Clusters
+          </button>
+          <button
+            onClick={() => setViewMode('individual')}
+            className={`px-3 py-1.5 rounded text-xs font-medium transition ${
+              viewMode === 'individual'
+                ? 'bg-white text-[#252923] shadow-sm font-semibold'
+                : 'text-[#777D78] hover:text-[#252923]'
+            }`}
+          >
+            Individual Incidents
+          </button>
+          <button
+            onClick={() => setViewMode('density')}
+            className={`px-3 py-1.5 rounded text-xs font-medium transition ${
+              viewMode === 'density'
+                ? 'bg-white text-[#252923] shadow-sm font-semibold'
+                : 'text-[#777D78] hover:text-[#252923]'
+            }`}
+          >
+            Density View
+          </button>
+        </div>
+
+        {/* Middle: Method Controls (when in cluster mode) */}
+        {viewMode === 'clusters' ? (
+          <div className="flex items-center gap-3">
+            <div className="flex items-center gap-1 bg-[#F0F2ED] p-0.5 rounded-md">
+              <button
+                onClick={() => setAlgorithm('dbscan')}
+                className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                  algorithm === 'dbscan'
+                    ? 'bg-white text-[#28634D] font-semibold shadow-sm'
+                    : 'text-[#777D78] hover:text-[#252923]'
+                }`}
+              >
+                DBSCAN (Density)
+              </button>
+              <button
+                onClick={() => setAlgorithm('kmeans')}
+                className={`px-2.5 py-1 rounded text-xs font-medium transition ${
+                  algorithm === 'kmeans'
+                    ? 'bg-white text-[#28634D] font-semibold shadow-sm'
+                    : 'text-[#777D78] hover:text-[#252923]'
+                }`}
+              >
+                K-Means (Centroids)
+              </button>
+            </div>
+
+            {algorithm === 'kmeans' ? (
               <div className="flex items-center gap-1">
-                {[5, 8, 10, 15, 20].map((k) => (
+                <span className="text-xs text-[#777D78]">K:</span>
+                {[5, 10, 15, 20].map((k) => (
                   <button
                     key={k}
                     onClick={() => setKValue(k)}
-                    className={`px-2.5 py-1 text-xs font-mono font-bold rounded-lg border transition ${
+                    className={`px-2 py-0.5 rounded border text-xs font-medium transition ${
                       kValue === k
-                        ? 'bg-sky-500/20 text-sky-300 border-sky-500/50'
-                        : 'bg-slate-800 text-slate-400 border-slate-700 hover:bg-slate-700'
+                        ? 'bg-[#EBF2EE] text-[#28634D] border-[#28634D]'
+                        : 'bg-white text-[#777D78] border-[#E5E7E1] hover:bg-[#F0F2ED]'
                     }`}
                   >
-                    K={k}
+                    {k}
                   </button>
                 ))}
               </div>
-              <span className="text-[11px] font-mono text-slate-400 ml-2">
-                Inertia: {kmeansData?.inertia.toLocaleString()}
+            ) : (
+              <span className="text-xs text-[#777D78]">
+                Radius: 7.5 km (Haversine)
               </span>
-            </div>
-          ) : (
-            <div className="flex items-center gap-3 text-xs">
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-                <span className="text-slate-400">Epsilon (Radius):</span>
-                <span className="font-mono font-bold text-sky-300">7.5 km</span>
-                <span className="text-slate-400 text-[10px]">(0.001177 rad)</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-                <span className="text-slate-400">MinPts:</span>
-                <span className="font-mono font-bold text-sky-300">35 pts</span>
-              </div>
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-lg bg-slate-800/80 border border-slate-700">
-                <span className="text-slate-400">Isolated Noise:</span>
-                <span className="font-mono font-bold text-amber-300">
-                  {dbscanData?.noise_points_count} ({dbscanData?.noise_percentage}%)
-                </span>
-              </div>
-            </div>
-          )}
-        </div>
-
-        {/* City Filter & Reset */}
-        <div className="flex items-center gap-3">
-          <div className="flex items-center gap-2">
-            <Filter className="w-3.5 h-3.5 text-slate-400" />
-            <select
-              value={selectedCity}
-              onChange={(e) => setSelectedCity(e.target.value)}
-              className="bg-slate-800 border border-slate-700 rounded-lg px-3 py-1.5 text-xs text-slate-200 focus:outline-none focus:border-sky-500 font-medium"
-            >
-              <option value="All">All Cities ({currentClusters.length} clusters)</option>
-              {uniqueCities.map((city) => (
-                <option key={city} value={city}>{city}</option>
-              ))}
-            </select>
+            )}
           </div>
+        ) : (
+          <div className="text-xs text-[#777D78]">
+            Showing {rawAccidents.length.toLocaleString()} locations in view
+          </div>
+        )}
 
-          <button
-            onClick={handleResetView}
-            className="text-xs px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700 transition"
+        {/* Right: State, City, Severity Filters and Reset */}
+        <div className="flex items-center gap-2">
+          {/* State */}
+          <select
+            value={selectedState}
+            onChange={(e) => handleStateChange(e.target.value)}
+            className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2.5 py-1.5 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
           >
-            Reset View
+            <option value="ALL">All States</option>
+            <option value="CA">California (CA)</option>
+            <option value="FL">Florida (FL)</option>
+            <option value="TX">Texas (TX)</option>
+          </select>
+
+          {/* City */}
+          <select
+            value={selectedCity}
+            onChange={(e) => setSelectedCity(e.target.value)}
+            className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2.5 py-1.5 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
+          >
+            <option value="All">All Cities</option>
+            {uniqueCities.map((city) => (
+              <option key={city} value={city}>{city}</option>
+            ))}
+          </select>
+
+          {/* Severity */}
+          <select
+            value={selectedSeverity !== undefined ? String(selectedSeverity) : 'ALL'}
+            onChange={(e) => setSelectedSeverity(e.target.value === 'ALL' ? undefined : Number(e.target.value))}
+            className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2.5 py-1.5 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
+          >
+            <option value="ALL">All Severities</option>
+            <option value="1">Level 1 (Minor)</option>
+            <option value="2">Level 2 (Moderate)</option>
+            <option value="3">Level 3 (Long delay)</option>
+            <option value="4">Level 4 (Severe)</option>
+          </select>
+
+          {/* Reset Map */}
+          <button
+            onClick={handleResetMap}
+            title="Reset map view"
+            className="p-1.5 rounded border border-[#E5E7E1] hover:bg-[#F0F2ED] text-[#777D78] hover:text-[#252923] transition"
+          >
+            <RotateCcw className="w-3.5 h-3.5" />
           </button>
         </div>
       </div>
 
       {/* Main Interactive Map */}
       <HotspotMap
+        viewMode={viewMode}
         clusters={filteredClusters}
         algorithm={algorithm}
         rawAccidents={rawAccidents}
@@ -223,132 +313,108 @@ export const HotspotExplorer: React.FC = () => {
         zoom={mapZoom}
         selectedClusterId={selectedCluster?.cluster_id}
         onSelectCluster={handleSelectCluster}
+        onViewportChange={handleViewportChange}
       />
 
-      {/* Cluster Details Table / Cards */}
-      <div className="bg-[#111827] border border-slate-800 rounded-2xl p-5 shadow-sm">
-        <div className="flex items-center justify-between mb-4">
-          <div>
-            <h3 className="text-sm font-bold text-white flex items-center gap-2">
-              <Layers className="w-4 h-4 text-sky-400" />
-              Identified Spatial Hotspots Ranked by Historical Incident Density
-            </h3>
-            <p className="text-[11px] text-slate-400 mt-0.5">
-              Click any cluster row to pan and zoom directly to the high-density highway corridor on the map
-            </p>
-          </div>
-          <span className="text-xs font-mono text-slate-400">
-            {filteredClusters.length} Clusters Displayed
-          </span>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-slate-300">
-            <thead className="bg-slate-800/60 uppercase text-[10px] tracking-wider text-slate-400 font-mono">
-              <tr>
-                <th className="py-2.5 px-3">Cluster ID</th>
-                <th className="py-2.5 px-3">Dominant Metro Corridor</th>
-                <th className="py-2.5 px-3">Centroid Coordinates</th>
-                <th className="py-2.5 px-3">Accident Volume</th>
-                <th className="py-2.5 px-3">Dataset Share</th>
-                <th className="py-2.5 px-3">Avg Severity</th>
-                <th className="py-2.5 px-3">Spread Radius</th>
-                <th className="py-2.5 px-3 text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-800">
-              {filteredClusters.map((cluster) => {
-                const isSelected = selectedCluster?.cluster_id === cluster.cluster_id;
-                return (
-                  <tr
-                    key={cluster.cluster_id}
-                    onClick={() => handleSelectCluster(cluster)}
-                    className={`cursor-pointer transition ${
-                      isSelected
-                        ? 'bg-sky-500/15 text-white'
-                        : 'hover:bg-slate-800/50'
-                    }`}
-                  >
-                    <td className="py-3 px-3 font-mono font-bold text-sky-400">
-                      #{cluster.cluster_id + 1}
-                    </td>
-                    <td className="py-3 px-3 font-semibold text-slate-100 flex items-center gap-1.5">
-                      <MapPin className="w-3.5 h-3.5 text-slate-400" />
-                      {cluster.dominant_city}
-                    </td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-slate-400">
-                      {cluster.center_lat.toFixed(4)}, {cluster.center_lng.toFixed(4)}
-                    </td>
-                    <td className="py-3 px-3 font-mono font-bold text-white">
-                      {cluster.accident_count.toLocaleString()}
-                    </td>
-                    <td className="py-3 px-3">
-                      <div className="flex items-center gap-2">
-                        <div className="w-16 h-1.5 bg-slate-800 rounded-full overflow-hidden">
-                          <div
-                            className="h-full bg-sky-400 rounded-full"
-                            style={{ width: `${Math.min(cluster.accident_percentage * 2, 100)}%` }}
-                          ></div>
-                        </div>
-                        <span className="font-mono text-[11px]">{cluster.accident_percentage}%</span>
-                      </div>
-                    </td>
-                    <td className="py-3 px-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        cluster.average_severity >= 2.5
-                          ? 'bg-amber-500/20 text-amber-300 border border-amber-500/30'
-                          : 'bg-sky-500/20 text-sky-300 border border-sky-500/30'
-                      }`}>
-                        Level {cluster.average_severity}
-                      </span>
-                    </td>
-                    <td className="py-3 px-3 font-mono text-[11px] text-slate-400">
-                      {cluster.spread_radius_km} km
-                    </td>
-                    <td className="py-3 px-3 text-right">
-                      <span className="text-[11px] text-sky-400 hover:text-sky-300 font-medium inline-flex items-center gap-1">
-                        View Map <ArrowRight className="w-3 h-3" />
-                      </span>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Architectural Viva Comparison Box */}
-      {comparison && (
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <div className="bg-[#111827] border border-slate-800 rounded-xl p-4 text-xs">
-            <div className="flex items-center gap-2 font-bold text-sky-400 mb-2">
-              <Compass className="w-4 h-4" />
-              <span>K-Means Spatial Characteristics</span>
+      {/* Cluster Table (when viewing clusters) */}
+      {viewMode === 'clusters' && (
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
+          <div className="flex items-baseline justify-between mb-3">
+            <div>
+              <h2 className="text-sm font-semibold text-[#252923]">
+                Identified accident concentrations
+              </h2>
+              <p className="text-xs text-[#777D78] mt-0.5">
+                Dense corridors ranked by total recorded incidents
+              </p>
             </div>
-            <ul className="space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
-              <li>• <strong>Distance Metric:</strong> Euclidean planar coordinates approximation.</li>
-              <li>• <strong>Cluster Shape:</strong> Spherical convex Voronoi partitions around geometric centroids.</li>
-              <li>• <strong>Outlier Treatment:</strong> Forces every isolated rural incident into the nearest cluster center.</li>
-              <li>• <strong>Best Suited:</strong> Partitioning regional highway emergency patrol zones.</li>
-            </ul>
+            <span className="text-xs text-[#777D78]">
+              {filteredClusters.length} clusters found
+            </span>
           </div>
 
-          <div className="bg-[#111827] border border-slate-800 rounded-xl p-4 text-xs">
-            <div className="flex items-center gap-2 font-bold text-emerald-400 mb-2">
-              <Activity className="w-4 h-4" />
-              <span>DBSCAN Haversine Characteristics</span>
-            </div>
-            <ul className="space-y-1.5 text-slate-300 text-[11px] leading-relaxed">
-              <li>• <strong>Distance Metric:</strong> Great-Circle Haversine spherical distance on Earth's curved surface.</li>
-              <li>• <strong>Cluster Shape:</strong> Arbitrary geometric chains following real curvy highway corridors (I-5, I-405).</li>
-              <li>• <strong>Outlier Treatment:</strong> Isolates sparse rural accidents as noise ({dbscanData?.noise_points_count} isolated).</li>
-              <li>• <strong>Best Suited:</strong> High-precision blackspot detection without artificial geometric distortion.</li>
-            </ul>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs text-[#252923]">
+              <thead className="bg-[#F7F7F4] border-b border-[#E5E7E1] text-[11px] uppercase tracking-wider text-[#777D78] font-medium">
+                <tr>
+                  <th className="py-2.5 px-3">Cluster</th>
+                  <th className="py-2.5 px-3">Primary Area</th>
+                  <th className="py-2.5 px-3">Coordinates</th>
+                  <th className="py-2.5 px-3 text-right">Recorded Accidents</th>
+                  <th className="py-2.5 px-3 text-right">Dataset Share</th>
+                  <th className="py-2.5 px-3 text-center">Avg Delay Severity</th>
+                  <th className="py-2.5 px-3 text-right">Spread Radius</th>
+                  <th className="py-2.5 px-3 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-[#E5E7E1]">
+                {filteredClusters.map((cluster) => {
+                  const isSelected = selectedCluster?.cluster_id === cluster.cluster_id;
+                  return (
+                    <tr
+                      key={cluster.cluster_id}
+                      onClick={() => handleSelectCluster(cluster)}
+                      className={`cursor-pointer transition-colors ${
+                        isSelected ? 'bg-[#EBF2EE]' : 'hover:bg-[#F7F7F4]'
+                      }`}
+                    >
+                      <td className="py-2.5 px-3 font-semibold text-[#28634D]">
+                        #{cluster.cluster_id + 1}
+                      </td>
+                      <td className="py-2.5 px-3 font-medium">
+                        {cluster.dominant_city}
+                      </td>
+                      <td className="py-2.5 px-3 font-mono text-[11px] text-[#777D78]">
+                        {cluster.center_lat.toFixed(4)}, {cluster.center_lng.toFixed(4)}
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-medium">
+                        {cluster.accident_count.toLocaleString()}
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-[#777D78]">
+                        {cluster.accident_percentage}%
+                      </td>
+                      <td className="py-2.5 px-3 text-center">
+                        <span className="font-semibold text-[#28634D]">
+                          Level {cluster.average_severity}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-[#777D78]">
+                        {cluster.spread_radius_km} km
+                      </td>
+                      <td className="py-2.5 px-3 text-right">
+                        <span className="text-[#28634D] font-medium hover:underline">
+                          View
+                        </span>
+                      </td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
           </div>
         </div>
       )}
+
+      {/* Natural Editorial Explanation Box */}
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#252923]">
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
+          <div className="font-semibold text-xs text-[#28634D]">
+            DBSCAN with Haversine Metric
+          </div>
+          <p className="text-xs text-[#777D78] leading-relaxed">
+            DBSCAN groups points based on spatial density without requiring an upfront cluster count. Because road accidents occur on Earth’s spherical surface, Haversine great-circle distance is used instead of flat Cartesian coordinates to avoid geometric distortion across long freeway corridors.
+          </p>
+        </div>
+
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
+          <div className="font-semibold text-xs text-[#252923]">
+            K-Means Centroid Partitioning
+          </div>
+          <p className="text-xs text-[#777D78] leading-relaxed">
+            K-Means groups coordinates into K geographic regions by minimizing the sum of squared distances to each center. While useful for dividing patrol areas, it forces all points into spherical clusters and includes remote rural incidents into the nearest cluster.
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
-

@@ -36,12 +36,25 @@ def get_dashboard_summary():
 
 @router.get("/accidents", response_model=List[AccidentSummary])
 def get_accidents(
-    limit: int = Query(150, ge=1, le=1000, description="Max number of sampled accidents to return"),
+    limit: int = Query(500, ge=1, le=2500, description="Max number of sampled accidents to return"),
     state: Optional[str] = Query(None, description="Filter by state abbreviation (e.g. CA, FL, TX)"),
     city: Optional[str] = Query(None, description="Filter by city name"),
-    severity: Optional[int] = Query(None, ge=1, le=4, description="Filter by severity level (1-4)")
+    severity: Optional[int] = Query(None, ge=1, le=4, description="Filter by severity level (1-4)"),
+    min_lat: Optional[float] = Query(None, description="Bounding box minimum latitude"),
+    max_lat: Optional[float] = Query(None, description="Bounding box maximum latitude"),
+    min_lng: Optional[float] = Query(None, description="Bounding box minimum longitude"),
+    max_lng: Optional[float] = Query(None, description="Bounding box maximum longitude")
 ):
-    """Retrieves sampled accident records for client-side map rendering and geographic filtering."""
+    """Retrieves sampled accident records with optional geographic viewport and state filtering."""
     ds = DataService.get_instance()
-    return ds.get_accidents(limit=limit, state=state, city=city, severity=severity)
+    return ds.get_accidents(
+        limit=limit,
+        state=state,
+        city=city,
+        severity=severity,
+        min_lat=min_lat,
+        max_lat=max_lat,
+        min_lng=min_lng,
+        max_lng=max_lng
+    )
 

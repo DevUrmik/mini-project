@@ -1,5 +1,5 @@
 import React from 'react';
-import { AlertTriangle, RefreshCw } from 'lucide-react';
+import { AlertCircle, RotateCcw } from 'lucide-react';
 
 interface ErrorBannerProps {
   message?: string;
@@ -7,30 +7,26 @@ interface ErrorBannerProps {
 }
 
 export const ErrorBanner: React.FC<ErrorBannerProps> = ({
-  message = "Failed to load data from the FastAPI backend.",
+  message = "Unable to reach the server. Please check your connection.",
   onRetry
 }) => {
   return (
-    <div className="bg-rose-950/40 border border-rose-800/60 rounded-xl p-5 text-rose-200 flex flex-col sm:flex-row items-center justify-between gap-4">
-      <div className="flex items-center gap-3">
-        <div className="p-2 rounded-lg bg-rose-900/60 text-rose-400">
-          <AlertTriangle className="w-5 h-5" />
-        </div>
+    <div className="bg-[#FDFBF7] border border-[#D69A43]/40 rounded-lg p-4 text-[#252923] flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 shadow-subtle">
+      <div className="flex items-center gap-2.5">
+        <AlertCircle className="w-4 h-4 text-[#D69A43] shrink-0" />
         <div>
-          <h4 className="text-sm font-semibold text-rose-100">Backend Communication Issue</h4>
-          <p className="text-xs text-rose-300 mt-0.5">{message}</p>
+          <p className="text-xs font-medium text-[#252923]">{message}</p>
         </div>
       </div>
       {onRetry && (
         <button
           onClick={onRetry}
-          className="flex items-center gap-2 px-3 py-1.5 text-xs font-medium rounded-lg bg-rose-900/80 hover:bg-rose-800 text-white border border-rose-700 transition"
+          className="flex items-center gap-1.5 px-3 py-1.5 text-xs font-medium rounded-md bg-white border border-[#E5E7E1] hover:bg-[#F0F2ED] text-[#252923] transition shrink-0"
         >
-          <RefreshCw className="w-3.5 h-3.5" />
-          Retry Request
+          <RotateCcw className="w-3.5 h-3.5 text-[#777D78]" />
+          Retry
         </button>
       )}
     </div>
   );
 };
-

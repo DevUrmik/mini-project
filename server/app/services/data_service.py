@@ -87,10 +87,14 @@ class DataService:
 
     def get_accidents(
         self,
-        limit: int = 150,
+        limit: int = 500,
         state: Optional[str] = None,
         city: Optional[str] = None,
-        severity: Optional[int] = None
+        severity: Optional[int] = None,
+        min_lat: Optional[float] = None,
+        max_lat: Optional[float] = None,
+        min_lng: Optional[float] = None,
+        max_lng: Optional[float] = None
     ) -> List[Dict[str, Any]]:
         if self._df.empty:
             return []
@@ -102,6 +106,12 @@ class DataService:
             filtered = filtered[filtered["City"].str.lower() == city.lower()]
         if severity:
             filtered = filtered[filtered["Severity"] == severity]
+
+        # Bounding box viewport filtering
+        if min_lat is not None and max_lat is not None:
+            filtered = filtered[(filtered["Start_Lat"] >= min_lat) & (filtered["Start_Lat"] <= max_lat)]
+        if min_lng is not None and max_lng is not None:
+            filtered = filtered[(filtered["Start_Lng"] >= min_lng) & (filtered["Start_Lng"] <= max_lng)]
 
         # Sample up to limit records for map rendering without overwhelming frontend
         sample_size = min(limit, len(filtered))
