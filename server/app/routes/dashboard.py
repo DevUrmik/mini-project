@@ -43,9 +43,11 @@ def get_accidents(
     min_lat: Optional[float] = Query(None, description="Bounding box minimum latitude"),
     max_lat: Optional[float] = Query(None, description="Bounding box maximum latitude"),
     min_lng: Optional[float] = Query(None, description="Bounding box minimum longitude"),
-    max_lng: Optional[float] = Query(None, description="Bounding box maximum longitude")
+    max_lng: Optional[float] = Query(None, description="Bounding box maximum longitude"),
+    start_date: Optional[str] = Query(None, description="Filter start date (YYYY-MM-DD)"),
+    end_date: Optional[str] = Query(None, description="Filter end date (YYYY-MM-DD)")
 ):
-    """Retrieves sampled accident records with optional geographic viewport and state filtering."""
+    """Retrieves sampled accident records with optional geographic viewport, date range, and state filtering."""
     ds = DataService.get_instance()
     return ds.get_accidents(
         limit=limit,
@@ -55,6 +57,8 @@ def get_accidents(
         min_lat=min_lat,
         max_lat=max_lat,
         min_lng=min_lng,
-        max_lng=max_lng
+        max_lng=max_lng,
+        start_date=start_date,
+        end_date=end_date
     )
 

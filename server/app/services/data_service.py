@@ -94,18 +94,26 @@ class DataService:
         min_lat: Optional[float] = None,
         max_lat: Optional[float] = None,
         min_lng: Optional[float] = None,
-        max_lng: Optional[float] = None
+        max_lng: Optional[float] = None,
+        start_date: Optional[str] = None,
+        end_date: Optional[str] = None
     ) -> List[Dict[str, Any]]:
         if self._df.empty:
             return []
 
         filtered = self._df
-        if state:
+        if state and state.upper() != "ALL":
             filtered = filtered[filtered["State"].str.upper() == state.upper()]
-        if city:
+        if city and city.lower() != "all":
             filtered = filtered[filtered["City"].str.lower() == city.lower()]
         if severity:
             filtered = filtered[filtered["Severity"] == severity]
+
+        # Date range filtering
+        if start_date and "Start_Time" in filtered.columns:
+            filtered = filtered[filtered["Start_Time"] >= str(start_date)]
+        if end_date and "Start_Time" in filtered.columns:
+            filtered = filtered[filtered["Start_Time"] <= f"{end_date} 23:59:59"]
 
         # Bounding box viewport filtering
         if min_lat is not None and max_lat is not None:

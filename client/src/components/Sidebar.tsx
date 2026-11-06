@@ -27,12 +27,12 @@ export const Sidebar: React.FC<SidebarProps> = ({
     },
     {
       id: 'map',
-      label: 'Explore Map',
+      label: 'Hotspot Explorer',
       icon: Map,
     },
     {
       id: 'models',
-      label: 'Model Evaluation',
+      label: 'ML Model Analysis',
       icon: BarChart2,
     },
     {

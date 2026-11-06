@@ -11,6 +11,7 @@ import {
   Line,
   Cell
 } from 'recharts';
+import { Info } from 'lucide-react';
 
 import { StatCard } from '../components/StatCard';
 import { CardSkeleton, ChartSkeleton } from '../components/LoadingSkeleton';
@@ -74,27 +75,50 @@ export const Dashboard: React.FC = () => {
     return <ErrorBanner message={error || undefined} onRetry={fetchData} />;
   }
 
-  // Format Severity for Bar Chart
+  // Discrete severity levels (1, 2, 3, 4) from dataset
+  const severityLabels: Record<string, string> = {
+    '1': 'Level 1 (Minimal)',
+    '2': 'Level 2 (Moderate)',
+    '3': 'Level 3 (High)',
+    '4': 'Level 4 (Severe)'
+  };
+
   const severityData = Object.entries(summary.severity_distribution).map(([key, val]) => ({
-    severity: `Level ${key}`,
+    levelKey: key,
+    severity: severityLabels[key] || `Level ${key}`,
     count: val,
     pct: ((val / summary.total_accidents) * 100).toFixed(1)
   }));
 
-  // Format Top Cities
-  const topCitiesData = Object.entries(summary.top_cities).slice(0, 7).map(([city, count]) => ({
-    city,
-    count
-  }));
+  // Geographic distribution by State
+  const stateData = Object.entries(summary.top_states).map(([st, count]) => {
+    const stateNames: Record<string, string> = {
+      CA: 'California',
+      FL: 'Florida',
+      TX: 'Texas'
+    };
+    return {
+      stateCode: st,
+      stateName: stateNames[st] || st,
+      count,
+      pct: ((count / summary.total_accidents) * 100).toFixed(1)
+    };
+  });
 
-  // Format Weather Conditions
+  // Weather conditions
   const weatherData = Object.entries(summary.top_weather_conditions).slice(0, 6).map(([condition, count]) => ({
     condition,
     count
   }));
 
-  const mostAffectedState = Object.keys(summary.top_states)[0] || 'CA';
-  const stateRecordCount = summary.top_states[mostAffectedState] || 0;
+  // Peak hour computation
+  let peakHourStr = '17:00 (5 PM)';
+  if (timeData?.hourly && timeData.hourly.length > 0) {
+    const maxHourObj = [...timeData.hourly].sort((a, b) => b.count - a.count)[0];
+    if (maxHourObj) {
+      peakHourStr = `${String(maxHourObj.hour).padStart(2, '0')}:00`;
+    }
+  }
 
   return (
     <div className="space-y-6">
@@ -104,46 +128,55 @@ export const Dashboard: React.FC = () => {
           Accident Overview
         </h1>
         <p className="text-xs text-[#777D78] mt-1">
-          Historical analysis of recorded US traffic incidents, temporal patterns, and road delay severity.
+          Empirical patterns across recorded US traffic incidents, temporal distributions, and road impact severities.
         </p>
+      </div>
+
+      {/* Dataset Scope & Severity Meaning Banner */}
+      <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-3 text-xs text-[#252923] flex items-start gap-2.5">
+        <Info className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
+        <div className="space-y-0.5 text-[11px] leading-relaxed">
+          <span className="font-semibold text-[#252923]">Data Scope & Metric Definition: </span>
+          This development sample contains 35,000 verified incident records across California, Florida, and Texas.
+          Severity is an integer score (1–4) representing the extent of vehicular traffic disruption and delay caused by the incident; it does not measure injuries or fatalities.
+        </div>
       </div>
 
       {/* 4 Focused KPI Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Accident records analysed"
+          label="Total accident records"
           value={summary.total_accidents.toLocaleString()}
-          description="Continental US verified GPS records"
+          description="Sample across CA, FL, and TX"
         />
         <StatCard
           label="Average recorded severity"
-          value={`${summary.average_severity}`}
+          value={`${summary.average_severity.toFixed(2)}`}
           detail="out of 4.0"
-          description="Measured by traffic delay duration"
+          description="Traffic delay impact scale"
         />
         <StatCard
-          label="High-impact traffic delays"
+          label="Higher-impact incident rate"
           value={`${summary.high_impact_percentage}%`}
-          description="Severity 3 and 4 prolonged road impacts"
+          description="Severity 3 & 4 prolonged road disruptions"
         />
         <StatCard
-          label="Most affected area"
-          value={mostAffectedState}
-          detail={`${stateRecordCount.toLocaleString()} records`}
-          description="State with highest incident density"
+          label="Peak accident hour"
+          value={peakHourStr}
+          description="Highest incident frequency window"
         />
       </div>
 
-      {/* Primary Charts: Time of Day & Severity Breakdown */}
+      {/* Primary Charts Row: Hourly Volume & Severity Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Hourly Volume */}
+        {/* Hourly Volume (Line Chart) */}
         <div className="lg:col-span-2 bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Accidents by hour of day
+              Accident frequency by hour
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Incident volume peaks during standard morning and evening commute windows
+              Incident count plotted across 24 hours showing morning (07:00–09:00) and evening (16:00–18:00) commute peaks
             </p>
           </div>
 
@@ -183,14 +216,14 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Severity Distribution */}
+        {/* Severity Distribution (Bar Chart with Discrete 1 to 4) */}
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Accidents by severity
+              Severity distribution
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Severity 2 (moderate delay) represents the majority of recorded incidents
+              Level 2 (moderate delay) represents 71.8% of recorded incidents
             </p>
           </div>
 
@@ -198,7 +231,7 @@ export const Dashboard: React.FC = () => {
             <ResponsiveContainer width="100%" height="100%">
               <BarChart data={severityData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                 <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" vertical={false} />
-                <XAxis dataKey="severity" stroke="#777D78" fontSize={11} />
+                <XAxis dataKey="levelKey" stroke="#777D78" fontSize={11} tickFormatter={(val) => `Level ${val}`} />
                 <YAxis stroke="#777D78" fontSize={11} />
                 <Tooltip
                   contentStyle={{
@@ -209,7 +242,10 @@ export const Dashboard: React.FC = () => {
                     color: '#252923',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
                   }}
-                  formatter={(val: any) => [`${Number(val).toLocaleString()} records`, 'Count']}
+                  formatter={(val: any, _name: any, item: any) => [
+                    `${Number(val).toLocaleString()} records (${item.payload.pct}%)`,
+                    item.payload.severity
+                  ]}
                 />
                 <Bar dataKey="count" radius={[3, 3, 0, 0]}>
                   {severityData.map((_, index) => (
@@ -222,16 +258,16 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Secondary Charts: Weather & Metro Areas */}
+      {/* Secondary Charts: Weather Distribution & Geographic Distribution by State */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Weather Conditions */}
+        {/* Weather Conditions Distribution */}
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Weather during accidents
+              Weather distribution
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Incident count by dominant recorded atmospheric conditions
+              Incident count by dominant recorded weather condition
             </p>
           </div>
 
@@ -258,46 +294,45 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Top Cities */}
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
+        {/* Geographic Distribution by State */}
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Cities with the most recorded accidents
+              Geographic distribution by state
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Urban metro areas with high historical incident counts
+              Record counts and share across states present in this development dataset
             </p>
           </div>
 
-          <div className="h-60 w-full">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={topCitiesData}
-                layout="vertical"
-                margin={{ top: 5, right: 20, left: 35, bottom: 5 }}
-              >
-                <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" horizontal={false} />
-                <XAxis type="number" stroke="#777D78" fontSize={11} />
-                <YAxis dataKey="city" type="category" stroke="#252923" fontSize={11} width={85} />
-                <Tooltip
-                  contentStyle={{
-                    backgroundColor: '#FFFFFF',
-                    borderColor: '#E5E7E1',
-                    borderRadius: '6px',
-                    fontSize: '12px',
-                    color: '#252923',
-                    boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
-                  }}
-                  formatter={(val: any) => [`${Number(val).toLocaleString()} records`, 'Count']}
-                />
-                <Bar dataKey="count" fill="#D69A43" radius={[0, 3, 3, 0]} />
-              </BarChart>
-            </ResponsiveContainer>
+          <div className="space-y-3.5 my-auto">
+            {stateData.map((st) => (
+              <div key={st.stateCode} className="space-y-1">
+                <div className="flex justify-between items-baseline text-xs">
+                  <span className="font-semibold text-[#252923]">
+                    {st.stateName} ({st.stateCode})
+                  </span>
+                  <span className="text-[#777D78]">
+                    <span className="font-bold text-[#252923]">{st.count.toLocaleString()}</span> records ({st.pct}%)
+                  </span>
+                </div>
+                <div className="w-full bg-[#F0F2ED] h-2 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#28634D] rounded-full transition-all duration-500"
+                    style={{ width: `${Math.max(Number(st.pct), 2)}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+
+            <div className="pt-2 border-t border-[#E5E7E1] text-[11px] text-[#777D78] leading-tight">
+              33,052 of 35,000 records reside in California (94.4%), with targeted urban samples in Miami, FL (1,173) and Houston, TX (775).
+            </div>
           </div>
         </div>
       </div>
 
-      {/* Road Features Comparison (Integrated from Analytics) */}
+      {/* Road Features Infrastructure Impact */}
       {infraData && infraData.features.length > 0 && (
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
           <div className="mb-3">
@@ -305,7 +340,7 @@ export const Dashboard: React.FC = () => {
               Roadway features in recorded incidents
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Prevalence and average traffic delay impact near road infrastructure
+              Prevalence and average traffic delay severity near road infrastructure
             </p>
           </div>
 
