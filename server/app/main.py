@@ -3,6 +3,23 @@ Accident Hotspot Prediction and Road Safety Intelligence System
 FastAPI Application Entry Point
 """
 
+import sys
+import types
+from pathlib import Path
+
+# Ensure 'server' package resolves in sys.modules whether running inside server/ (Vercel) or from repo root
+_current_dir = Path(__file__).resolve().parent  # server/app
+_server_dir = _current_dir.parent               # server/
+
+if str(_server_dir) not in sys.path:
+    sys.path.insert(0, str(_server_dir))
+
+if "server" not in sys.modules:
+    _server_pkg = types.ModuleType("server")
+    _server_pkg.__path__ = [str(_server_dir)]
+    _server_pkg.__file__ = str(_server_dir / "__init__.py")
+    sys.modules["server"] = _server_pkg
+
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
