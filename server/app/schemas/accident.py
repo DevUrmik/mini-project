@@ -40,6 +40,7 @@ class HotspotCluster(BaseModel):
     average_severity: float
     spread_radius_km: float
     dominant_city: str
+    state: Optional[str] = None
 
 class KMeansHotspotsResponse(BaseModel):
     algorithm: str = "K-Means"
@@ -58,6 +59,7 @@ class DBSCANHotspotsResponse(BaseModel):
     noise_points_count: int
     noise_percentage: float
     clusters: List[HotspotCluster]
+    status_message: Optional[str] = None
 
 class HealthResponse(BaseModel):
     status: str
@@ -65,4 +67,29 @@ class HealthResponse(BaseModel):
     uptime: str
     data_loaded: bool
     model_loaded: bool
+
+class PaginatedAccidentsResponse(BaseModel):
+    total: int
+    page: int
+    page_size: int
+    total_pages: int
+    items: List[AccidentSummary]
+
+class StateSummary(BaseModel):
+    state: str
+    name: str
+    count: int
+
+class CitySummary(BaseModel):
+    city: str
+    state: str
+    count: int
+
+class GeoBoundsResponse(BaseModel):
+    min_lat: float
+    max_lat: float
+    min_lng: float
+    max_lng: float
+    bounds: List[List[float]]
+    total_records: int
 

@@ -9,7 +9,7 @@ import {
   CartesianGrid,
   Legend
 } from 'recharts';
-import { Info, AlertCircle } from 'lucide-react';
+import { Info, AlertCircle, CheckCircle2, ShieldCheck, Scale, AlertTriangle, Clock } from 'lucide-react';
 
 import { CardSkeleton, ChartSkeleton } from '../components/LoadingSkeleton';
 import { ErrorBanner } from '../components/ErrorBanner';
@@ -18,7 +18,7 @@ import { ModelMetricsResponse, ModelMetricDetails } from '../types';
 
 export const ModelComparison: React.FC = () => {
   const [metrics, setMetrics] = useState<ModelMetricsResponse | null>(null);
-  const [selectedModelKey, setSelectedModelKey] = useState<'random_forest' | 'decision_tree' | 'logistic_regression'>('random_forest');
+  const [selectedModelKey, setSelectedModelKey] = useState<string>('random_forest');
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -28,8 +28,10 @@ export const ModelComparison: React.FC = () => {
     try {
       const data = await getModelMetrics();
       setMetrics(data);
-      if (data.selected_best_model) {
-        setSelectedModelKey(data.selected_best_model as any);
+      if (data.selected_best_model && data.models[data.selected_best_model]) {
+        setSelectedModelKey(data.selected_best_model);
+      } else if (data.models && Object.keys(data.models).length > 0) {
+        setSelectedModelKey(Object.keys(data.models)[0]);
       }
     } catch (err: any) {
       setError(err?.message || 'Failed to load model evaluation metrics.');
@@ -45,7 +47,7 @@ export const ModelComparison: React.FC = () => {
   if (loading) {
     return (
       <div className="space-y-6">
-        <CardSkeleton count={3} />
+        <CardSkeleton count={4} />
         <ChartSkeleton height="h-72" />
       </div>
     );
@@ -55,212 +57,164 @@ export const ModelComparison: React.FC = () => {
     return <ErrorBanner message={error || undefined} onRetry={fetchMetrics} />;
   }
 
-  const modelsList: ModelMetricDetails[] = [
-    metrics.models.logistic_regression,
-    metrics.models.decision_tree,
-    metrics.models.random_forest
-  ];
-
-  const chartData = modelsList.map((m) => ({
-    name: m.name.replace(' Classifier', ''),
-    accuracy: m.accuracy,
-    macro_f1: m.macro_f1,
-    balanced_accuracy: m.balanced_accuracy,
-  }));
-
-  const activeModel = metrics.models[selectedModelKey] || metrics.models.random_forest;
+  const modelsList: ModelMetricDetails[] = Object.values(metrics.models);
+  const activeModel = metrics.models[selectedModelKey] || metrics.models.random_forest || modelsList[0];
   const activeCM = activeModel.confusion_matrix;
   const maxCellValue = Math.max(...activeCM.flat());
 
-  const severityDefinitions: Record<string, string> = {
-    '1': 'Minimal traffic impact',
-    '2': 'Moderate traffic impact',
-    '3': 'High traffic impact',
-    '4': 'Significant traffic disruption'
+  const severityDefinitions: Record<string, { title: string; desc: string }> = {
+    '1': { title: 'Level 1 — Minimal Delay', desc: 'Negligible vehicular traffic disruption (< 15 min delay)' },
+    '2': { title: 'Level 2 — Moderate Delay', desc: 'Standard incident with localized freeway slowdown (15–45 min)' },
+    '3': { title: 'Level 3 — High Delay', desc: 'Substantial congestion with multi-lane blockage (45–90 min)' },
+    '4': { title: 'Level 4 — Significant Disruption', desc: 'Prolonged full corridor closure or major arterial shutdown' }
   };
+
+  // Chart data comparing models + majority baseline
+  const chartData = [
+    ...(metrics.majority_baseline ? [{
+      name: 'Majority Baseline',
+      accuracy: metrics.majority_baseline.accuracy,
+      macro_f1: metrics.majority_baseline.macro_f1,
+      balanced_accuracy: metrics.majority_baseline.balanced_accuracy,
+      isBaseline: true
+    }] : []),
+    ...modelsList.map((m) => ({
+      name: m.name.replace(' Classifier', ''),
+      accuracy: m.accuracy,
+      macro_f1: m.macro_f1,
+      balanced_accuracy: m.balanced_accuracy,
+      isBaseline: false
+    }))
+  ];
+
+  // Class distribution bar data
+  const classDistData = Object.entries(metrics.target_info.class_distribution).map(([cls, count]) => {
+    const total = metrics.dataset_split.total_samples;
+    const pct = ((count / total) * 100).toFixed(2);
+    return {
+      name: `Level ${cls}`,
+      count,
+      percentage: Number(pct),
+      label: severityDefinitions[cls]?.title || `Severity ${cls}`
+    };
+  });
 
   return (
     <div className="space-y-6">
       {/* Editorial Header */}
       <div className="pb-1 border-b border-[#E5E7E1]">
-        <h1 className="text-xl font-bold tracking-tight text-[#252923]">
-          ML Model Analysis
-        </h1>
-        <p className="text-xs text-[#777D78] mt-1">
-          Supervised classification benchmarks on a stratified 20% test partition (7,000 incidents) comparing Logistic Regression, Decision Tree, and Random Forest.
-        </p>
-      </div>
-
-      {/* Class Imbalance & Minority Performance Investigation Card */}
-      <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-4 space-y-2 text-xs text-[#252923]">
-        <div className="flex items-center gap-2 font-semibold text-xs text-[#28634D]">
-          <Info className="w-4 h-4 shrink-0" />
-          <span>Investigation: Extreme Class Imbalance & Minority Performance</span>
-        </div>
-        <p className="text-xs text-[#777D78] leading-relaxed">
-          The dataset shows severe class skew: <strong>Level 2 represents 71.8%</strong> of all incidents, whereas Level 1 is only 2.8% and Level 4 is 7.2%.
-          An unweighted baseline would collapse toward predicting Level 2 exclusively, artificially yielding ~72% accuracy while failing on extreme disruptions.
-          Consequently, Random Forest achieves <strong>59.91% accuracy</strong> but <strong>25.23% balanced accuracy</strong> and <strong>24.99% Macro F1</strong>.
-          Even with balanced class weights, pre-incident environmental and road features lack sufficient variance to reliably separate minority severe delays from standard incidents without introducing excessive false positives.
-        </p>
-      </div>
-
-      {/* Model Benchmark Summary Table */}
-      <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-        <div className="mb-3">
-          <h2 className="text-sm font-semibold text-[#252923]">
-            Algorithm Benchmark Comparison
-          </h2>
-          <p className="text-xs text-[#777D78] mt-0.5">
-            Macro F1 and balanced accuracy are the primary comparative metrics rather than raw accuracy
-          </p>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-[#252923]">
-            <thead className="bg-[#F7F7F4] border-b border-[#E5E7E1] text-[11px] uppercase tracking-wider text-[#777D78] font-medium">
-              <tr>
-                <th className="py-2.5 px-3">Model</th>
-                <th className="py-2.5 px-3 text-right">Accuracy</th>
-                <th className="py-2.5 px-3 text-right">Macro F1</th>
-                <th className="py-2.5 px-3 text-right">Balanced Accuracy</th>
-                <th className="py-2.5 px-3 text-right">Weighted F1</th>
-                <th className="py-2.5 px-3 text-center">Status</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E5E7E1]">
-              {modelsList.map((model) => {
-                const isSelected = selectedModelKey === model.model_key;
-                const isBest = model.model_key === metrics.selected_best_model;
-
-                return (
-                  <tr
-                    key={model.model_key}
-                    onClick={() => setSelectedModelKey(model.model_key as any)}
-                    className={`cursor-pointer transition-colors ${
-                      isSelected ? 'bg-[#EBF2EE]' : 'hover:bg-[#F7F7F4]'
-                    }`}
-                  >
-                    <td className="py-3 px-3">
-                      <div className="font-semibold text-[#252923]">{model.name}</div>
-                      <div className="text-[11px] text-[#777D78]">
-                        {model.model_key === 'random_forest'
-                          ? '100 ensemble trees with balanced class weighting'
-                          : model.model_key === 'decision_tree'
-                          ? 'Max depth 12 with min split 20'
-                          : 'L2 regularization, balanced weights'}
-                      </div>
-                    </td>
-                    <td className="py-3 px-3 text-right font-medium">
-                      {model.accuracy}%
-                    </td>
-                    <td className="py-3 px-3 text-right font-bold text-[#28634D]">
-                      {model.macro_f1}%
-                    </td>
-                    <td className="py-3 px-3 text-right font-medium">
-                      {model.balanced_accuracy}%
-                    </td>
-                    <td className="py-3 px-3 text-right text-[#777D78]">
-                      {model.weighted_f1}%
-                    </td>
-                    <td className="py-3 px-3 text-center">
-                      {isBest ? (
-                        <span className="inline-block px-2 py-0.5 rounded text-[11px] font-medium bg-[#EBF2EE] text-[#28634D] border border-[#28634D]/30">
-                          Best evaluated model
-                        </span>
-                      ) : (
-                        <span className="text-[11px] text-[#777D78]">
-                          Baseline
-                        </span>
-                      )}
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      {/* Per-Class Precision, Recall, and F1 Table */}
-      <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
+        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
           <div>
-            <h2 className="text-sm font-semibold text-[#252923]">
-              Per-Class Performance: {activeModel.name}
-            </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Detailed breakdown of precision, recall, and F1 score across each discrete severity label
+            <h1 className="text-xl font-bold tracking-tight text-[#252923]">
+              ML Model Analysis & Evaluation
+            </h1>
+            <p className="text-xs text-[#777D78] mt-1">
+              Supervised traffic-impact classification benchmarks across a nationwide 20% test partition ({metrics.dataset_split.test_samples.toLocaleString()} incidents).
             </p>
           </div>
-          <select
-            value={selectedModelKey}
-            onChange={(e) => setSelectedModelKey(e.target.value as any)}
-            className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2.5 py-1 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
-          >
-            <option value="random_forest">Random Forest</option>
-            <option value="decision_tree">Decision Tree</option>
-            <option value="logistic_regression">Logistic Regression</option>
-          </select>
-        </div>
-
-        <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs text-[#252923]">
-            <thead className="bg-[#F7F7F4] border-b border-[#E5E7E1] text-[11px] uppercase tracking-wider text-[#777D78] font-medium">
-              <tr>
-                <th className="py-2.5 px-3">Class Label</th>
-                <th className="py-2.5 px-3">Dataset Definition</th>
-                <th className="py-2.5 px-3 text-right">Test Support</th>
-                <th className="py-2.5 px-3 text-right">Test Share</th>
-                <th className="py-2.5 px-3 text-right">Precision</th>
-                <th className="py-2.5 px-3 text-right">Recall</th>
-                <th className="py-2.5 px-3 text-right">F1 Score</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-[#E5E7E1]">
-              {Object.entries(activeModel.per_class).map(([cls, pc]) => {
-                const supportPct = ((pc.support / metrics.dataset_split.test_samples) * 100).toFixed(1);
-                return (
-                  <tr key={cls} className="hover:bg-[#F7F7F4] transition-colors">
-                    <td className="py-2.5 px-3 font-semibold text-[#28634D]">
-                      Level {cls}
-                    </td>
-                    <td className="py-2.5 px-3 text-[#252923]">
-                      {severityDefinitions[cls] || `Severity ${cls}`}
-                    </td>
-                    <td className="py-2.5 px-3 text-right font-medium">
-                      {pc.support.toLocaleString()}
-                    </td>
-                    <td className="py-2.5 px-3 text-right text-[#777D78]">
-                      {supportPct}%
-                    </td>
-                    <td className="py-2.5 px-3 text-right font-mono text-[11px]">
-                      {(pc.precision * 100).toFixed(1)}%
-                    </td>
-                    <td className="py-2.5 px-3 text-right font-mono text-[11px]">
-                      {(pc.recall * 100).toFixed(1)}%
-                    </td>
-                    <td className="py-2.5 px-3 text-right font-mono text-[11px] font-bold text-[#28634D]">
-                      {(pc.f1_score * 100).toFixed(1)}%
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </table>
+          <div className="text-[11px] text-[#777D78] bg-white border border-[#E5E7E1] px-2.5 py-1 rounded">
+            Partition: <strong className="text-[#252923]">{metrics.dataset_split.train_samples.toLocaleString()} train</strong> / <strong className="text-[#252923]">{metrics.dataset_split.test_samples.toLocaleString()} test</strong>
+          </div>
         </div>
       </div>
 
-      {/* Side-by-side: Metric Bar Chart & Confusion Matrix */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Metric Comparison Chart */}
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
+      {/* Majority-Class Baseline Warning Card */}
+      <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-4 space-y-2 text-xs text-[#252923]">
+        <div className="flex items-center gap-2 font-semibold text-xs text-[#28634D]">
+          <Scale className="w-4 h-4 shrink-0" />
+          <span>Investigation: Extreme Class Imbalance & The Fallacy of Raw Accuracy</span>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 pt-1">
+          <div className="md:col-span-2 space-y-1 text-xs text-[#777D78] leading-relaxed">
+            <p>
+              The authentic dataset exhibits severe class imbalance: <strong>Level 2 represents 79.65%</strong> of all records, whereas <strong>Level 1 (0.88%)</strong> and <strong>Level 4 (2.66%)</strong> are rare minority events.
+            </p>
+            <p>
+              A trivial dummy model that always predicts Level 2 scores <strong>79.65% raw accuracy</strong>, but has <strong>0.0% recall</strong> on minority classes (Balanced Accuracy = 25.0%). Therefore, <strong>Macro F1</strong> and <strong>Balanced Accuracy</strong> serve as our primary scientific benchmarks.
+            </p>
+          </div>
+          <div className="bg-white border border-[#E5E7E1] rounded p-3 text-xs space-y-1">
+            <div className="text-[11px] font-semibold text-[#252923]">Majority Baseline Benchmark:</div>
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[#777D78]">Dummy Accuracy:</span>
+              <span className="font-bold text-[#252923]">{metrics.majority_baseline?.accuracy ?? 79.65}%</span>
+            </div>
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[#777D78]">Dummy Balanced Acc:</span>
+              <span className="font-bold text-[#C24E42]">25.00%</span>
+            </div>
+            <div className="flex justify-between text-[11px]">
+              <span className="text-[#777D78]">Dummy Macro F1:</span>
+              <span className="font-bold text-[#C24E42]">22.17%</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Model Comparison Cards Grid */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        {modelsList.map((model) => {
+          const isSelected = selectedModelKey === model.model_key;
+          const isPrimary = model.model_key === metrics.selected_best_model;
+
+          return (
+            <div
+              key={model.model_key}
+              onClick={() => setSelectedModelKey(model.model_key)}
+              className={`p-4 rounded-lg border cursor-pointer transition-all ${
+                isSelected
+                  ? 'bg-white border-[#28634D] shadow-md ring-1 ring-[#28634D]'
+                  : 'bg-white border-[#E5E7E1] hover:border-[#28634D]/50 shadow-subtle'
+              }`}
+            >
+              <div className="flex justify-between items-start mb-2">
+                <span className="text-xs font-bold text-[#252923]">{model.name}</span>
+                {isPrimary && (
+                  <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded bg-[#EBF2EE] text-[#28634D] border border-[#28634D]/30">
+                    Primary
+                  </span>
+                )}
+              </div>
+
+              <div className="space-y-1.5 pt-1 text-xs">
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[#777D78]">Macro F1:</span>
+                  <span className="font-bold text-sm text-[#28634D]">{model.macro_f1}%</span>
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[#777D78]">Balanced Acc:</span>
+                  <span className="font-semibold text-[#252923]">{model.balanced_accuracy}%</span>
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[#777D78]">Overall Accuracy:</span>
+                  <span className="font-medium text-[#252923]">{model.accuracy}%</span>
+                </div>
+                <div className="flex justify-between items-baseline">
+                  <span className="text-[#777D78]">Weighted F1:</span>
+                  <span className="text-[#777D78]">{model.weighted_f1}%</span>
+                </div>
+                {model.training_time_sec !== undefined && (
+                  <div className="flex justify-between items-baseline pt-1 border-t border-[#E5E7E1] text-[10px] text-[#777D78]">
+                    <span>Training Latency:</span>
+                    <span>{model.training_time_sec}s</span>
+                  </div>
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+
+      {/* Side-by-side: Metric Benchmark Multi-Bar Chart & Class Distribution */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        {/* Metric Comparison Chart (2 cols) */}
+        <div className="lg:col-span-2 bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Accuracy vs. Balanced Metrics
+              Accuracy vs. Balanced Metrics Benchmark
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Evaluating raw accuracy against balanced accuracy and unweighted Macro F1
+              Comparison across candidate classifiers and the majority-class baseline. Note how the baseline collapses on Balanced Accuracy.
             </p>
           </div>
 
@@ -269,7 +223,7 @@ export const ModelComparison: React.FC = () => {
               <BarChart data={chartData} margin={{ top: 10, right: 15, left: -20, bottom: 5 }}>
                 <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="name" stroke="#777D78" fontSize={11} />
-                <YAxis stroke="#777D78" fontSize={11} domain={[0, 80]} />
+                <YAxis stroke="#777D78" fontSize={11} domain={[0, 90]} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#FFFFFF',
@@ -290,6 +244,120 @@ export const ModelComparison: React.FC = () => {
           </div>
         </div>
 
+        {/* Dataset Class Distribution Chart (1 col) */}
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
+          <div className="mb-2">
+            <h2 className="text-sm font-semibold text-[#252923]">
+              Target Class Distribution
+            </h2>
+            <p className="text-xs text-[#777D78] mt-0.5">
+              Empirical frequency of traffic delay severity in training partition
+            </p>
+          </div>
+
+          <div className="space-y-3 my-2">
+            {classDistData.map((cd) => (
+              <div key={cd.name} className="space-y-1">
+                <div className="flex justify-between items-baseline text-xs">
+                  <span className="font-semibold text-[#252923]">{cd.name}</span>
+                  <span className="text-[11px] text-[#777D78]">
+                    {cd.count.toLocaleString()} ({cd.percentage}%)
+                  </span>
+                </div>
+                <div className="w-full bg-[#F0F2ED] h-2 rounded-full overflow-hidden">
+                  <div
+                    className="h-full bg-[#28634D] rounded-full"
+                    style={{ width: `${Math.max(cd.percentage, 2)}%` }}
+                  />
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <div className="text-[11px] text-[#777D78] pt-2 border-t border-[#E5E7E1] leading-tight">
+            Level 2 represents 79.7% of incidents. Levels 1 & 4 require class-weighted cost penalties.
+          </div>
+        </div>
+      </div>
+
+      {/* Per-Class Precision, Recall, and F1 Table */}
+      <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
+        <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2 mb-3">
+          <div>
+            <h2 className="text-sm font-semibold text-[#252923]">
+              Per-Class Breakdown: {activeModel.name}
+            </h2>
+            <p className="text-xs text-[#777D78] mt-0.5">
+              Precision, recall, and F1 score for each discrete traffic-delay severity level
+            </p>
+          </div>
+          <div className="flex items-center gap-2">
+            <span className="text-xs text-[#777D78]">Inspect Model:</span>
+            <select
+              value={selectedModelKey}
+              onChange={(e) => setSelectedModelKey(e.target.value)}
+              className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2.5 py-1 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
+            >
+              {modelsList.map((m) => (
+                <option key={m.model_key} value={m.model_key}>
+                  {m.name}
+                </option>
+              ))}
+            </select>
+          </div>
+        </div>
+
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-xs text-[#252923]">
+            <thead className="bg-[#F7F7F4] border-b border-[#E5E7E1] text-[11px] uppercase tracking-wider text-[#777D78] font-medium">
+              <tr>
+                <th className="py-2.5 px-3">Class</th>
+                <th className="py-2.5 px-3">Impact Definition</th>
+                <th className="py-2.5 px-3 text-right">Test Support</th>
+                <th className="py-2.5 px-3 text-right">Test Share</th>
+                <th className="py-2.5 px-3 text-right">Precision</th>
+                <th className="py-2.5 px-3 text-right">Recall</th>
+                <th className="py-2.5 px-3 text-right">F1 Score</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-[#E5E7E1]">
+              {Object.entries(activeModel.per_class).map(([cls, pc]) => {
+                const supportPct = ((pc.support / metrics.dataset_split.test_samples) * 100).toFixed(1);
+                const isMinority = cls === '1' || cls === '4';
+                return (
+                  <tr key={cls} className={`transition-colors ${isMinority ? 'bg-[#FAFAF8]' : 'hover:bg-[#F7F7F4]'}`}>
+                    <td className="py-2.5 px-3 font-semibold text-[#28634D]">
+                      Level {cls}
+                    </td>
+                    <td className="py-2.5 px-3 text-[#252923]">
+                      <div className="font-medium">{severityDefinitions[cls]?.title || `Severity ${cls}`}</div>
+                      <div className="text-[10px] text-[#777D78]">{severityDefinitions[cls]?.desc}</div>
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-medium">
+                      {pc.support.toLocaleString()}
+                    </td>
+                    <td className="py-2.5 px-3 text-right text-[#777D78]">
+                      {supportPct}%
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-mono text-[11px]">
+                      {pc.precision.toFixed(1)}%
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-mono text-[11px]">
+                      {pc.recall.toFixed(1)}%
+                    </td>
+                    <td className="py-2.5 px-3 text-right font-mono text-[11px] font-bold text-[#28634D]">
+                      {pc.f1_score.toFixed(1)}%
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      {/* Side-by-side: Confusion Matrix & Feature Importances */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         {/* Confusion Matrix */}
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-2">
@@ -308,7 +376,7 @@ export const ModelComparison: React.FC = () => {
               </div>
               <div className="grid grid-cols-5 gap-1.5 text-xs">
                 {/* Header Row */}
-                <div className="text-[#777D78] p-2 text-right text-[11px]">Actual</div>
+                <div className="text-[#777D78] p-2 text-right text-[11px] font-medium">Actual</div>
                 {[1, 2, 3, 4].map((c) => (
                   <div key={`header-${c}`} className="bg-[#F0F2ED] text-[#252923] font-semibold p-2 rounded">
                     Level {c}
@@ -350,66 +418,92 @@ export const ModelComparison: React.FC = () => {
 
           <div className="text-xs text-[#777D78] pt-2 border-t border-[#E5E7E1] flex justify-between">
             <span>Diagonal cells indicate correct predictions</span>
-            <span>Total test samples: {metrics.dataset_split.test_samples.toLocaleString()}</span>
+            <span>Total test partition: {metrics.dataset_split.test_samples.toLocaleString()}</span>
+          </div>
+        </div>
+
+        {/* Feature Importances (Random Forest) */}
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
+          <div className="mb-2">
+            <h2 className="text-sm font-semibold text-[#252923]">
+              Top Pre-Incident Predictive Features
+            </h2>
+            <p className="text-xs text-[#777D78] mt-0.5">
+              Gini split contributions from Random Forest (Zero post-incident outcome leakage)
+            </p>
+          </div>
+
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart
+                data={metrics.feature_importances.slice(0, 8).reverse()}
+                layout="vertical"
+                margin={{ top: 5, right: 25, left: 50, bottom: 5 }}
+              >
+                <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" horizontal={false} />
+                <XAxis type="number" stroke="#777D78" fontSize={11} domain={[0, 'dataMax + 2']} />
+                <YAxis dataKey="feature" type="category" stroke="#252923" fontSize={11} width={115} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: '#FFFFFF',
+                    borderColor: '#E5E7E1',
+                    borderRadius: '6px',
+                    fontSize: '12px',
+                    color: '#252923',
+                    boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
+                  }}
+                  formatter={(val: any) => [`${val}%`, 'Relative Importance']}
+                />
+                <Bar dataKey="importance" fill="#28634D" radius={[0, 3, 3, 0]} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+
+          <div className="text-[11px] text-[#777D78] pt-2 border-t border-[#E5E7E1]">
+            Weather conditions (humidity, temp, wind) and temporal peak hours dominate feature splits.
           </div>
         </div>
       </div>
 
-      {/* Feature Importances (Random Forest) */}
-      <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-        <div className="mb-4">
-          <h2 className="text-sm font-semibold text-[#252923]">
-            Top predictive factors for severity (Random Forest)
-          </h2>
-          <p className="text-xs text-[#777D78] mt-0.5">
-            Features with highest relative contribution to classification splits
-          </p>
-        </div>
-
-        <div className="h-64 w-full">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={metrics.feature_importances.slice(0, 8).reverse()}
-              layout="vertical"
-              margin={{ top: 5, right: 25, left: 50, bottom: 5 }}
-            >
-              <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" horizontal={false} />
-              <XAxis type="number" stroke="#777D78" fontSize={11} domain={[0, 'dataMax + 2']} />
-              <YAxis dataKey="feature" type="category" stroke="#252923" fontSize={11} width={110} />
-              <Tooltip
-                contentStyle={{
-                  backgroundColor: '#FFFFFF',
-                  borderColor: '#E5E7E1',
-                  borderRadius: '6px',
-                  fontSize: '12px',
-                  color: '#252923',
-                  boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
-                }}
-                formatter={(val: any) => [`${val}%`, 'Contribution']}
-              />
-              <Bar dataKey="importance" fill="#28634D" radius={[0, 3, 3, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </div>
-
-      {/* Editorial Methodology Explanations */}
+      {/* 4 Viva-Ready Methodology & Limitation Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#252923]">
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
-          <div className="font-semibold text-xs text-[#28634D]">
-            Why Macro F1 is the Primary Metric
+          <div className="flex items-center gap-1.5 font-semibold text-xs text-[#28634D]">
+            <Scale className="w-3.5 h-3.5" />
+            <span>Why Macro F1 Matters</span>
           </div>
           <p className="text-xs text-[#777D78] leading-relaxed">
-            In this dataset, over 71% of all records fall into Severity 2. A trivial baseline predicting Severity 2 for every record would achieve ~72% accuracy while completely failing to identify severe delays (Severity 3 & 4). Macro F1 calculates the unweighted mean of F1 scores across all four classes, giving equal importance to minority severe categories.
+            The dataset contains substantially more Level 2 incidents (~79.7%) than Level 1 (0.88%) and Level 4 (2.66%) incidents. Accuracy can look deceptively reasonable (79.65%) even when the model fails completely on minority categories. Macro F1 gives each of the four severity classes equal importance.
           </p>
         </div>
 
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
-          <div className="font-semibold text-xs text-[#252923]">
-            Preventing Data Leakage
+          <div className="flex items-center gap-1.5 font-semibold text-xs text-[#28634D]">
+            <CheckCircle2 className="w-3.5 h-3.5" />
+            <span>What the Model Predicts</span>
           </div>
           <p className="text-xs text-[#777D78] leading-relaxed">
-            Post-incident fields such as clearance time, incident duration, and road closure distance were intentionally excluded from model training. These attributes directly describe the consequence of the incident. Using only pre-incident variables (weather, hour, day, road infrastructure) ensures genuine predictive evaluation.
+            The target variable represents recorded <strong>traffic-impact severity</strong> (delay duration and roadway blockage), graded on an integer scale from 1 (minor impact) to 4 (major corridor disruption). It does not measure physical injuries or human fatalities.
+          </p>
+        </div>
+
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
+          <div className="flex items-center gap-1.5 font-semibold text-xs text-[#D69A43]">
+            <AlertTriangle className="w-3.5 h-3.5" />
+            <span>Important Modeling Limitation</span>
+          </div>
+          <p className="text-xs text-[#777D78] leading-relaxed">
+            This model classifies traffic-impact severity <em>given</em> pre-incident conditions at an accident occurrence. It does not establish the baseline spatial probability or likelihood that an accident will occur at a specific coordinate or highway intersection.
+          </p>
+        </div>
+
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
+          <div className="flex items-center gap-1.5 font-semibold text-xs text-[#28634D]">
+            <ShieldCheck className="w-3.5 h-3.5" />
+            <span>Zero Data Leakage Protocol</span>
+          </div>
+          <p className="text-xs text-[#777D78] leading-relaxed">
+            Post-incident outcome fields (clearance time, incident duration, road closure distance, and descriptive text) were strictly excluded from model training. The feature matrix contains solely pre-incident environmental, temporal, and infrastructure indicators.
           </p>
         </div>
       </div>

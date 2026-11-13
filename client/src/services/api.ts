@@ -2,6 +2,10 @@ import axios from 'axios';
 import {
   DashboardSummary,
   AccidentRecord,
+  PaginatedAccidentsResponse,
+  StateSummary,
+  CitySummary,
+  GeoBoundsResponse,
   KMeansResponse,
   DBSCANResponse,
   ModelMetricsResponse,
@@ -30,7 +34,31 @@ export const getDashboardSummary = async (): Promise<DashboardSummary> => {
   return data;
 };
 
+export const getAvailableStates = async (): Promise<StateSummary[]> => {
+  const { data } = await api.get<StateSummary[]>('/geo/states');
+  return data;
+};
+
+export const getAvailableCities = async (state?: string): Promise<CitySummary[]> => {
+  const { data } = await api.get<CitySummary[]>('/geo/cities', {
+    params: { state: state && state !== 'ALL' ? state : undefined }
+  });
+  return data;
+};
+
+export const getDatasetBounds = async (state?: string, city?: string): Promise<GeoBoundsResponse> => {
+  const { data } = await api.get<GeoBoundsResponse>('/geo/bounds', {
+    params: {
+      state: state && state !== 'ALL' ? state : undefined,
+      city: city && city !== 'All' ? city : undefined
+    }
+  });
+  return data;
+};
+
 export const getAccidents = async (params?: {
+  page?: number;
+  page_size?: number;
   limit?: number;
   state?: string;
   city?: string;
@@ -41,18 +69,22 @@ export const getAccidents = async (params?: {
   max_lng?: number;
   start_date?: string;
   end_date?: string;
-}): Promise<AccidentRecord[]> => {
-  const { data } = await api.get<AccidentRecord[]>('/accidents', { params });
+}): Promise<PaginatedAccidentsResponse> => {
+  const { data } = await api.get<PaginatedAccidentsResponse>('/accidents', { params });
   return data;
 };
 
-export const getKMeansHotspots = async (k: number = 10): Promise<KMeansResponse> => {
-  const { data } = await api.get<KMeansResponse>('/hotspots', { params: { k } });
+export const getKMeansHotspots = async (k: number = 10, state?: string): Promise<KMeansResponse> => {
+  const { data } = await api.get<KMeansResponse>('/hotspots', {
+    params: { k, state: state && state !== 'ALL' ? state : undefined }
+  });
   return data;
 };
 
-export const getDBSCANHotspots = async (): Promise<DBSCANResponse> => {
-  const { data } = await api.get<DBSCANResponse>('/hotspots/dbscan');
+export const getDBSCANHotspots = async (state?: string): Promise<DBSCANResponse> => {
+  const { data } = await api.get<DBSCANResponse>('/hotspots/dbscan', {
+    params: { state: state && state !== 'ALL' ? state : undefined }
+  });
   return data;
 };
 

@@ -1,8 +1,11 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
-import { RotateCcw, AlertCircle, Info } from 'lucide-react';
+import { RotateCcw, Info, MapPin } from 'lucide-react';
 import { HotspotMap, MapViewMode } from '../maps/HotspotMap';
 import { ErrorBanner } from '../components/ErrorBanner';
 import {
+  getAvailableStates,
+  getAvailableCities,
+  getDatasetBounds,
   getKMeansHotspots,
   getDBSCANHotspots,
   getAccidents
@@ -11,48 +14,31 @@ import {
   HotspotCluster,
   AccidentRecord,
   KMeansResponse,
-  DBSCANResponse
+  DBSCANResponse,
+  StateSummary,
+  CitySummary
 } from '../types';
-
-// Preset state coordinates and zoom levels
-const STATE_VIEWPORTS: Record<string, { center: [number, number]; zoom: number }> = {
-  ALL: { center: [33.5, -100.0], zoom: 4 },
-  CA: { center: [36.7783, -119.4179], zoom: 6 },
-  FL: { center: [27.9944, -81.7603], zoom: 7 },
-  TX: { center: [31.9686, -99.9018], zoom: 6 },
-};
-
-// Cities strictly present in the 35,000-record dataset
-const STATE_CITIES: Record<string, string[]> = {
-  ALL: ['Los Angeles', 'San Francisco', 'San Jose', 'San Diego', 'Sacramento', 'Miami', 'Houston'],
-  CA: ['Los Angeles', 'San Francisco', 'San Jose', 'San Diego', 'Sacramento'],
-  FL: ['Miami'],
-  TX: ['Houston'],
-};
-
-// City center coordinates for automatic focus
-const CITY_COORDINATES: Record<string, { center: [number, number]; zoom: number }> = {
-  'Los Angeles': { center: [34.0522, -118.2437], zoom: 10 },
-  'San Francisco': { center: [37.7749, -122.4194], zoom: 11 },
-  'San Jose': { center: [37.3382, -121.8863], zoom: 11 },
-  'San Diego': { center: [32.7157, -117.1611], zoom: 11 },
-  'Sacramento': { center: [38.5816, -121.4944], zoom: 11 },
-  'Miami': { center: [25.7617, -80.1918], zoom: 11 },
-  'Houston': { center: [29.7604, -95.3698], zoom: 10 },
-};
 
 export const HotspotExplorer: React.FC = () => {
   const [viewMode, setViewMode] = useState<MapViewMode>('clusters');
-  const [algorithm, setAlgorithm] = useState<'kmeans' | 'dbscan'>('dbscan');
+  const [algorithm, setAlgorithm] = useState<'dbscan' | 'kmeans'>('dbscan');
   const [kValue, setKValue] = useState<number>(10);
-  const [selectedState, setSelectedState] = useState<string>('CA');
+
+  // Dynamic Geographic State (Zero hardcoded constants)
+  const [availableStates, setAvailableStates] = useState<StateSummary[]>([]);
+  const [availableCities, setAvailableCities] = useState<CitySummary[]>([]);
+  const [selectedState, setSelectedState] = useState<string>('ALL');
   const [selectedCity, setSelectedCity] = useState<string>('All');
   const [selectedSeverity, setSelectedSeverity] = useState<number | undefined>(undefined);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  const [mapCenter, setMapCenter] = useState<[number, number]>(STATE_VIEWPORTS.CA.center);
-  const [mapZoom, setMapZoom] = useState<number>(STATE_VIEWPORTS.CA.zoom);
+  // Dynamically calculated bounds directly from actual accident GPS records
+  const [mapBounds, setMapBounds] = useState<[[number, number], [number, number]]>([
+    [24.0, -125.0],
+    [50.0, -66.0]
+  ]);
+  const [totalMatching, setTotalMatching] = useState<number>(0);
 
   const [kmeansData, setKmeansData] = useState<KMeansResponse | null>(null);
   const [dbscanData, setDbscanData] = useState<DBSCANResponse | null>(null);
@@ -64,28 +50,62 @@ export const HotspotExplorer: React.FC = () => {
 
   const viewportDebounceTimer = useRef<NodeJS.Timeout | null>(null);
 
-  // Load initial cluster models and accidents
+  // 1. Initial Geographic Discovery: Load available states and overall dataset bounds
+  useEffect(() => {
+    const initGeography = async () => {
+      try {
+        const [statesData, boundsData] = await Promise.all([
+          getAvailableStates(),
+          getDatasetBounds()
+        ]);
+        setAvailableStates(statesData);
+        if (boundsData && boundsData.bounds) {
+          setMapBounds(boundsData.bounds);
+        }
+      } catch (err) {
+        console.error('Failed to discover dataset geography:', err);
+      }
+    };
+    initGeography();
+  }, []);
+
+  // 2. Discover cities whenever selected state changes
+  useEffect(() => {
+    const fetchCities = async () => {
+      try {
+        const citiesData = await getAvailableCities(selectedState === 'ALL' ? undefined : selectedState);
+        setAvailableCities(citiesData);
+      } catch (err) {
+        console.error('Failed to discover cities for state:', selectedState, err);
+      }
+    };
+    fetchCities();
+  }, [selectedState]);
+
+  // 3. Main Data Fetcher: Loads clusters, accidents, and record counts for active filters
   const fetchData = async () => {
     setLoading(true);
     setError(null);
     try {
       const [kmRes, dbRes, accRes] = await Promise.all([
-        getKMeansHotspots(kValue),
-        getDBSCANHotspots(),
+        getKMeansHotspots(kValue, selectedState),
+        getDBSCANHotspots(selectedState),
         getAccidents({
           state: selectedState === 'ALL' ? undefined : selectedState,
           city: selectedCity === 'All' ? undefined : selectedCity,
           severity: selectedSeverity,
           start_date: startDate || undefined,
           end_date: endDate || undefined,
-          limit: 1000
+          page: 1,
+          page_size: 1500
         })
       ]);
       setKmeansData(kmRes);
       setDbscanData(dbRes);
-      setRawAccidents(accRes);
+      setRawAccidents(accRes.items || []);
+      setTotalMatching(accRes.total || 0);
     } catch (err: any) {
-      setError(err?.message || 'Failed to load map data.');
+      setError(err?.message || 'Failed to load accident map data.');
     } finally {
       setLoading(false);
     }
@@ -95,7 +115,7 @@ export const HotspotExplorer: React.FC = () => {
     fetchData();
   }, [kValue, selectedState, selectedCity, selectedSeverity, startDate, endDate]);
 
-  // Viewport-based fetching on pan/zoom (debounced)
+  // 4. Viewport-based fetching on pan/zoom (debounced)
   const handleViewportChange = useCallback((bounds: { min_lat: number; max_lat: number; min_lng: number; max_lng: number }) => {
     if (viewMode === 'clusters') return; // Viewport queries apply to raw and density modes
 
@@ -105,7 +125,7 @@ export const HotspotExplorer: React.FC = () => {
 
     viewportDebounceTimer.current = setTimeout(async () => {
       try {
-        const records = await getAccidents({
+        const paged = await getAccidents({
           min_lat: bounds.min_lat,
           max_lat: bounds.max_lat,
           min_lng: bounds.min_lng,
@@ -115,51 +135,67 @@ export const HotspotExplorer: React.FC = () => {
           severity: selectedSeverity,
           start_date: startDate || undefined,
           end_date: endDate || undefined,
-          limit: 1200
+          page: 1,
+          page_size: 1500
         });
-        if (records.length > 0) {
-          setRawAccidents(records);
+        if (paged.items && paged.items.length > 0) {
+          setRawAccidents(paged.items);
+          setTotalMatching(paged.total);
         }
       } catch (err) {
-        // Suppress transient pan errors
+        // Suppress transient drag errors
       }
     }, 350);
   }, [viewMode, selectedState, selectedCity, selectedSeverity, startDate, endDate]);
 
-  // Automatic state transition
-  const handleStateChange = (stateCode: string) => {
+  // 5. Dynamic State Selection: Automatically computes and zooms to that state's exact bounds
+  const handleStateChange = async (stateCode: string) => {
     setSelectedState(stateCode);
     setSelectedCity('All');
     setSelectedCluster(null);
-    const vp = STATE_VIEWPORTS[stateCode] || STATE_VIEWPORTS.ALL;
-    setMapCenter(vp.center);
-    setMapZoom(vp.zoom);
-  };
-
-  // Automatic city transition
-  const handleCityChange = (cityName: string) => {
-    setSelectedCity(cityName);
-    setSelectedCluster(null);
-    if (cityName !== 'All' && CITY_COORDINATES[cityName]) {
-      setMapCenter(CITY_COORDINATES[cityName].center);
-      setMapZoom(CITY_COORDINATES[cityName].zoom);
-    } else {
-      const vp = STATE_VIEWPORTS[selectedState] || STATE_VIEWPORTS.ALL;
-      setMapCenter(vp.center);
-      setMapZoom(vp.zoom);
+    try {
+      const boundsData = await getDatasetBounds(stateCode === 'ALL' ? undefined : stateCode);
+      if (boundsData && boundsData.bounds) {
+        setMapBounds(boundsData.bounds);
+      }
+    } catch (err) {
+      console.error('Failed to compute dynamic state bounds:', err);
     }
   };
 
-  // Reset map control
-  const handleResetMap = () => {
-    setSelectedState('CA');
+  // 6. Dynamic City Selection: Automatically computes and zooms to that city's exact bounds
+  const handleCityChange = async (cityName: string) => {
+    setSelectedCity(cityName);
+    setSelectedCluster(null);
+    try {
+      const boundsData = await getDatasetBounds(
+        selectedState === 'ALL' ? undefined : selectedState,
+        cityName === 'All' ? undefined : cityName
+      );
+      if (boundsData && boundsData.bounds) {
+        setMapBounds(boundsData.bounds);
+      }
+    } catch (err) {
+      console.error('Failed to compute dynamic city bounds:', err);
+    }
+  };
+
+  // 7. Reset map control: Dynamically re-fetches overall bounds directly from backend
+  const handleResetMap = async () => {
+    setSelectedState('ALL');
     setSelectedCity('All');
     setSelectedSeverity(undefined);
     setStartDate('');
     setEndDate('');
     setSelectedCluster(null);
-    setMapCenter(STATE_VIEWPORTS.CA.center);
-    setMapZoom(STATE_VIEWPORTS.CA.zoom);
+    try {
+      const boundsData = await getDatasetBounds();
+      if (boundsData && boundsData.bounds) {
+        setMapBounds(boundsData.bounds);
+      }
+    } catch (err) {
+      console.error('Failed to reset bounds:', err);
+    }
   };
 
   const currentClusters = algorithm === 'kmeans'
@@ -170,15 +206,18 @@ export const HotspotExplorer: React.FC = () => {
     ? currentClusters
     : currentClusters.filter((c) => c.dominant_city.toLowerCase() === selectedCity.toLowerCase());
 
-  const availableCities = STATE_CITIES[selectedState] || STATE_CITIES.ALL;
-
   const handleSelectCluster = (cluster: HotspotCluster) => {
     setSelectedCluster(cluster);
-    setMapCenter([cluster.center_lat, cluster.center_lng]);
-    setMapZoom(11);
+    const lat = cluster.center_lat;
+    const lng = cluster.center_lng;
+    const delta = Math.max(0.08, (cluster.spread_radius_km || 10) / 111.0);
+    setMapBounds([
+      [lat - delta, lng - delta],
+      [lat + delta, lng + delta]
+    ]);
   };
 
-  if (loading && !kmeansData && !dbscanData) {
+  if (loading && !kmeansData && !dbscanData && availableStates.length === 0) {
     return (
       <div className="space-y-4">
         <div className="h-10 bg-white border border-[#E5E7E1] rounded-md animate-pulse"></div>
@@ -191,6 +230,11 @@ export const HotspotExplorer: React.FC = () => {
     return <ErrorBanner message={error} onRetry={fetchData} />;
   }
 
+  const selectedStateObj = availableStates.find((s) => s.state === selectedState);
+  const selectedStateLabel = selectedState === 'ALL'
+    ? `All ${availableStates.length} Discovered States`
+    : selectedStateObj ? `${selectedStateObj.name} (${selectedStateObj.state})` : selectedState;
+
   return (
     <div className="space-y-4">
       {/* Editorial Header */}
@@ -200,32 +244,20 @@ export const HotspotExplorer: React.FC = () => {
             Accident Map & Hotspots
           </h1>
           <p className="text-xs text-[#777D78] mt-0.5">
-            Geographic analysis of traffic-impacting incidents, spatial densities, and unsupervised clustering.
+            Geographic analysis of road incidents across all available US regions with dynamic discovery of states, cities, and cluster corridors.
           </p>
         </div>
       </div>
 
-      {/* Dataset & Spatial Sample Disclosure Card */}
+      {/* Dataset & Dynamic Discovery Scope Card */}
       <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-3 text-xs text-[#252923] flex items-start gap-2.5">
         <Info className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
         <div className="space-y-0.5 text-[11px] leading-relaxed">
-          <span className="font-semibold text-[#252923]">Dataset Coverage & Clustering Scope: </span>
-          The development dataset contains 35,000 incident records across California (33,052), Florida (1,173), and Texas (775).
-          DBSCAN and K-Means models were trained on a representative spatial subset of 20,000 California incidents (19,963 clustered into 5 dense metropolitan corridors, 37 noise points).
-          All cluster percentages use this 20,000-point sample as their denominator.
+          <span className="font-semibold text-[#252923]">Dynamic Dataset Discovery: </span>
+          The application has dynamically discovered <strong>{availableStates.length} states</strong> and{' '}
+          <strong>{availableCities.length}+ cities</strong> from the loaded dataset. Map bounds, coordinates, and regional statistics are computed server-side directly from actual accident records without hardcoded regional constraints.
         </div>
       </div>
-
-      {/* State Cluster Notice when FL or TX is selected in Cluster mode */}
-      {viewMode === 'clusters' && selectedState !== 'CA' && selectedState !== 'ALL' && (
-        <div className="bg-[#FFF8E7] border border-[#D69A43]/40 rounded-lg p-3 text-xs text-[#252923] flex items-center gap-2">
-          <AlertCircle className="w-4 h-4 text-[#D69A43] shrink-0" />
-          <span>
-            The precomputed ML clustering models were trained specifically on California accident coordinates.
-            Switch to <strong>Individual Incidents</strong> or <strong>Density View</strong> to inspect Florida (Miami) or Texas (Houston) records.
-          </span>
-        </div>
-      )}
 
       {/* Compact Interactive Map Toolbar */}
       <div className="bg-white border border-[#E5E7E1] rounded-lg p-3 shadow-subtle space-y-2.5 text-xs">
@@ -241,7 +273,7 @@ export const HotspotExplorer: React.FC = () => {
                   : 'text-[#777D78] hover:text-[#252923]'
               }`}
             >
-              ML Clusters
+              ML Hotspot Clusters
             </button>
             <button
               onClick={() => setViewMode('individual')}
@@ -251,7 +283,7 @@ export const HotspotExplorer: React.FC = () => {
                   : 'text-[#777D78] hover:text-[#252923]'
               }`}
             >
-              Individual Incidents
+              Accident Locations
             </button>
             <button
               onClick={() => setViewMode('density')}
@@ -261,7 +293,7 @@ export const HotspotExplorer: React.FC = () => {
                   : 'text-[#777D78] hover:text-[#252923]'
               }`}
             >
-              Density View
+              Density Heatmap
             </button>
           </div>
 
@@ -294,7 +326,7 @@ export const HotspotExplorer: React.FC = () => {
               {algorithm === 'kmeans' ? (
                 <div className="flex items-center gap-1">
                   <span className="text-xs text-[#777D78]">K:</span>
-                  {[5, 10, 15, 20].map((k) => (
+                  {[3, 5, 8, 10, 15].map((k) => (
                     <button
                       key={k}
                       onClick={() => setKValue(k)}
@@ -310,21 +342,22 @@ export const HotspotExplorer: React.FC = () => {
                 </div>
               ) : (
                 <span className="text-[11px] text-[#777D78] hidden sm:inline">
-                  Radius: 7.5 km · 35 min samples
+                  Radius: 7.5 km · Great-circle Haversine metric
                 </span>
               )}
             </div>
           ) : (
             <div className="text-xs text-[#777D78]">
-              Loaded {rawAccidents.length.toLocaleString()} locations in view
+              Loaded <strong className="text-[#252923]">{rawAccidents.length.toLocaleString()}</strong> of{' '}
+              <strong className="text-[#252923]">{totalMatching.toLocaleString()}</strong> matching records in view
             </div>
           )}
         </div>
 
-        {/* Lower Row: State, Dependent City, Severity, and Date Range Filters */}
+        {/* Lower Row: Dynamically Populated State, City, Severity, and Date Range Filters */}
         <div className="pt-2 border-t border-[#E5E7E1] flex flex-wrap items-center justify-between gap-2">
           <div className="flex flex-wrap items-center gap-2">
-            {/* State Selector */}
+            {/* Dynamic State Selector */}
             <div className="flex items-center gap-1">
               <span className="text-[11px] text-[#777D78]">State:</span>
               <select
@@ -332,14 +365,18 @@ export const HotspotExplorer: React.FC = () => {
                 onChange={(e) => handleStateChange(e.target.value)}
                 className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2 py-1 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
               >
-                <option value="ALL">All States (CA, FL, TX)</option>
-                <option value="CA">California (CA - 33,052)</option>
-                <option value="FL">Florida (FL - 1,173)</option>
-                <option value="TX">Texas (TX - 775)</option>
+                <option value="ALL">
+                  All Available States ({availableStates.length})
+                </option>
+                {availableStates.map((st) => (
+                  <option key={st.state} value={st.state}>
+                    {st.name} ({st.state} — {st.count.toLocaleString()})
+                  </option>
+                ))}
               </select>
             </div>
 
-            {/* Dependent City Selector */}
+            {/* Dynamic City Selector (dependent on state) */}
             <div className="flex items-center gap-1">
               <span className="text-[11px] text-[#777D78]">City:</span>
               <select
@@ -347,9 +384,11 @@ export const HotspotExplorer: React.FC = () => {
                 onChange={(e) => handleCityChange(e.target.value)}
                 className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2 py-1 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
               >
-                <option value="All">All Cities</option>
-                {availableCities.map((city) => (
-                  <option key={city} value={city}>{city}</option>
+                <option value="All">All Cities ({availableCities.length})</option>
+                {availableCities.map((ct) => (
+                  <option key={`${ct.state}-${ct.city}`} value={ct.city}>
+                    {ct.city} ({ct.count.toLocaleString()})
+                  </option>
                 ))}
               </select>
             </div>
@@ -392,23 +431,22 @@ export const HotspotExplorer: React.FC = () => {
           {/* Reset Map Button */}
           <button
             onClick={handleResetMap}
-            title="Reset to California overview"
+            title="Reset to full dataset bounds"
             className="flex items-center gap-1.5 px-2.5 py-1 rounded border border-[#E5E7E1] bg-[#F7F7F4] hover:bg-[#F0F2ED] text-[#252923] font-medium transition"
           >
             <RotateCcw className="w-3 h-3 text-[#777D78]" />
-            <span>Reset</span>
+            <span>Reset Bounds</span>
           </button>
         </div>
       </div>
 
-      {/* Main Interactive Map */}
+      {/* Main Interactive Map with dynamic fitBounds */}
       <HotspotMap
         viewMode={viewMode}
         clusters={filteredClusters}
         algorithm={algorithm}
         rawAccidents={rawAccidents}
-        center={mapCenter}
-        zoom={mapZoom}
+        bounds={mapBounds}
         selectedClusterId={selectedCluster?.cluster_id}
         onSelectCluster={handleSelectCluster}
         onViewportChange={handleViewportChange}
@@ -420,14 +458,14 @@ export const HotspotExplorer: React.FC = () => {
           <div className="flex items-baseline justify-between mb-3">
             <div>
               <h2 className="text-sm font-semibold text-[#252923]">
-                {algorithm === 'dbscan' ? 'DBSCAN Spatial Hotspots' : 'K-Means Centroid Clusters'}
+                {algorithm === 'dbscan' ? 'DBSCAN Density Corridors' : 'K-Means Centroid Clusters'}
               </h2>
               <p className="text-xs text-[#777D78] mt-0.5">
-                Dense corridors ranked by total recorded incidents across California
+                Dense corridors identified across {selectedStateLabel}
               </p>
             </div>
             <span className="text-xs text-[#777D78]">
-              {filteredClusters.length} clusters identified
+              {filteredClusters.length} clusters identified · {totalMatching.toLocaleString()} total records
             </span>
           </div>
 
@@ -437,9 +475,10 @@ export const HotspotExplorer: React.FC = () => {
                 <tr>
                   <th className="py-2.5 px-3">Cluster</th>
                   <th className="py-2.5 px-3">Primary Area</th>
+                  <th className="py-2.5 px-3">State</th>
                   <th className="py-2.5 px-3">Coordinates</th>
                   <th className="py-2.5 px-3 text-right">Recorded Accidents</th>
-                  <th className="py-2.5 px-3 text-right">CA Sample Share</th>
+                  <th className="py-2.5 px-3 text-right">Regional Share</th>
                   <th className="py-2.5 px-3 text-center">Avg Severity</th>
                   <th className="py-2.5 px-3 text-right">Spread Radius</th>
                   <th className="py-2.5 px-3 text-right">Action</th>
@@ -447,10 +486,10 @@ export const HotspotExplorer: React.FC = () => {
               </thead>
               <tbody className="divide-y divide-[#E5E7E1]">
                 {filteredClusters.map((cluster) => {
-                  const isSelected = selectedCluster?.cluster_id === cluster.cluster_id;
+                  const isSelected = selectedCluster?.cluster_id === cluster.cluster_id && selectedCluster?.dominant_city === cluster.dominant_city;
                   return (
                     <tr
-                      key={cluster.cluster_id}
+                      key={`${cluster.dominant_city}-${cluster.cluster_id}`}
                       onClick={() => handleSelectCluster(cluster)}
                       className={`cursor-pointer transition-colors ${
                         isSelected ? 'bg-[#EBF2EE]' : 'hover:bg-[#F7F7F4]'
@@ -461,6 +500,9 @@ export const HotspotExplorer: React.FC = () => {
                       </td>
                       <td className="py-2.5 px-3 font-medium">
                         {cluster.dominant_city}
+                      </td>
+                      <td className="py-2.5 px-3 font-semibold text-[#777D78]">
+                        {cluster.state || 'N/A'}
                       </td>
                       <td className="py-2.5 px-3 font-mono text-[11px] text-[#777D78]">
                         {cluster.center_lat.toFixed(4)}, {cluster.center_lng.toFixed(4)}
@@ -481,7 +523,7 @@ export const HotspotExplorer: React.FC = () => {
                       </td>
                       <td className="py-2.5 px-3 text-right">
                         <span className="text-[#28634D] font-medium hover:underline">
-                          Focus
+                          Zoom
                         </span>
                       </td>
                     </tr>
@@ -497,10 +539,10 @@ export const HotspotExplorer: React.FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#252923]">
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 space-y-1.5 shadow-subtle">
           <div className="font-semibold text-xs text-[#28634D]">
-            DBSCAN with Haversine Spherical Distance
+            DBSCAN with Spherical Haversine Metric
           </div>
           <p className="text-xs text-[#777D78] leading-relaxed">
-            DBSCAN discovers clusters of arbitrary geometric shape (such as curved highway arteries) without pre-specifying cluster counts. Using true Haversine distance preserves spherical surface geometry across California. Outliers that do not satisfy minimum spatial density thresholds are tagged as noise (37 points).
+            DBSCAN identifies clusters of arbitrary shape without pre-specifying cluster counts. Using true great-circle Haversine distance avoids flat Cartesian distortion across long interstate distances. Outlier incidents in remote highway segments that fail density thresholds (min_samples) are separated as noise.
           </p>
         </div>
 
@@ -509,7 +551,7 @@ export const HotspotExplorer: React.FC = () => {
             K-Means Centroid Partitioning
           </div>
           <p className="text-xs text-[#777D78] leading-relaxed">
-            K-Means partitions incident coordinates into K spherical geographic regions by minimizing squared Euclidean distance to each cluster centroid. While effective for establishing emergency response district centroids, it forces all points (including isolated rural incidents) into nearest clusters.
+            K-Means partitions incident coordinates into K spherical geographic regions by minimizing squared Euclidean distance to each cluster center. While useful for creating operational boundaries and district dispatch centroids, it forces all points (including isolated rural incidents) into the nearest centroid.
           </p>
         </div>
       </div>

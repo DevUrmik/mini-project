@@ -1,5 +1,7 @@
 export interface DashboardSummary {
   total_accidents: number;
+  total_states?: number;
+  total_cities?: number;
   average_severity: number;
   high_impact_percentage: number;
   data_source: string;
@@ -34,6 +36,35 @@ export interface AccidentRecord {
   traffic_signal: boolean;
 }
 
+export interface PaginatedAccidentsResponse {
+  total: number;
+  page: number;
+  page_size: number;
+  total_pages: number;
+  items: AccidentRecord[];
+}
+
+export interface StateSummary {
+  state: string;
+  name: string;
+  count: number;
+}
+
+export interface CitySummary {
+  city: string;
+  state: string;
+  count: number;
+}
+
+export interface GeoBoundsResponse {
+  min_lat: number;
+  max_lat: number;
+  min_lng: number;
+  max_lng: number;
+  bounds: [[number, number], [number, number]];
+  total_records: number;
+}
+
 export interface HotspotCluster {
   cluster_id: number;
   center_lat: number;
@@ -43,6 +74,7 @@ export interface HotspotCluster {
   average_severity: number;
   spread_radius_km: number;
   dominant_city: string;
+  state?: string;
 }
 
 export interface KMeansResponse {
@@ -78,6 +110,8 @@ export interface ModelMetricDetails {
   macro_recall: number;
   macro_f1: number;
   weighted_f1: number;
+  training_time_sec?: number;
+  inference_time_sec?: number;
   confusion_matrix: number[][];
   classes: number[];
   class_labels: string[];
@@ -95,6 +129,16 @@ export interface FeatureImportance {
   importance: number;
 }
 
+export interface MajorityBaseline {
+  name: string;
+  description: string;
+  majority_class: number;
+  accuracy: number;
+  balanced_accuracy: number;
+  macro_f1: number;
+  explanation: string;
+}
+
 export interface ModelMetricsResponse {
   dataset_split: {
     total_samples: number;
@@ -107,13 +151,11 @@ export interface ModelMetricsResponse {
     target_variable: string;
     scale_meaning: string;
     class_distribution: Record<string, number>;
+    class_proportions?: Record<string, number>;
   };
+  majority_baseline?: MajorityBaseline;
   selected_best_model: string;
-  models: {
-    logistic_regression: ModelMetricDetails;
-    decision_tree: ModelMetricDetails;
-    random_forest: ModelMetricDetails;
-  };
+  models: Record<string, ModelMetricDetails>;
   feature_importances: FeatureImportance[];
   evaluation_notes: string[];
 }

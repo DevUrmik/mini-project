@@ -1,49 +1,121 @@
 {
-  "data_source": "Development Sample Fixture (Kaggle Schema Compliant)",
-  "is_synthetic": true,
-  "total_raw_records": 35000,
-  "cleaned_records": 35000,
-  "california_sample_records": 33052,
+  "data_source": "Original Sobhan Moosavi US Accidents (2016-2023) Dataset",
+  "source_file": "US_Accidents_March23.csv",
+  "is_synthetic": false,
+  "is_sample": false,
+  "total_raw_records": 7728394,
+  "cleaned_records": 7728394,
+  "retention_rate_pct": 100.0,
+  "total_states": 49,
+  "total_cities": 20281,
   "severity_distribution": {
-    "1": 977,
-    "2": 25128,
-    "3": 6363,
-    "4": 2532
+    "2": 6156981,
+    "3": 1299337,
+    "1": 67366,
+    "4": 204710
   },
-  "average_severity": 2.3,
-  "high_impact_percentage": 25.41,
+  "average_severity": 2.21,
+  "high_impact_percentage": 19.46,
   "top_states": {
-    "CA": 33052,
-    "FL": 1173,
-    "TX": 775
-  },
-  "top_cities": {
-    "Los Angeles": 17481,
-    "San Francisco": 5902,
-    "San Jose": 3887,
-    "San Diego": 3842,
-    "Sacramento": 1940,
-    "Miami": 1173,
-    "Houston": 775
+    "CA": 1741433,
+    "FL": 880192,
+    "TX": 582837,
+    "SC": 382557,
+    "NY": 347960,
+    "NC": 338199,
+    "VA": 303301,
+    "PA": 296620,
+    "MN": 192084,
+    "OR": 179660,
+    "AZ": 170609,
+    "GA": 169234,
+    "IL": 168958,
+    "TN": 167388,
+    "MI": 162191
   },
   "top_weather_conditions": {
-    "Fair": 14739,
-    "Clear": 7751,
-    "Mostly Cloudy": 4201,
-    "Partly Cloudy": 2773,
-    "Overcast": 2021,
-    "Light Rain": 1408,
-    "Rain": 1085,
-    "Fog": 524
+    "Fair": 2734261,
+    "Mostly Cloudy": 1016195,
+    "Cloudy": 817082,
+    "Clear": 808743,
+    "Partly Cloudy": 698972,
+    "Overcast": 382851,
+    "Light Rain": 352957,
+    "Scattered Clouds": 204829,
+    "Light Snow": 128646,
+    "Fog": 99238
   },
-  "temporal_range": {
-    "earliest": "2022-01-01 00:35:51",
-    "latest": "2023-12-01 23:52:40"
+  "yearly_distribution": {
+    "2016": 410821,
+    "2017": 718093,
+    "2018": 893426,
+    "2019": 954303,
+    "2020": 1178913,
+    "2021": 1563753,
+    "2022": 1762452,
+    "2023": 246633
+  },
+  "monthly_distribution": {
+    "1": 751946,
+    "2": 658984,
+    "3": 554595,
+    "4": 587300,
+    "5": 558176,
+    "6": 571373,
+    "7": 512335,
+    "8": 599666,
+    "9": 651381,
+    "10": 675130,
+    "11": 760165,
+    "12": 847343
+  },
+  "hourly_distribution": {
+    "0": 112378,
+    "1": 97071,
+    "2": 93227,
+    "3": 83863,
+    "4": 159852,
+    "5": 228182,
+    "6": 405837,
+    "7": 587472,
+    "8": 577576,
+    "9": 363034,
+    "10": 342706,
+    "11": 355040,
+    "12": 355001,
+    "13": 396445,
+    "14": 448846,
+    "15": 525855,
+    "16": 581969,
+    "17": 576015,
+    "18": 432042,
+    "19": 295121,
+    "20": 225226,
+    "21": 191452,
+    "22": 167645,
+    "23": 126539
   },
   "road_features_prevalence": {
-    "junction_pct": 14.0,
-    "crossing_pct": 9.0,
-    "traffic_signal_pct": 17.8,
-    "stop_pct": 3.13
+    "junction_pct": 7.39,
+    "crossing_pct": 11.31,
+    "traffic_signal_pct": 14.8,
+    "stop_pct": 2.77,
+    "station_pct": 2.61
+  },
+  "bounds": {
+    "min_lat": 24.5548,
+    "max_lat": 49.0022,
+    "min_lng": -124.6238,
+    "max_lng": -67.1132,
+    "bounds": [
+      [
+        24.5548,
+        -124.6238
+      ],
+      [
+        49.0022,
+        -67.1132
+      ]
+    ]
   }
 }

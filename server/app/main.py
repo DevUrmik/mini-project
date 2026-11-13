@@ -35,7 +35,8 @@ from server.app.routes import (
     hotspots,
     models,
     predict,
-    analytics
+    analytics,
+    geo
 )
 
 @asynccontextmanager
@@ -76,6 +77,7 @@ app.include_router(hotspots.router, prefix="/api")
 app.include_router(models.router, prefix="/api")
 app.include_router(predict.router, prefix="/api")
 app.include_router(analytics.router, prefix="/api")
+app.include_router(geo.router, prefix="/api")
 
 @app.get("/", include_in_schema=False)
 def root():

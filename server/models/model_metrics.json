@@ -1,56 +1,73 @@
 {
   "dataset_split": {
-    "total_samples": 35000,
-    "train_samples": 28000,
-    "test_samples": 7000,
+    "total_samples": 108500,
+    "train_samples": 86800,
+    "test_samples": 21700,
     "test_ratio": 0.2,
     "stratified": true
   },
   "target_info": {
     "target_variable": "Severity",
-    "scale_meaning": "Traffic delay impact (1 = Short delay, 4 = Severe prolonged disruption). Not fatality.",
+    "scale_meaning": "Recorded traffic delay and road disruption impact (1 = Short delay, 4 = Severe prolonged disruption). Not physical injury or fatality severity.",
     "class_distribution": {
-      "1": 977,
-      "2": 25128,
-      "3": 6363,
-      "4": 2532
+      "1": 954,
+      "2": 86419,
+      "3": 18245,
+      "4": 2882
+    },
+    "class_proportions": {
+      "1": 0.88,
+      "2": 79.65,
+      "3": 16.82,
+      "4": 2.66
     }
+  },
+  "majority_baseline": {
+    "name": "Majority-Class Baseline",
+    "description": "Trivially predicts dominant Class 2 (Level 2) for all incidents without learning features.",
+    "majority_class": 2,
+    "accuracy": 79.65,
+    "balanced_accuracy": 25.0,
+    "macro_f1": 22.17,
+    "explanation": "Demonstrates why raw accuracy is deceptive in class-imbalanced datasets: a dummy model achieves ~79.6% accuracy while completely failing (0.0% recall) on minority Classes 1 and 4."
   },
   "selected_best_model": "random_forest",
   "models": {
     "logistic_regression": {
       "model_key": "logistic_regression",
       "name": "Logistic Regression",
-      "accuracy": 21.47,
-      "balanced_accuracy": 25.15,
-      "macro_precision": 25.23,
-      "macro_recall": 25.15,
-      "macro_f1": 16.92,
-      "weighted_f1": 27.71,
+      "accuracy": 25.4,
+      "balanced_accuracy": 43.52,
+      "macro_precision": 30.37,
+      "macro_recall": 43.52,
+      "macro_f1": 19.6,
+      "weighted_f1": 31.74,
+      "training_time_sec": 5.09,
+      "inference_time_sec": 0.0045,
       "confusion_matrix": [
         [
-          76,
-          34,
-          49,
-          36
+          139,
+          10,
+          21,
+          21
         ],
         [
-          1808,
-          1037,
-          1175,
-          1006
+          5180,
+          3395,
+          4459,
+          4250
         ],
         [
-          468,
-          246,
-          303,
-          256
+          708,
+          381,
+          1789,
+          771
         ],
         [
-          200,
-          98,
-          121,
-          87
+          133,
+          78,
+          177,
+          188
         ]
       ],
       "classes": [
@@ -67,64 +84,66 @@
       ],
       "per_class": {
         "1": {
-          "precision": 0.03,
-          "recall": 0.39,
-          "f1_score": 0.055,
-          "support": 195
+          "precision": 2.26,
+          "recall": 72.77,
+          "f1_score": 4.38,
+          "support": 191
         },
         "2": {
-          "precision": 0.733,
-          "recall": 0.206,
-          "f1_score": 0.322,
-          "support": 5026
+          "precision": 87.86,
+          "recall": 19.64,
+          "f1_score": 32.11,
+          "support": 17284
         },
         "3": {
-          "precision": 0.184,
-          "recall": 0.238,
-          "f1_score": 0.207,
-          "support": 1273
+          "precision": 27.75,
+          "recall": 49.03,
+          "f1_score": 35.44,
+          "support": 3649
         },
         "4": {
-          "precision": 0.063,
-          "recall": 0.172,
-          "f1_score": 0.092,
-          "support": 506
+          "precision": 3.59,
+          "recall": 32.64,
+          "f1_score": 6.48,
+          "support": 576
         }
       }
     },
     "decision_tree": {
       "model_key": "decision_tree",
       "name": "Decision Tree Classifier",
-      "accuracy": 23.24,
-      "balanced_accuracy": 23.97,
-      "macro_precision": 24.92,
-      "macro_recall": 23.97,
-      "macro_f1": 17.68,
-      "weighted_f1": 29.52,
+      "accuracy": 35.64,
+      "balanced_accuracy": 39.62,
+      "macro_precision": 29.41,
+      "macro_recall": 39.62,
+      "macro_f1": 22.83,
+      "weighted_f1": 43.47,
+      "training_time_sec": 0.79,
+      "inference_time_sec": 0.0083,
       "confusion_matrix": [
         [
-          43,
+          97,
           40,
-          48,
-          64
+          37,
+          17
         ],
         [
-          1306,
-          1145,
-          1183,
-          1392
+          2810,
+          5625,
+          5777,
+          3072
         ],
         [
-          316,
-          292,
-          300,
-          365
+          494,
+          628,
+          1875,
+          652
         ],
         [
-          137,
-          113,
-          117,
-          139
+          87,
+          127,
+          225,
+          137
         ]
       ],
       "classes": [
@@ -141,64 +160,66 @@
       ],
       "per_class": {
         "1": {
-          "precision": 0.024,
-          "recall": 0.221,
-          "f1_score": 0.043,
-          "support": 195
+          "precision": 2.78,
+          "recall": 50.79,
+          "f1_score": 5.27,
+          "support": 191
         },
         "2": {
-          "precision": 0.72,
-          "recall": 0.228,
-          "f1_score": 0.346,
-          "support": 5026
+          "precision": 87.62,
+          "recall": 32.54,
+          "f1_score": 47.46,
+          "support": 17284
         },
         "3": {
-          "precision": 0.182,
-          "recall": 0.236,
-          "f1_score": 0.205,
-          "support": 1273
+          "precision": 23.69,
+          "recall": 51.38,
+          "f1_score": 32.43,
+          "support": 3649
         },
         "4": {
-          "precision": 0.071,
-          "recall": 0.275,
-          "f1_score": 0.113,
-          "support": 506
+          "precision": 3.53,
+          "recall": 23.78,
+          "f1_score": 6.15,
+          "support": 576
         }
       }
     },
     "random_forest": {
       "model_key": "random_forest",
       "name": "Random Forest Classifier",
-      "accuracy": 59.91,
-      "balanced_accuracy": 25.23,
-      "macro_precision": 25.19,
-      "macro_recall": 25.23,
-      "macro_f1": 24.99,
-      "weighted_f1": 57.49,
+      "accuracy": 61.56,
+      "balanced_accuracy": 39.12,
+      "macro_precision": 31.66,
+      "macro_recall": 39.12,
+      "macro_f1": 31.77,
+      "weighted_f1": 65.63,
+      "training_time_sec": 4.28,
+      "inference_time_sec": 0.071,
       "confusion_matrix": [
         [
-          7,
-          149,
-          34,
-          5
+          56,
+          104,
+          29,
+          2
         ],
         [
-          95,
-          3974,
-          770,
-          187
+          797,
+          11171,
+          4941,
+          375
         ],
         [
-          18,
-          1008,
-          200,
-          47
+          123,
+          1330,
+          2104,
+          92
         ],
         [
-          12,
-          406,
-          75,
-          13
+          24,
+          301,
+          223,
+          28
         ]
       ],
       "classes": [
@@ -215,113 +236,190 @@
       ],
       "per_class": {
         "1": {
-          "precision": 0.053,
-          "recall": 0.036,
-          "f1_score": 0.043,
-          "support": 195
+          "precision": 5.6,
+          "recall": 29.32,
+          "f1_score": 9.4,
+          "support": 191
         },
         "2": {
-          "precision": 0.718,
-          "recall": 0.791,
-          "f1_score": 0.752,
-          "support": 5026
+          "precision": 86.56,
+          "recall": 64.63,
+          "f1_score": 74.0,
+          "support": 17284
         },
         "3": {
-          "precision": 0.185,
-          "recall": 0.157,
-          "f1_score": 0.17,
-          "support": 1273
+          "precision": 28.83,
+          "recall": 57.66,
+          "f1_score": 38.44,
+          "support": 3649
         },
         "4": {
-          "precision": 0.052,
-          "recall": 0.026,
-          "f1_score": 0.034,
-          "support": 506
+          "precision": 5.63,
+          "recall": 4.86,
+          "f1_score": 5.22,
+          "support": 576
+        }
+      }
+    },
+    "hist_gradient_boosting": {
+      "model_key": "hist_gradient_boosting",
+      "name": "HistGradientBoosting Classifier",
+      "accuracy": 43.87,
+      "balanced_accuracy": 45.13,
+      "macro_precision": 31.49,
+      "macro_recall": 45.13,
+      "macro_f1": 27.35,
+      "weighted_f1": 52.39,
+      "training_time_sec": 4.51,
+      "inference_time_sec": 0.1096,
+      "confusion_matrix": [
+        [
+          112,
+          52,
+          16,
+          11
+        ],
+        [
+          2830,
+          7357,
+          4097,
+          3000
+        ],
+        [
+          410,
+          816,
+          1893,
+          530
+        ],
+        [
+          84,
+          153,
+          181,
+          158
+        ]
+      ],
+      "classes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "class_labels": [
+        "Severity 1",
+        "Severity 2",
+        "Severity 3",
+        "Severity 4"
+      ],
+      "per_class": {
+        "1": {
+          "precision": 3.26,
+          "recall": 58.64,
+          "f1_score": 6.18,
+          "support": 191
+        },
+        "2": {
+          "precision": 87.81,
+          "recall": 42.57,
+          "f1_score": 57.34,
+          "support": 17284
+        },
+        "3": {
+          "precision": 30.6,
+          "recall": 51.88,
+          "f1_score": 38.49,
+          "support": 3649
+        },
+        "4": {
+          "precision": 4.27,
+          "recall": 27.43,
+          "f1_score": 7.39,
+          "support": 576
         }
       }
     }
   },
   "feature_importances": [
     {
-      "feature": "Humidity(%)",
-      "raw_feature": "Humidity(%)",
-      "importance": 17.85
-    },
-    {
       "feature": "Temperature(F)",
       "raw_feature": "Temperature(F)",
-      "importance": 17.64
+      "importance": 18.23
     },
     {
-      "feature": "Wind_Speed(mph)",
-      "raw_feature": "Wind_Speed(mph)",
-      "importance": 16.43
+      "feature": "Humidity(%)",
+      "raw_feature": "Humidity(%)",
+      "importance": 14.56
     },
     {
       "feature": "Hour",
       "raw_feature": "Hour",
-      "importance": 11.74
+      "importance": 13.03
     },
     {
-      "feature": "Visibility(mi)",
-      "raw_feature": "Visibility(mi)",
-      "importance": 6.84
+      "feature": "Wind_Speed(mph)",
+      "raw_feature": "Wind_Speed(mph)",
+      "importance": 10.97
     },
     {
       "feature": "Traffic_Signal",
       "raw_feature": "Traffic_Signal",
-      "importance": 2.39
-    },
-    {
-      "feature": "Is_Rush_Hour",
-      "raw_feature": "Is_Rush_Hour",
-      "importance": 2.31
-    },
-    {
-      "feature": "Junction",
-      "raw_feature": "Junction",
-      "importance": 2.26
+      "importance": 6.15
     },
     {
       "feature": "Crossing",
       "raw_feature": "Crossing",
-      "importance": 2.03
+      "importance": 3.77
     },
     {
-      "feature": "Weather: Fair",
-      "raw_feature": "Weather_Condition_Fair",
-      "importance": 1.67
+      "feature": "Visibility(mi)",
+      "raw_feature": "Visibility(mi)",
+      "importance": 3.75
     },
     {
       "feature": "Weather: Clear",
       "raw_feature": "Weather_Condition_Clear",
-      "importance": 1.46
+      "importance": 3.22
     },
     {
-      "feature": "Weather: Mostly Cloudy",
-      "raw_feature": "Weather_Condition_Mostly Cloudy",
-      "importance": 1.43
+      "feature": "Weather: Fair",
+      "raw_feature": "Weather_Condition_Fair",
+      "importance": 3.15
     },
     {
-      "feature": "Day: Thursday",
-      "raw_feature": "Day_OfWeek_Thursday",
-      "importance": 1.39
+      "feature": "Is_Rush_Hour",
+      "raw_feature": "Is_Rush_Hour",
+      "importance": 2.7
     },
     {
-      "feature": "Day: Friday",
-      "raw_feature": "Day_OfWeek_Friday",
-      "importance": 1.37
+      "feature": "Junction",
+      "raw_feature": "Junction",
+      "importance": 1.72
     },
     {
-      "feature": "Day: Tuesday",
-      "raw_feature": "Day_OfWeek_Tuesday",
-      "importance": 1.37
+      "feature": "Is_Weekend",
+      "raw_feature": "Is_Weekend",
+      "importance": 1.58
+    },
+    {
+      "feature": "Weather: Overcast",
+      "raw_feature": "Weather_Condition_Overcast",
+      "importance": 1.5
+    },
+    {
+      "feature": "Day: Wednesday",
+      "raw_feature": "Day_OfWeek_Wednesday",
+      "importance": 1.34
+    },
+    {
+      "feature": "Day: Monday",
+      "raw_feature": "Day_OfWeek_Monday",
+      "importance": 1.33
     }
   ],
   "evaluation_notes": [
-    "Severity distribution has significant class imbalance with Class 2 being dominant (>70%).",
-    "Accuracy alone can be misleading in imbalanced datasets; therefore, Macro F1 and Balanced Accuracy are the primary comparative benchmarks.",
-    "Class weight balancing ('balanced') was applied across models to penalize under-prediction of severe accidents (Classes 3 & 4).",
-    "Random Forest outperforms linear and single-tree baselines by capturing complex non-linear interactions between weather factors and road features."
+    "Severe class imbalance: Level 2 represents ~79.7% of all recorded incidents, while Level 1 (0.9%) and Level 4 (2.7%) are rare minority classes.",
+    "Why Accuracy is Deceptive: A naive majority-class model predicting Level 2 for every record scores 79.65% accuracy, but has 0.0% recall on Levels 1, 3, and 4 (Balanced Accuracy: 25.0%).",
+    "Macro F1 and Balanced Accuracy are the true north star benchmarks, weighting each severity level equally regardless of sample frequency.",
+    "Class balancing ('balanced_subsample' for Random Forest, 'balanced' for HistGradientBoosting) penalizes minority-class false negatives to ensure severe highway blockages are recognized.",
+    "Data Leakage Prevention: Excluded End_Time, Duration_Minutes, Distance, and post-accident descriptions. Features contain only information known prior to or at the time of the incident."
   ]
 }

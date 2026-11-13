@@ -2,65 +2,5875 @@
   "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
   "distance_metric": "Haversine (Great-Circle Spherical Distance)",
   "parameters": {
-    "eps_km": 7.5,
-    "eps_radians": 0.001177,
-    "min_samples": 35
+    "eps_km": 14.0,
+    "eps_radians": 0.002197,
+    "min_samples": 40
   },
-  "total_analyzed_points": 20000,
-  "identified_clusters_count": 5,
-  "clustered_points_count": 19963,
-  "noise_points_count": 37,
-  "noise_percentage": 0.18,
+  "total_analyzed_points": 45000,
+  "identified_clusters_count": 89,
+  "clustered_points_count": 36069,
+  "noise_points_count": 8931,
+  "noise_percentage": 19.85,
   "clusters": [
     {
-      "cluster_id": 0,
-      "center_lat": 34.05247,
-      "center_lng": -118.24415,
-      "accident_count": 10547,
-      "accident_percentage": 52.73,
-      "average_severity": 2.3,
-      "spread_radius_km": 15.32,
-      "dominant_city": "Los Angeles"
-    },
-    {
-      "cluster_id": 1,
-      "center_lat": 37.77471,
-      "center_lng": -122.41982,
-      "accident_count": 3555,
-      "accident_percentage": 17.77,
-      "average_severity": 2.3,
-      "spread_radius_km": 10.1,
-      "dominant_city": "San Francisco"
-    },
-    {
-      "cluster_id": 4,
-      "center_lat": 37.3374,
-      "center_lng": -121.88706,
-      "accident_count": 2332,
-      "accident_percentage": 11.66,
-      "average_severity": 2.31,
-      "spread_radius_km": 11.24,
-      "dominant_city": "San Jose"
-    },
-    {
       "cluster_id": 3,
-      "center_lat": 32.71675,
-      "center_lng": -117.16219,
-      "accident_count": 2321,
-      "accident_percentage": 11.61,
-      "average_severity": 2.3,
-      "spread_radius_km": 10.2,
-      "dominant_city": "San Diego"
+      "center_lat": 33.87911,
+      "center_lng": -117.91001,
+      "accident_count": 5420,
+      "accident_percentage": 12.04,
+      "average_severity": 2.21,
+      "spread_radius_km": 49.93,
+      "dominant_city": "Los Angeles",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 9,
+      "center_lat": 37.69445,
+      "center_lng": -122.0058,
+      "accident_count": 2362,
+      "accident_percentage": 5.25,
+      "average_severity": 2.19,
+      "spread_radius_km": 46.92,
+      "dominant_city": "San Jose",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 0,
+      "center_lat": 40.85413,
+      "center_lng": -73.83664,
+      "accident_count": 2040,
+      "accident_percentage": 4.53,
+      "average_severity": 2.26,
+      "spread_radius_km": 31.13,
+      "dominant_city": "Bronx",
+      "state": "NY"
     },
     {
       "cluster_id": 2,
-      "center_lat": 38.58342,
-      "center_lng": -121.49337,
-      "accident_count": 1208,
-      "accident_percentage": 6.04,
+      "center_lat": 25.91116,
+      "center_lng": -80.26275,
+      "accident_count": 1854,
+      "accident_percentage": 4.12,
+      "average_severity": 2.14,
+      "spread_radius_km": 23.74,
+      "dominant_city": "Miami",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 7,
+      "center_lat": 38.95339,
+      "center_lng": -77.05334,
+      "accident_count": 1311,
+      "accident_percentage": 2.91,
+      "average_severity": 2.27,
+      "spread_radius_km": 31.1,
+      "dominant_city": "Washington",
+      "state": "MD"
+    },
+    {
+      "cluster_id": 32,
+      "center_lat": 32.80921,
+      "center_lng": -96.86557,
+      "accident_count": 1134,
+      "accident_percentage": 2.52,
+      "average_severity": 2.3,
+      "spread_radius_km": 18.35,
+      "dominant_city": "Dallas",
+      "state": "TX"
+    },
+    {
+      "cluster_id": 4,
+      "center_lat": 29.7641,
+      "center_lng": -95.42247,
+      "accident_count": 1060,
+      "accident_percentage": 2.36,
+      "average_severity": 2.18,
+      "spread_radius_km": 14.38,
+      "dominant_city": "Houston",
+      "state": "TX"
+    },
+    {
+      "cluster_id": 34,
+      "center_lat": 28.49277,
+      "center_lng": -81.40848,
+      "accident_count": 967,
+      "accident_percentage": 2.15,
+      "average_severity": 2.1,
+      "spread_radius_km": 14.38,
+      "dominant_city": "Orlando",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 26,
+      "center_lat": 35.20593,
+      "center_lng": -80.84409,
+      "accident_count": 943,
+      "accident_percentage": 2.1,
+      "average_severity": 2.08,
+      "spread_radius_km": 11.48,
+      "dominant_city": "Charlotte",
+      "state": "NC"
+    },
+    {
+      "cluster_id": 11,
+      "center_lat": 40.03427,
+      "center_lng": -75.26973,
+      "accident_count": 928,
+      "accident_percentage": 2.06,
+      "average_severity": 2.17,
+      "spread_radius_km": 23.71,
+      "dominant_city": "Philadelphia",
+      "state": "PA"
+    },
+    {
+      "cluster_id": 18,
+      "center_lat": 41.94317,
+      "center_lng": -87.90282,
+      "accident_count": 905,
+      "accident_percentage": 2.01,
+      "average_severity": 2.33,
+      "spread_radius_km": 27.75,
+      "dominant_city": "Chicago",
+      "state": "IL"
+    },
+    {
+      "cluster_id": 27,
+      "center_lat": 34.82866,
+      "center_lng": -82.29342,
+      "accident_count": 772,
+      "accident_percentage": 1.72,
+      "average_severity": 2.06,
+      "spread_radius_km": 24.52,
+      "dominant_city": "Greenville",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 28,
+      "center_lat": 44.97144,
+      "center_lng": -93.25401,
+      "accident_count": 713,
+      "accident_percentage": 1.58,
+      "average_severity": 2.21,
+      "spread_radius_km": 15.68,
+      "dominant_city": "Minneapolis",
+      "state": "MN"
+    },
+    {
+      "cluster_id": 22,
+      "center_lat": 33.80009,
+      "center_lng": -84.36888,
+      "accident_count": 700,
+      "accident_percentage": 1.56,
+      "average_severity": 2.54,
+      "spread_radius_km": 15.22,
+      "dominant_city": "Atlanta",
+      "state": "GA"
+    },
+    {
+      "cluster_id": 39,
+      "center_lat": 35.8054,
+      "center_lng": -78.65181,
+      "accident_count": 697,
+      "accident_percentage": 1.55,
+      "average_severity": 2.11,
+      "spread_radius_km": 11.21,
+      "dominant_city": "Raleigh",
+      "state": "NC"
+    },
+    {
+      "cluster_id": 48,
+      "center_lat": 38.60094,
+      "center_lng": -121.38571,
+      "accident_count": 668,
+      "accident_percentage": 1.48,
+      "average_severity": 2.1,
+      "spread_radius_km": 14.9,
+      "dominant_city": "Sacramento",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 15,
+      "center_lat": 27.9926,
+      "center_lng": -82.54063,
+      "accident_count": 664,
+      "accident_percentage": 1.48,
+      "average_severity": 2.12,
+      "spread_radius_km": 23.14,
+      "dominant_city": "Tampa",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 43,
+      "center_lat": 30.31222,
+      "center_lng": -97.72823,
+      "accident_count": 662,
+      "accident_percentage": 1.47,
+      "average_severity": 2.08,
+      "spread_radius_km": 11.43,
+      "dominant_city": "Austin",
+      "state": "TX"
+    },
+    {
+      "cluster_id": 5,
+      "center_lat": 33.47724,
+      "center_lng": -112.05567,
+      "accident_count": 592,
+      "accident_percentage": 1.32,
+      "average_severity": 2.12,
+      "spread_radius_km": 16.85,
+      "dominant_city": "Phoenix",
+      "state": "AZ"
+    },
+    {
+      "cluster_id": 30,
+      "center_lat": 36.14197,
+      "center_lng": -86.74346,
+      "accident_count": 556,
+      "accident_percentage": 1.24,
+      "average_severity": 2.15,
+      "spread_radius_km": 9.15,
+      "dominant_city": "Nashville",
+      "state": "TN"
+    },
+    {
+      "cluster_id": 14,
+      "center_lat": 37.51516,
+      "center_lng": -77.47011,
+      "accident_count": 476,
+      "accident_percentage": 1.06,
+      "average_severity": 2.15,
+      "spread_radius_km": 13.17,
+      "dominant_city": "Richmond",
+      "state": "VA"
+    },
+    {
+      "cluster_id": 19,
+      "center_lat": 47.55847,
+      "center_lng": -122.3002,
+      "accident_count": 471,
+      "accident_percentage": 1.05,
       "average_severity": 2.32,
+      "spread_radius_km": 21.79,
+      "dominant_city": "Seattle",
+      "state": "WA"
+    },
+    {
+      "cluster_id": 8,
+      "center_lat": 30.44631,
+      "center_lng": -91.11475,
+      "accident_count": 463,
+      "accident_percentage": 1.03,
+      "average_severity": 2.08,
+      "spread_radius_km": 6.95,
+      "dominant_city": "Baton Rouge",
+      "state": "LA"
+    },
+    {
+      "cluster_id": 20,
+      "center_lat": 34.04189,
+      "center_lng": -81.06306,
+      "accident_count": 397,
+      "accident_percentage": 0.88,
+      "average_severity": 2.2,
+      "spread_radius_km": 15.28,
+      "dominant_city": "Columbia",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 23,
+      "center_lat": 42.40968,
+      "center_lng": -83.16655,
+      "accident_count": 374,
+      "accident_percentage": 0.83,
+      "average_severity": 2.46,
+      "spread_radius_km": 14.35,
+      "dominant_city": "Detroit",
+      "state": "MI"
+    },
+    {
+      "cluster_id": 66,
+      "center_lat": 40.09058,
+      "center_lng": -76.55743,
+      "accident_count": 349,
+      "accident_percentage": 0.78,
+      "average_severity": 2.15,
+      "spread_radius_km": 24.88,
+      "dominant_city": "Lancaster",
+      "state": "PA"
+    },
+    {
+      "cluster_id": 57,
+      "center_lat": 35.47528,
+      "center_lng": -97.55457,
+      "accident_count": 323,
+      "accident_percentage": 0.72,
+      "average_severity": 2.13,
       "spread_radius_km": 8.81,
-      "dominant_city": "Sacramento"
+      "dominant_city": "Oklahoma City",
+      "state": "OK"
+    },
+    {
+      "cluster_id": 31,
+      "center_lat": 39.75461,
+      "center_lng": -104.9723,
+      "accident_count": 301,
+      "accident_percentage": 0.67,
+      "average_severity": 2.36,
+      "spread_radius_km": 12.52,
+      "dominant_city": "Denver",
+      "state": "CO"
+    },
+    {
+      "cluster_id": 50,
+      "center_lat": 45.5026,
+      "center_lng": -122.6399,
+      "accident_count": 283,
+      "accident_percentage": 0.63,
+      "average_severity": 2.22,
+      "spread_radius_km": 10.11,
+      "dominant_city": "Portland",
+      "state": "OR"
+    },
+    {
+      "cluster_id": 44,
+      "center_lat": 39.04817,
+      "center_lng": -94.59342,
+      "accident_count": 282,
+      "accident_percentage": 0.63,
+      "average_severity": 2.33,
+      "spread_radius_km": 13.75,
+      "dominant_city": "Kansas City",
+      "state": "MO"
+    },
+    {
+      "cluster_id": 10,
+      "center_lat": 42.40402,
+      "center_lng": -71.13478,
+      "accident_count": 279,
+      "accident_percentage": 0.62,
+      "average_severity": 2.25,
+      "spread_radius_km": 18.19,
+      "dominant_city": "Boston",
+      "state": "MA"
+    },
+    {
+      "cluster_id": 35,
+      "center_lat": 40.64204,
+      "center_lng": -111.90822,
+      "accident_count": 270,
+      "accident_percentage": 0.6,
+      "average_severity": 2.18,
+      "spread_radius_km": 14.1,
+      "dominant_city": "Salt Lake City",
+      "state": "UT"
+    },
+    {
+      "cluster_id": 41,
+      "center_lat": 43.00909,
+      "center_lng": -83.6903,
+      "accident_count": 261,
+      "accident_percentage": 0.58,
+      "average_severity": 2.15,
+      "spread_radius_km": 9.46,
+      "dominant_city": "Flint",
+      "state": "MI"
+    },
+    {
+      "cluster_id": 29,
+      "center_lat": 30.28972,
+      "center_lng": -81.63708,
+      "accident_count": 253,
+      "accident_percentage": 0.56,
+      "average_severity": 2.32,
+      "spread_radius_km": 12.33,
+      "dominant_city": "Jacksonville",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 69,
+      "center_lat": 36.9078,
+      "center_lng": -76.31308,
+      "accident_count": 242,
+      "accident_percentage": 0.54,
+      "average_severity": 2.36,
+      "spread_radius_km": 14.71,
+      "dominant_city": "Norfolk",
+      "state": "VA"
+    },
+    {
+      "cluster_id": 6,
+      "center_lat": 27.39725,
+      "center_lng": -82.50658,
+      "accident_count": 219,
+      "accident_percentage": 0.49,
+      "average_severity": 2.09,
+      "spread_radius_km": 12.2,
+      "dominant_city": "Bradenton",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 36,
+      "center_lat": 26.50924,
+      "center_lng": -81.79421,
+      "accident_count": 215,
+      "accident_percentage": 0.48,
+      "average_severity": 2.1,
+      "spread_radius_km": 15.69,
+      "dominant_city": "Fort Myers",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 54,
+      "center_lat": 32.23837,
+      "center_lng": -110.95077,
+      "accident_count": 214,
+      "accident_percentage": 0.48,
+      "average_severity": 1.97,
+      "spread_radius_km": 9.78,
+      "dominant_city": "Tucson",
+      "state": "AZ"
+    },
+    {
+      "cluster_id": 42,
+      "center_lat": 39.79637,
+      "center_lng": -86.13852,
+      "accident_count": 211,
+      "accident_percentage": 0.47,
+      "average_severity": 2.29,
+      "spread_radius_km": 11.67,
+      "dominant_city": "Indianapolis",
+      "state": "IN"
+    },
+    {
+      "cluster_id": 72,
+      "center_lat": 29.46574,
+      "center_lng": -98.50862,
+      "accident_count": 206,
+      "accident_percentage": 0.46,
+      "average_severity": 2.27,
+      "spread_radius_km": 10.92,
+      "dominant_city": "San Antonio",
+      "state": "TX"
+    },
+    {
+      "cluster_id": 13,
+      "center_lat": 29.97574,
+      "center_lng": -90.06516,
+      "accident_count": 189,
+      "accident_percentage": 0.42,
+      "average_severity": 2.13,
+      "spread_radius_km": 5.4,
+      "dominant_city": "New Orleans",
+      "state": "LA"
+    },
+    {
+      "cluster_id": 52,
+      "center_lat": 38.65215,
+      "center_lng": -90.35703,
+      "accident_count": 186,
+      "accident_percentage": 0.41,
+      "average_severity": 2.65,
+      "spread_radius_km": 14.13,
+      "dominant_city": "Saint Louis",
+      "state": "MO"
+    },
+    {
+      "cluster_id": 60,
+      "center_lat": 43.15253,
+      "center_lng": -77.61662,
+      "accident_count": 186,
+      "accident_percentage": 0.41,
+      "average_severity": 2.11,
+      "spread_radius_km": 7.74,
+      "dominant_city": "Rochester",
+      "state": "NY"
+    },
+    {
+      "cluster_id": 1,
+      "center_lat": 36.11175,
+      "center_lng": -95.91958,
+      "accident_count": 183,
+      "accident_percentage": 0.41,
+      "average_severity": 1.98,
+      "spread_radius_km": 7.07,
+      "dominant_city": "Tulsa",
+      "state": "OK"
+    },
+    {
+      "cluster_id": 58,
+      "center_lat": 40.00334,
+      "center_lng": -82.98618,
+      "accident_count": 181,
+      "accident_percentage": 0.4,
+      "average_severity": 2.37,
+      "spread_radius_km": 11.85,
+      "dominant_city": "Columbus",
+      "state": "OH"
+    },
+    {
+      "cluster_id": 16,
+      "center_lat": 32.977,
+      "center_lng": -80.08994,
+      "accident_count": 178,
+      "accident_percentage": 0.4,
+      "average_severity": 2.2,
+      "spread_radius_km": 11.51,
+      "dominant_city": "Summerville",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 65,
+      "center_lat": 39.74333,
+      "center_lng": -84.21338,
+      "accident_count": 177,
+      "accident_percentage": 0.39,
+      "average_severity": 2.13,
+      "spread_radius_km": 8.99,
+      "dominant_city": "Dayton",
+      "state": "OH"
+    },
+    {
+      "cluster_id": 62,
+      "center_lat": 41.69592,
+      "center_lng": -72.73992,
+      "accident_count": 175,
+      "accident_percentage": 0.39,
+      "average_severity": 2.34,
+      "spread_radius_km": 14.28,
+      "dominant_city": "Hartford",
+      "state": "CT"
+    },
+    {
+      "cluster_id": 17,
+      "center_lat": 39.15153,
+      "center_lng": -84.48821,
+      "accident_count": 169,
+      "accident_percentage": 0.38,
+      "average_severity": 2.44,
+      "spread_radius_km": 12.52,
+      "dominant_city": "Cincinnati",
+      "state": "OH"
+    },
+    {
+      "cluster_id": 37,
+      "center_lat": 41.23201,
+      "center_lng": -96.03065,
+      "accident_count": 167,
+      "accident_percentage": 0.37,
+      "average_severity": 2.18,
+      "spread_radius_km": 8.56,
+      "dominant_city": "Omaha",
+      "state": "NE"
+    },
+    {
+      "cluster_id": 40,
+      "center_lat": 42.94527,
+      "center_lng": -85.65078,
+      "accident_count": 158,
+      "accident_percentage": 0.35,
+      "average_severity": 2.08,
+      "spread_radius_km": 6.13,
+      "dominant_city": "Grand Rapids",
+      "state": "MI"
+    },
+    {
+      "cluster_id": 59,
+      "center_lat": 35.35939,
+      "center_lng": -119.0252,
+      "accident_count": 154,
+      "accident_percentage": 0.34,
+      "average_severity": 2.01,
+      "spread_radius_km": 8.22,
+      "dominant_city": "Bakersfield",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 46,
+      "center_lat": 33.47848,
+      "center_lng": -81.97335,
+      "accident_count": 140,
+      "accident_percentage": 0.31,
+      "average_severity": 2.04,
+      "spread_radius_km": 11.29,
+      "dominant_city": "Augusta",
+      "state": "GA"
+    },
+    {
+      "cluster_id": 38,
+      "center_lat": 36.7518,
+      "center_lng": -119.78925,
+      "accident_count": 128,
+      "accident_percentage": 0.28,
+      "average_severity": 2.02,
+      "spread_radius_km": 9.68,
+      "dominant_city": "Fresno",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 71,
+      "center_lat": 33.48499,
+      "center_lng": -86.76296,
+      "accident_count": 121,
+      "accident_percentage": 0.27,
+      "average_severity": 2.32,
+      "spread_radius_km": 11.21,
+      "dominant_city": "Birmingham",
+      "state": "AL"
+    },
+    {
+      "cluster_id": 45,
+      "center_lat": 35.10721,
+      "center_lng": -89.9386,
+      "accident_count": 118,
+      "accident_percentage": 0.26,
+      "average_severity": 2.3,
+      "spread_radius_km": 9.95,
+      "dominant_city": "Memphis",
+      "state": "TN"
+    },
+    {
+      "cluster_id": 77,
+      "center_lat": 40.44624,
+      "center_lng": -79.98355,
+      "accident_count": 117,
+      "accident_percentage": 0.26,
+      "average_severity": 2.29,
+      "spread_radius_km": 9.6,
+      "dominant_city": "Pittsburgh",
+      "state": "PA"
+    },
+    {
+      "cluster_id": 74,
+      "center_lat": 35.04821,
+      "center_lng": -85.21623,
+      "accident_count": 109,
+      "accident_percentage": 0.24,
+      "average_severity": 2.26,
+      "spread_radius_km": 10.16,
+      "dominant_city": "Chattanooga",
+      "state": "TN"
+    },
+    {
+      "cluster_id": 79,
+      "center_lat": 38.23813,
+      "center_lng": -85.70716,
+      "accident_count": 109,
+      "accident_percentage": 0.24,
+      "average_severity": 2.62,
+      "spread_radius_km": 10.33,
+      "dominant_city": "Louisville",
+      "state": "KY"
+    },
+    {
+      "cluster_id": 56,
+      "center_lat": 41.81531,
+      "center_lng": -71.4218,
+      "accident_count": 104,
+      "accident_percentage": 0.23,
+      "average_severity": 2.49,
+      "spread_radius_km": 5.55,
+      "dominant_city": "Providence",
+      "state": "RI"
+    },
+    {
+      "cluster_id": 12,
+      "center_lat": 30.49519,
+      "center_lng": -87.23859,
+      "accident_count": 103,
+      "accident_percentage": 0.23,
+      "average_severity": 2.06,
+      "spread_radius_km": 8.77,
+      "dominant_city": "Pensacola",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 21,
+      "center_lat": 32.46592,
+      "center_lng": -93.77066,
+      "accident_count": 99,
+      "accident_percentage": 0.22,
+      "average_severity": 2.19,
+      "spread_radius_km": 6.66,
+      "dominant_city": "Shreveport",
+      "state": "LA"
+    },
+    {
+      "cluster_id": 53,
+      "center_lat": 42.74425,
+      "center_lng": -73.78487,
+      "accident_count": 96,
+      "accident_percentage": 0.21,
+      "average_severity": 2.44,
+      "spread_radius_km": 10.47,
+      "dominant_city": "Albany",
+      "state": "NY"
+    },
+    {
+      "cluster_id": 64,
+      "center_lat": 33.73237,
+      "center_lng": -78.99089,
+      "accident_count": 96,
+      "accident_percentage": 0.21,
+      "average_severity": 1.99,
+      "spread_radius_km": 11.06,
+      "dominant_city": "Myrtle Beach",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 67,
+      "center_lat": 41.45511,
+      "center_lng": -81.68837,
+      "accident_count": 88,
+      "accident_percentage": 0.2,
+      "average_severity": 2.33,
+      "spread_radius_km": 9.44,
+      "dominant_city": "Cleveland",
+      "state": "OH"
+    },
+    {
+      "cluster_id": 33,
+      "center_lat": 43.04004,
+      "center_lng": -87.99712,
+      "accident_count": 87,
+      "accident_percentage": 0.19,
+      "average_severity": 2.41,
+      "spread_radius_km": 8.74,
+      "dominant_city": "Milwaukee",
+      "state": "WI"
+    },
+    {
+      "cluster_id": 63,
+      "center_lat": 34.73807,
+      "center_lng": -86.65939,
+      "accident_count": 86,
+      "accident_percentage": 0.19,
+      "average_severity": 2.22,
+      "spread_radius_km": 9.37,
+      "dominant_city": "Huntsville",
+      "state": "AL"
+    },
+    {
+      "cluster_id": 24,
+      "center_lat": 41.12533,
+      "center_lng": -111.97788,
+      "accident_count": 85,
+      "accident_percentage": 0.19,
+      "average_severity": 2.25,
+      "spread_radius_km": 9.47,
+      "dominant_city": "Ogden",
+      "state": "UT"
+    },
+    {
+      "cluster_id": 47,
+      "center_lat": 30.21368,
+      "center_lng": -92.03918,
+      "accident_count": 85,
+      "accident_percentage": 0.19,
+      "average_severity": 2.04,
+      "spread_radius_km": 6.44,
+      "dominant_city": "Lafayette",
+      "state": "LA"
+    },
+    {
+      "cluster_id": 61,
+      "center_lat": 31.76148,
+      "center_lng": -106.36025,
+      "accident_count": 79,
+      "accident_percentage": 0.18,
+      "average_severity": 2.06,
+      "spread_radius_km": 7.32,
+      "dominant_city": "El Paso",
+      "state": "TX"
+    },
+    {
+      "cluster_id": 49,
+      "center_lat": 30.67217,
+      "center_lng": -88.09368,
+      "accident_count": 74,
+      "accident_percentage": 0.16,
+      "average_severity": 2.3,
+      "spread_radius_km": 8.64,
+      "dominant_city": "Mobile",
+      "state": "AL"
+    },
+    {
+      "cluster_id": 25,
+      "center_lat": 33.19342,
+      "center_lng": -87.53832,
+      "accident_count": 72,
+      "accident_percentage": 0.16,
+      "average_severity": 2.11,
+      "spread_radius_km": 5.71,
+      "dominant_city": "Tuscaloosa",
+      "state": "AL"
+    },
+    {
+      "cluster_id": 55,
+      "center_lat": 42.92142,
+      "center_lng": -78.8208,
+      "accident_count": 69,
+      "accident_percentage": 0.15,
+      "average_severity": 2.43,
+      "spread_radius_km": 7.29,
+      "dominant_city": "Buffalo",
+      "state": "NY"
+    },
+    {
+      "cluster_id": 80,
+      "center_lat": 39.40002,
+      "center_lng": -77.43104,
+      "accident_count": 68,
+      "accident_percentage": 0.15,
+      "average_severity": 2.29,
+      "spread_radius_km": 10.44,
+      "dominant_city": "Frederick",
+      "state": "MD"
+    },
+    {
+      "cluster_id": 86,
+      "center_lat": 32.35512,
+      "center_lng": -86.25189,
+      "accident_count": 68,
+      "accident_percentage": 0.15,
+      "average_severity": 2.21,
+      "spread_radius_km": 8.98,
+      "dominant_city": "Montgomery",
+      "state": "AL"
+    },
+    {
+      "cluster_id": 84,
+      "center_lat": 39.5147,
+      "center_lng": -119.75784,
+      "accident_count": 67,
+      "accident_percentage": 0.15,
+      "average_severity": 2.3,
+      "spread_radius_km": 7.62,
+      "dominant_city": "Reno",
+      "state": "NV"
+    },
+    {
+      "cluster_id": 81,
+      "center_lat": 34.19933,
+      "center_lng": -79.81245,
+      "accident_count": 66,
+      "accident_percentage": 0.15,
+      "average_severity": 2.06,
+      "spread_radius_km": 9.17,
+      "dominant_city": "Florence",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 73,
+      "center_lat": 29.16734,
+      "center_lng": -82.16398,
+      "accident_count": 60,
+      "accident_percentage": 0.13,
+      "average_severity": 2.08,
+      "spread_radius_km": 10.33,
+      "dominant_city": "Ocala",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 51,
+      "center_lat": 37.19331,
+      "center_lng": -93.3036,
+      "accident_count": 55,
+      "accident_percentage": 0.12,
+      "average_severity": 2.07,
+      "spread_radius_km": 4.63,
+      "dominant_city": "Springfield",
+      "state": "MO"
+    },
+    {
+      "cluster_id": 76,
+      "center_lat": 30.46126,
+      "center_lng": -84.27847,
+      "accident_count": 54,
+      "accident_percentage": 0.12,
+      "average_severity": 2.0,
+      "spread_radius_km": 7.06,
+      "dominant_city": "Tallahassee",
+      "state": "FL"
+    },
+    {
+      "cluster_id": 70,
+      "center_lat": 40.61859,
+      "center_lng": -75.43498,
+      "accident_count": 53,
+      "accident_percentage": 0.12,
+      "average_severity": 2.17,
+      "spread_radius_km": 9.72,
+      "dominant_city": "Allentown",
+      "state": "PA"
+    },
+    {
+      "cluster_id": 82,
+      "center_lat": 41.6188,
+      "center_lng": -93.65487,
+      "accident_count": 52,
+      "accident_percentage": 0.12,
+      "average_severity": 2.44,
+      "spread_radius_km": 7.52,
+      "dominant_city": "Des Moines",
+      "state": "IA"
+    },
+    {
+      "cluster_id": 78,
+      "center_lat": 38.86383,
+      "center_lng": -104.78424,
+      "accident_count": 51,
+      "accident_percentage": 0.11,
+      "average_severity": 2.35,
+      "spread_radius_km": 7.65,
+      "dominant_city": "Colorado Springs",
+      "state": "CO"
+    },
+    {
+      "cluster_id": 87,
+      "center_lat": 33.54258,
+      "center_lng": -80.84673,
+      "accident_count": 50,
+      "accident_percentage": 0.11,
+      "average_severity": 2.22,
+      "spread_radius_km": 8.57,
+      "dominant_city": "Orangeburg",
+      "state": "SC"
+    },
+    {
+      "cluster_id": 68,
+      "center_lat": 43.06873,
+      "center_lng": -76.14223,
+      "accident_count": 48,
+      "accident_percentage": 0.11,
+      "average_severity": 2.19,
+      "spread_radius_km": 6.23,
+      "dominant_city": "Syracuse",
+      "state": "NY"
+    },
+    {
+      "cluster_id": 85,
+      "center_lat": 41.56508,
+      "center_lng": -73.94841,
+      "accident_count": 45,
+      "accident_percentage": 0.1,
+      "average_severity": 2.24,
+      "spread_radius_km": 9.13,
+      "dominant_city": "Newburgh",
+      "state": "NY"
+    },
+    {
+      "cluster_id": 88,
+      "center_lat": 34.57606,
+      "center_lng": -118.1478,
+      "accident_count": 45,
+      "accident_percentage": 0.1,
+      "average_severity": 2.07,
+      "spread_radius_km": 8.78,
+      "dominant_city": "Palmdale",
+      "state": "CA"
+    },
+    {
+      "cluster_id": 75,
+      "center_lat": 35.10291,
+      "center_lng": -106.64491,
+      "accident_count": 42,
+      "accident_percentage": 0.09,
+      "average_severity": 2.31,
+      "spread_radius_km": 5.24,
+      "dominant_city": "Albuquerque",
+      "state": "NM"
+    },
+    {
+      "cluster_id": 83,
+      "center_lat": 43.61461,
+      "center_lng": -116.32598,
+      "accident_count": 40,
+      "accident_percentage": 0.09,
+      "average_severity": 2.0,
+      "spread_radius_km": 6.19,
+      "dominant_city": "Boise",
+      "state": "ID"
     }
-  ]
+  ],
+  "by_state": {
+    "ALL": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 14.0,
+        "eps_radians": 0.002197,
+        "min_samples": 40
+      },
+      "total_analyzed_points": 45000,
+      "identified_clusters_count": 89,
+      "clustered_points_count": 36069,
+      "noise_points_count": 8931,
+      "noise_percentage": 19.85,
+      "clusters": [
+        {
+          "cluster_id": 3,
+          "center_lat": 33.87911,
+          "center_lng": -117.91001,
+          "accident_count": 5420,
+          "accident_percentage": 12.04,
+          "average_severity": 2.21,
+          "spread_radius_km": 49.93,
+          "dominant_city": "Los Angeles",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 37.69445,
+          "center_lng": -122.0058,
+          "accident_count": 2362,
+          "accident_percentage": 5.25,
+          "average_severity": 2.19,
+          "spread_radius_km": 46.92,
+          "dominant_city": "San Jose",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 40.85413,
+          "center_lng": -73.83664,
+          "accident_count": 2040,
+          "accident_percentage": 4.53,
+          "average_severity": 2.26,
+          "spread_radius_km": 31.13,
+          "dominant_city": "Bronx",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 25.91116,
+          "center_lng": -80.26275,
+          "accident_count": 1854,
+          "accident_percentage": 4.12,
+          "average_severity": 2.14,
+          "spread_radius_km": 23.74,
+          "dominant_city": "Miami",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 38.95339,
+          "center_lng": -77.05334,
+          "accident_count": 1311,
+          "accident_percentage": 2.91,
+          "average_severity": 2.27,
+          "spread_radius_km": 31.1,
+          "dominant_city": "Washington",
+          "state": "MD"
+        },
+        {
+          "cluster_id": 32,
+          "center_lat": 32.80921,
+          "center_lng": -96.86557,
+          "accident_count": 1134,
+          "accident_percentage": 2.52,
+          "average_severity": 2.3,
+          "spread_radius_km": 18.35,
+          "dominant_city": "Dallas",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 29.7641,
+          "center_lng": -95.42247,
+          "accident_count": 1060,
+          "accident_percentage": 2.36,
+          "average_severity": 2.18,
+          "spread_radius_km": 14.38,
+          "dominant_city": "Houston",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 34,
+          "center_lat": 28.49277,
+          "center_lng": -81.40848,
+          "accident_count": 967,
+          "accident_percentage": 2.15,
+          "average_severity": 2.1,
+          "spread_radius_km": 14.38,
+          "dominant_city": "Orlando",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 26,
+          "center_lat": 35.20593,
+          "center_lng": -80.84409,
+          "accident_count": 943,
+          "accident_percentage": 2.1,
+          "average_severity": 2.08,
+          "spread_radius_km": 11.48,
+          "dominant_city": "Charlotte",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 40.03427,
+          "center_lng": -75.26973,
+          "accident_count": 928,
+          "accident_percentage": 2.06,
+          "average_severity": 2.17,
+          "spread_radius_km": 23.71,
+          "dominant_city": "Philadelphia",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 18,
+          "center_lat": 41.94317,
+          "center_lng": -87.90282,
+          "accident_count": 905,
+          "accident_percentage": 2.01,
+          "average_severity": 2.33,
+          "spread_radius_km": 27.75,
+          "dominant_city": "Chicago",
+          "state": "IL"
+        },
+        {
+          "cluster_id": 27,
+          "center_lat": 34.82866,
+          "center_lng": -82.29342,
+          "accident_count": 772,
+          "accident_percentage": 1.72,
+          "average_severity": 2.06,
+          "spread_radius_km": 24.52,
+          "dominant_city": "Greenville",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 28,
+          "center_lat": 44.97144,
+          "center_lng": -93.25401,
+          "accident_count": 713,
+          "accident_percentage": 1.58,
+          "average_severity": 2.21,
+          "spread_radius_km": 15.68,
+          "dominant_city": "Minneapolis",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 22,
+          "center_lat": 33.80009,
+          "center_lng": -84.36888,
+          "accident_count": 700,
+          "accident_percentage": 1.56,
+          "average_severity": 2.54,
+          "spread_radius_km": 15.22,
+          "dominant_city": "Atlanta",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 39,
+          "center_lat": 35.8054,
+          "center_lng": -78.65181,
+          "accident_count": 697,
+          "accident_percentage": 1.55,
+          "average_severity": 2.11,
+          "spread_radius_km": 11.21,
+          "dominant_city": "Raleigh",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 48,
+          "center_lat": 38.60094,
+          "center_lng": -121.38571,
+          "accident_count": 668,
+          "accident_percentage": 1.48,
+          "average_severity": 2.1,
+          "spread_radius_km": 14.9,
+          "dominant_city": "Sacramento",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 15,
+          "center_lat": 27.9926,
+          "center_lng": -82.54063,
+          "accident_count": 664,
+          "accident_percentage": 1.48,
+          "average_severity": 2.12,
+          "spread_radius_km": 23.14,
+          "dominant_city": "Tampa",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 43,
+          "center_lat": 30.31222,
+          "center_lng": -97.72823,
+          "accident_count": 662,
+          "accident_percentage": 1.47,
+          "average_severity": 2.08,
+          "spread_radius_km": 11.43,
+          "dominant_city": "Austin",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 33.47724,
+          "center_lng": -112.05567,
+          "accident_count": 592,
+          "accident_percentage": 1.32,
+          "average_severity": 2.12,
+          "spread_radius_km": 16.85,
+          "dominant_city": "Phoenix",
+          "state": "AZ"
+        },
+        {
+          "cluster_id": 30,
+          "center_lat": 36.14197,
+          "center_lng": -86.74346,
+          "accident_count": 556,
+          "accident_percentage": 1.24,
+          "average_severity": 2.15,
+          "spread_radius_km": 9.15,
+          "dominant_city": "Nashville",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 14,
+          "center_lat": 37.51516,
+          "center_lng": -77.47011,
+          "accident_count": 476,
+          "accident_percentage": 1.06,
+          "average_severity": 2.15,
+          "spread_radius_km": 13.17,
+          "dominant_city": "Richmond",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 19,
+          "center_lat": 47.55847,
+          "center_lng": -122.3002,
+          "accident_count": 471,
+          "accident_percentage": 1.05,
+          "average_severity": 2.32,
+          "spread_radius_km": 21.79,
+          "dominant_city": "Seattle",
+          "state": "WA"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 30.44631,
+          "center_lng": -91.11475,
+          "accident_count": 463,
+          "accident_percentage": 1.03,
+          "average_severity": 2.08,
+          "spread_radius_km": 6.95,
+          "dominant_city": "Baton Rouge",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 20,
+          "center_lat": 34.04189,
+          "center_lng": -81.06306,
+          "accident_count": 397,
+          "accident_percentage": 0.88,
+          "average_severity": 2.2,
+          "spread_radius_km": 15.28,
+          "dominant_city": "Columbia",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 23,
+          "center_lat": 42.40968,
+          "center_lng": -83.16655,
+          "accident_count": 374,
+          "accident_percentage": 0.83,
+          "average_severity": 2.46,
+          "spread_radius_km": 14.35,
+          "dominant_city": "Detroit",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 66,
+          "center_lat": 40.09058,
+          "center_lng": -76.55743,
+          "accident_count": 349,
+          "accident_percentage": 0.78,
+          "average_severity": 2.15,
+          "spread_radius_km": 24.88,
+          "dominant_city": "Lancaster",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 57,
+          "center_lat": 35.47528,
+          "center_lng": -97.55457,
+          "accident_count": 323,
+          "accident_percentage": 0.72,
+          "average_severity": 2.13,
+          "spread_radius_km": 8.81,
+          "dominant_city": "Oklahoma City",
+          "state": "OK"
+        },
+        {
+          "cluster_id": 31,
+          "center_lat": 39.75461,
+          "center_lng": -104.9723,
+          "accident_count": 301,
+          "accident_percentage": 0.67,
+          "average_severity": 2.36,
+          "spread_radius_km": 12.52,
+          "dominant_city": "Denver",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 50,
+          "center_lat": 45.5026,
+          "center_lng": -122.6399,
+          "accident_count": 283,
+          "accident_percentage": 0.63,
+          "average_severity": 2.22,
+          "spread_radius_km": 10.11,
+          "dominant_city": "Portland",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 44,
+          "center_lat": 39.04817,
+          "center_lng": -94.59342,
+          "accident_count": 282,
+          "accident_percentage": 0.63,
+          "average_severity": 2.33,
+          "spread_radius_km": 13.75,
+          "dominant_city": "Kansas City",
+          "state": "MO"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 42.40402,
+          "center_lng": -71.13478,
+          "accident_count": 279,
+          "accident_percentage": 0.62,
+          "average_severity": 2.25,
+          "spread_radius_km": 18.19,
+          "dominant_city": "Boston",
+          "state": "MA"
+        },
+        {
+          "cluster_id": 35,
+          "center_lat": 40.64204,
+          "center_lng": -111.90822,
+          "accident_count": 270,
+          "accident_percentage": 0.6,
+          "average_severity": 2.18,
+          "spread_radius_km": 14.1,
+          "dominant_city": "Salt Lake City",
+          "state": "UT"
+        },
+        {
+          "cluster_id": 41,
+          "center_lat": 43.00909,
+          "center_lng": -83.6903,
+          "accident_count": 261,
+          "accident_percentage": 0.58,
+          "average_severity": 2.15,
+          "spread_radius_km": 9.46,
+          "dominant_city": "Flint",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 29,
+          "center_lat": 30.28972,
+          "center_lng": -81.63708,
+          "accident_count": 253,
+          "accident_percentage": 0.56,
+          "average_severity": 2.32,
+          "spread_radius_km": 12.33,
+          "dominant_city": "Jacksonville",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 69,
+          "center_lat": 36.9078,
+          "center_lng": -76.31308,
+          "accident_count": 242,
+          "accident_percentage": 0.54,
+          "average_severity": 2.36,
+          "spread_radius_km": 14.71,
+          "dominant_city": "Norfolk",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 27.39725,
+          "center_lng": -82.50658,
+          "accident_count": 219,
+          "accident_percentage": 0.49,
+          "average_severity": 2.09,
+          "spread_radius_km": 12.2,
+          "dominant_city": "Bradenton",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 36,
+          "center_lat": 26.50924,
+          "center_lng": -81.79421,
+          "accident_count": 215,
+          "accident_percentage": 0.48,
+          "average_severity": 2.1,
+          "spread_radius_km": 15.69,
+          "dominant_city": "Fort Myers",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 54,
+          "center_lat": 32.23837,
+          "center_lng": -110.95077,
+          "accident_count": 214,
+          "accident_percentage": 0.48,
+          "average_severity": 1.97,
+          "spread_radius_km": 9.78,
+          "dominant_city": "Tucson",
+          "state": "AZ"
+        },
+        {
+          "cluster_id": 42,
+          "center_lat": 39.79637,
+          "center_lng": -86.13852,
+          "accident_count": 211,
+          "accident_percentage": 0.47,
+          "average_severity": 2.29,
+          "spread_radius_km": 11.67,
+          "dominant_city": "Indianapolis",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 72,
+          "center_lat": 29.46574,
+          "center_lng": -98.50862,
+          "accident_count": 206,
+          "accident_percentage": 0.46,
+          "average_severity": 2.27,
+          "spread_radius_km": 10.92,
+          "dominant_city": "San Antonio",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 29.97574,
+          "center_lng": -90.06516,
+          "accident_count": 189,
+          "accident_percentage": 0.42,
+          "average_severity": 2.13,
+          "spread_radius_km": 5.4,
+          "dominant_city": "New Orleans",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 52,
+          "center_lat": 38.65215,
+          "center_lng": -90.35703,
+          "accident_count": 186,
+          "accident_percentage": 0.41,
+          "average_severity": 2.65,
+          "spread_radius_km": 14.13,
+          "dominant_city": "Saint Louis",
+          "state": "MO"
+        },
+        {
+          "cluster_id": 60,
+          "center_lat": 43.15253,
+          "center_lng": -77.61662,
+          "accident_count": 186,
+          "accident_percentage": 0.41,
+          "average_severity": 2.11,
+          "spread_radius_km": 7.74,
+          "dominant_city": "Rochester",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 36.11175,
+          "center_lng": -95.91958,
+          "accident_count": 183,
+          "accident_percentage": 0.41,
+          "average_severity": 1.98,
+          "spread_radius_km": 7.07,
+          "dominant_city": "Tulsa",
+          "state": "OK"
+        },
+        {
+          "cluster_id": 58,
+          "center_lat": 40.00334,
+          "center_lng": -82.98618,
+          "accident_count": 181,
+          "accident_percentage": 0.4,
+          "average_severity": 2.37,
+          "spread_radius_km": 11.85,
+          "dominant_city": "Columbus",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 16,
+          "center_lat": 32.977,
+          "center_lng": -80.08994,
+          "accident_count": 178,
+          "accident_percentage": 0.4,
+          "average_severity": 2.2,
+          "spread_radius_km": 11.51,
+          "dominant_city": "Summerville",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 65,
+          "center_lat": 39.74333,
+          "center_lng": -84.21338,
+          "accident_count": 177,
+          "accident_percentage": 0.39,
+          "average_severity": 2.13,
+          "spread_radius_km": 8.99,
+          "dominant_city": "Dayton",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 62,
+          "center_lat": 41.69592,
+          "center_lng": -72.73992,
+          "accident_count": 175,
+          "accident_percentage": 0.39,
+          "average_severity": 2.34,
+          "spread_radius_km": 14.28,
+          "dominant_city": "Hartford",
+          "state": "CT"
+        },
+        {
+          "cluster_id": 17,
+          "center_lat": 39.15153,
+          "center_lng": -84.48821,
+          "accident_count": 169,
+          "accident_percentage": 0.38,
+          "average_severity": 2.44,
+          "spread_radius_km": 12.52,
+          "dominant_city": "Cincinnati",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 37,
+          "center_lat": 41.23201,
+          "center_lng": -96.03065,
+          "accident_count": 167,
+          "accident_percentage": 0.37,
+          "average_severity": 2.18,
+          "spread_radius_km": 8.56,
+          "dominant_city": "Omaha",
+          "state": "NE"
+        },
+        {
+          "cluster_id": 40,
+          "center_lat": 42.94527,
+          "center_lng": -85.65078,
+          "accident_count": 158,
+          "accident_percentage": 0.35,
+          "average_severity": 2.08,
+          "spread_radius_km": 6.13,
+          "dominant_city": "Grand Rapids",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 59,
+          "center_lat": 35.35939,
+          "center_lng": -119.0252,
+          "accident_count": 154,
+          "accident_percentage": 0.34,
+          "average_severity": 2.01,
+          "spread_radius_km": 8.22,
+          "dominant_city": "Bakersfield",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 46,
+          "center_lat": 33.47848,
+          "center_lng": -81.97335,
+          "accident_count": 140,
+          "accident_percentage": 0.31,
+          "average_severity": 2.04,
+          "spread_radius_km": 11.29,
+          "dominant_city": "Augusta",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 38,
+          "center_lat": 36.7518,
+          "center_lng": -119.78925,
+          "accident_count": 128,
+          "accident_percentage": 0.28,
+          "average_severity": 2.02,
+          "spread_radius_km": 9.68,
+          "dominant_city": "Fresno",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 71,
+          "center_lat": 33.48499,
+          "center_lng": -86.76296,
+          "accident_count": 121,
+          "accident_percentage": 0.27,
+          "average_severity": 2.32,
+          "spread_radius_km": 11.21,
+          "dominant_city": "Birmingham",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 45,
+          "center_lat": 35.10721,
+          "center_lng": -89.9386,
+          "accident_count": 118,
+          "accident_percentage": 0.26,
+          "average_severity": 2.3,
+          "spread_radius_km": 9.95,
+          "dominant_city": "Memphis",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 77,
+          "center_lat": 40.44624,
+          "center_lng": -79.98355,
+          "accident_count": 117,
+          "accident_percentage": 0.26,
+          "average_severity": 2.29,
+          "spread_radius_km": 9.6,
+          "dominant_city": "Pittsburgh",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 74,
+          "center_lat": 35.04821,
+          "center_lng": -85.21623,
+          "accident_count": 109,
+          "accident_percentage": 0.24,
+          "average_severity": 2.26,
+          "spread_radius_km": 10.16,
+          "dominant_city": "Chattanooga",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 79,
+          "center_lat": 38.23813,
+          "center_lng": -85.70716,
+          "accident_count": 109,
+          "accident_percentage": 0.24,
+          "average_severity": 2.62,
+          "spread_radius_km": 10.33,
+          "dominant_city": "Louisville",
+          "state": "KY"
+        },
+        {
+          "cluster_id": 56,
+          "center_lat": 41.81531,
+          "center_lng": -71.4218,
+          "accident_count": 104,
+          "accident_percentage": 0.23,
+          "average_severity": 2.49,
+          "spread_radius_km": 5.55,
+          "dominant_city": "Providence",
+          "state": "RI"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 30.49519,
+          "center_lng": -87.23859,
+          "accident_count": 103,
+          "accident_percentage": 0.23,
+          "average_severity": 2.06,
+          "spread_radius_km": 8.77,
+          "dominant_city": "Pensacola",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 21,
+          "center_lat": 32.46592,
+          "center_lng": -93.77066,
+          "accident_count": 99,
+          "accident_percentage": 0.22,
+          "average_severity": 2.19,
+          "spread_radius_km": 6.66,
+          "dominant_city": "Shreveport",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 53,
+          "center_lat": 42.74425,
+          "center_lng": -73.78487,
+          "accident_count": 96,
+          "accident_percentage": 0.21,
+          "average_severity": 2.44,
+          "spread_radius_km": 10.47,
+          "dominant_city": "Albany",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 64,
+          "center_lat": 33.73237,
+          "center_lng": -78.99089,
+          "accident_count": 96,
+          "accident_percentage": 0.21,
+          "average_severity": 1.99,
+          "spread_radius_km": 11.06,
+          "dominant_city": "Myrtle Beach",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 67,
+          "center_lat": 41.45511,
+          "center_lng": -81.68837,
+          "accident_count": 88,
+          "accident_percentage": 0.2,
+          "average_severity": 2.33,
+          "spread_radius_km": 9.44,
+          "dominant_city": "Cleveland",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 33,
+          "center_lat": 43.04004,
+          "center_lng": -87.99712,
+          "accident_count": 87,
+          "accident_percentage": 0.19,
+          "average_severity": 2.41,
+          "spread_radius_km": 8.74,
+          "dominant_city": "Milwaukee",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 63,
+          "center_lat": 34.73807,
+          "center_lng": -86.65939,
+          "accident_count": 86,
+          "accident_percentage": 0.19,
+          "average_severity": 2.22,
+          "spread_radius_km": 9.37,
+          "dominant_city": "Huntsville",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 24,
+          "center_lat": 41.12533,
+          "center_lng": -111.97788,
+          "accident_count": 85,
+          "accident_percentage": 0.19,
+          "average_severity": 2.25,
+          "spread_radius_km": 9.47,
+          "dominant_city": "Ogden",
+          "state": "UT"
+        },
+        {
+          "cluster_id": 47,
+          "center_lat": 30.21368,
+          "center_lng": -92.03918,
+          "accident_count": 85,
+          "accident_percentage": 0.19,
+          "average_severity": 2.04,
+          "spread_radius_km": 6.44,
+          "dominant_city": "Lafayette",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 61,
+          "center_lat": 31.76148,
+          "center_lng": -106.36025,
+          "accident_count": 79,
+          "accident_percentage": 0.18,
+          "average_severity": 2.06,
+          "spread_radius_km": 7.32,
+          "dominant_city": "El Paso",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 49,
+          "center_lat": 30.67217,
+          "center_lng": -88.09368,
+          "accident_count": 74,
+          "accident_percentage": 0.16,
+          "average_severity": 2.3,
+          "spread_radius_km": 8.64,
+          "dominant_city": "Mobile",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 25,
+          "center_lat": 33.19342,
+          "center_lng": -87.53832,
+          "accident_count": 72,
+          "accident_percentage": 0.16,
+          "average_severity": 2.11,
+          "spread_radius_km": 5.71,
+          "dominant_city": "Tuscaloosa",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 55,
+          "center_lat": 42.92142,
+          "center_lng": -78.8208,
+          "accident_count": 69,
+          "accident_percentage": 0.15,
+          "average_severity": 2.43,
+          "spread_radius_km": 7.29,
+          "dominant_city": "Buffalo",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 80,
+          "center_lat": 39.40002,
+          "center_lng": -77.43104,
+          "accident_count": 68,
+          "accident_percentage": 0.15,
+          "average_severity": 2.29,
+          "spread_radius_km": 10.44,
+          "dominant_city": "Frederick",
+          "state": "MD"
+        },
+        {
+          "cluster_id": 86,
+          "center_lat": 32.35512,
+          "center_lng": -86.25189,
+          "accident_count": 68,
+          "accident_percentage": 0.15,
+          "average_severity": 2.21,
+          "spread_radius_km": 8.98,
+          "dominant_city": "Montgomery",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 84,
+          "center_lat": 39.5147,
+          "center_lng": -119.75784,
+          "accident_count": 67,
+          "accident_percentage": 0.15,
+          "average_severity": 2.3,
+          "spread_radius_km": 7.62,
+          "dominant_city": "Reno",
+          "state": "NV"
+        },
+        {
+          "cluster_id": 81,
+          "center_lat": 34.19933,
+          "center_lng": -79.81245,
+          "accident_count": 66,
+          "accident_percentage": 0.15,
+          "average_severity": 2.06,
+          "spread_radius_km": 9.17,
+          "dominant_city": "Florence",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 73,
+          "center_lat": 29.16734,
+          "center_lng": -82.16398,
+          "accident_count": 60,
+          "accident_percentage": 0.13,
+          "average_severity": 2.08,
+          "spread_radius_km": 10.33,
+          "dominant_city": "Ocala",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 51,
+          "center_lat": 37.19331,
+          "center_lng": -93.3036,
+          "accident_count": 55,
+          "accident_percentage": 0.12,
+          "average_severity": 2.07,
+          "spread_radius_km": 4.63,
+          "dominant_city": "Springfield",
+          "state": "MO"
+        },
+        {
+          "cluster_id": 76,
+          "center_lat": 30.46126,
+          "center_lng": -84.27847,
+          "accident_count": 54,
+          "accident_percentage": 0.12,
+          "average_severity": 2.0,
+          "spread_radius_km": 7.06,
+          "dominant_city": "Tallahassee",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 70,
+          "center_lat": 40.61859,
+          "center_lng": -75.43498,
+          "accident_count": 53,
+          "accident_percentage": 0.12,
+          "average_severity": 2.17,
+          "spread_radius_km": 9.72,
+          "dominant_city": "Allentown",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 82,
+          "center_lat": 41.6188,
+          "center_lng": -93.65487,
+          "accident_count": 52,
+          "accident_percentage": 0.12,
+          "average_severity": 2.44,
+          "spread_radius_km": 7.52,
+          "dominant_city": "Des Moines",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 78,
+          "center_lat": 38.86383,
+          "center_lng": -104.78424,
+          "accident_count": 51,
+          "accident_percentage": 0.11,
+          "average_severity": 2.35,
+          "spread_radius_km": 7.65,
+          "dominant_city": "Colorado Springs",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 87,
+          "center_lat": 33.54258,
+          "center_lng": -80.84673,
+          "accident_count": 50,
+          "accident_percentage": 0.11,
+          "average_severity": 2.22,
+          "spread_radius_km": 8.57,
+          "dominant_city": "Orangeburg",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 68,
+          "center_lat": 43.06873,
+          "center_lng": -76.14223,
+          "accident_count": 48,
+          "accident_percentage": 0.11,
+          "average_severity": 2.19,
+          "spread_radius_km": 6.23,
+          "dominant_city": "Syracuse",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 85,
+          "center_lat": 41.56508,
+          "center_lng": -73.94841,
+          "accident_count": 45,
+          "accident_percentage": 0.1,
+          "average_severity": 2.24,
+          "spread_radius_km": 9.13,
+          "dominant_city": "Newburgh",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 88,
+          "center_lat": 34.57606,
+          "center_lng": -118.1478,
+          "accident_count": 45,
+          "accident_percentage": 0.1,
+          "average_severity": 2.07,
+          "spread_radius_km": 8.78,
+          "dominant_city": "Palmdale",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 75,
+          "center_lat": 35.10291,
+          "center_lng": -106.64491,
+          "accident_count": 42,
+          "accident_percentage": 0.09,
+          "average_severity": 2.31,
+          "spread_radius_km": 5.24,
+          "dominant_city": "Albuquerque",
+          "state": "NM"
+        },
+        {
+          "cluster_id": 83,
+          "center_lat": 43.61461,
+          "center_lng": -116.32598,
+          "accident_count": 40,
+          "accident_percentage": 0.09,
+          "average_severity": 2.0,
+          "spread_radius_km": 6.19,
+          "dominant_city": "Boise",
+          "state": "ID"
+        }
+      ]
+    },
+    "AL": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2540,
+      "identified_clusters_count": 12,
+      "clustered_points_count": 2084,
+      "noise_points_count": 456,
+      "noise_percentage": 17.95,
+      "clusters": [
+        {
+          "cluster_id": 3,
+          "center_lat": 33.46574,
+          "center_lng": -86.77436,
+          "accident_count": 587,
+          "accident_percentage": 23.11,
+          "average_severity": 2.39,
+          "spread_radius_km": 13.56,
+          "dominant_city": "Birmingham",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 34.7178,
+          "center_lng": -86.71353,
+          "accident_count": 366,
+          "accident_percentage": 14.41,
+          "average_severity": 2.18,
+          "spread_radius_km": 13.65,
+          "dominant_city": "Huntsville",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 32.37878,
+          "center_lng": -86.27308,
+          "accident_count": 327,
+          "accident_percentage": 12.87,
+          "average_severity": 2.18,
+          "spread_radius_km": 11.23,
+          "dominant_city": "Montgomery",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 30.66825,
+          "center_lng": -88.09482,
+          "accident_count": 281,
+          "accident_percentage": 11.06,
+          "average_severity": 2.34,
+          "spread_radius_km": 10.32,
+          "dominant_city": "Mobile",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 33.19239,
+          "center_lng": -87.53835,
+          "accident_count": 256,
+          "accident_percentage": 10.08,
+          "average_severity": 2.11,
+          "spread_radius_km": 5.77,
+          "dominant_city": "Tuscaloosa",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 32.84458,
+          "center_lng": -86.61575,
+          "accident_count": 69,
+          "accident_percentage": 2.72,
+          "average_severity": 2.22,
+          "spread_radius_km": 7.3,
+          "dominant_city": "Clanton",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 31.22392,
+          "center_lng": -85.41808,
+          "accident_count": 48,
+          "accident_percentage": 1.89,
+          "average_severity": 1.98,
+          "spread_radius_km": 4.87,
+          "dominant_city": "Dothan",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 34.16064,
+          "center_lng": -86.84692,
+          "accident_count": 39,
+          "accident_percentage": 1.54,
+          "average_severity": 2.15,
+          "spread_radius_km": 5.62,
+          "dominant_city": "Cullman",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 33.95887,
+          "center_lng": -86.46554,
+          "accident_count": 32,
+          "accident_percentage": 1.26,
+          "average_severity": 2.06,
+          "spread_radius_km": 5.77,
+          "dominant_city": "Oneonta",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 33.85995,
+          "center_lng": -86.8311,
+          "accident_count": 29,
+          "accident_percentage": 1.14,
+          "average_severity": 2.38,
+          "spread_radius_km": 5.31,
+          "dominant_city": "Warrior",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 31.7957,
+          "center_lng": -85.95671,
+          "accident_count": 26,
+          "accident_percentage": 1.02,
+          "average_severity": 2.04,
+          "spread_radius_km": 3.94,
+          "dominant_city": "Troy",
+          "state": "AL"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 32.62946,
+          "center_lng": -85.3941,
+          "accident_count": 24,
+          "accident_percentage": 0.94,
+          "average_severity": 2.42,
+          "spread_radius_km": 5.17,
+          "dominant_city": "Opelika",
+          "state": "AL"
+        }
+      ]
+    },
+    "AR": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 571,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 290,
+      "noise_points_count": 281,
+      "noise_percentage": 49.21,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 34.75901,
+          "center_lng": -92.29256,
+          "accident_count": 174,
+          "accident_percentage": 30.47,
+          "average_severity": 2.06,
+          "spread_radius_km": 10.37,
+          "dominant_city": "Little Rock",
+          "state": "AR"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 36.24183,
+          "center_lng": -94.17571,
+          "accident_count": 42,
+          "accident_percentage": 7.36,
+          "average_severity": 2.1,
+          "spread_radius_km": 10.39,
+          "dominant_city": "Fayetteville",
+          "state": "AR"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 35.16384,
+          "center_lng": -90.17681,
+          "accident_count": 24,
+          "accident_percentage": 4.2,
+          "average_severity": 2.12,
+          "spread_radius_km": 6.38,
+          "dominant_city": "West Memphis",
+          "state": "AR"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 35.36496,
+          "center_lng": -94.38364,
+          "accident_count": 18,
+          "accident_percentage": 3.15,
+          "average_severity": 1.94,
+          "spread_radius_km": 5.94,
+          "dominant_city": "Fort Smith",
+          "state": "AR"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 34.54759,
+          "center_lng": -92.63462,
+          "accident_count": 17,
+          "accident_percentage": 2.98,
+          "average_severity": 2.47,
+          "spread_radius_km": 4.31,
+          "dominant_city": "Benton",
+          "state": "AR"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 35.10697,
+          "center_lng": -92.44121,
+          "accident_count": 15,
+          "accident_percentage": 2.63,
+          "average_severity": 2.27,
+          "spread_radius_km": 5.01,
+          "dominant_city": "Conway",
+          "state": "AR"
+        }
+      ]
+    },
+    "AZ": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4232,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 3635,
+      "noise_points_count": 597,
+      "noise_percentage": 14.11,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 33.48963,
+          "center_lng": -112.06441,
+          "accident_count": 2657,
+          "accident_percentage": 62.78,
+          "average_severity": 2.14,
+          "spread_radius_km": 18.15,
+          "dominant_city": "Phoenix",
+          "state": "AZ"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 32.23517,
+          "center_lng": -110.94758,
+          "accident_count": 957,
+          "accident_percentage": 22.61,
+          "average_severity": 1.96,
+          "spread_radius_km": 9.78,
+          "dominant_city": "Tucson",
+          "state": "AZ"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 33.06429,
+          "center_lng": -112.02483,
+          "accident_count": 21,
+          "accident_percentage": 0.5,
+          "average_severity": 2.19,
+          "spread_radius_km": 3.36,
+          "dominant_city": "Maricopa",
+          "state": "AZ"
+        }
+      ]
+    },
+    "CA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 15000,
+      "identified_clusters_count": 14,
+      "clustered_points_count": 13014,
+      "noise_points_count": 1986,
+      "noise_percentage": 13.24,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 33.87829,
+          "center_lng": -117.90873,
+          "accident_count": 8127,
+          "accident_percentage": 54.18,
+          "average_severity": 2.21,
+          "spread_radius_km": 50.02,
+          "dominant_city": "Los Angeles",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 37.68565,
+          "center_lng": -122.03168,
+          "accident_count": 3312,
+          "accident_percentage": 22.08,
+          "average_severity": 2.18,
+          "spread_radius_km": 45.2,
+          "dominant_city": "San Jose",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 38.59428,
+          "center_lng": -121.39181,
+          "accident_count": 920,
+          "accident_percentage": 6.13,
+          "average_severity": 2.09,
+          "spread_radius_km": 13.59,
+          "dominant_city": "Sacramento",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 36.74859,
+          "center_lng": -119.77502,
+          "accident_count": 164,
+          "accident_percentage": 1.09,
+          "average_severity": 2.03,
+          "spread_radius_km": 7.43,
+          "dominant_city": "Fresno",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 35.37012,
+          "center_lng": -119.00666,
+          "accident_count": 162,
+          "accident_percentage": 1.08,
+          "average_severity": 2.0,
+          "spread_radius_km": 6.52,
+          "dominant_city": "Bakersfield",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 34.43418,
+          "center_lng": -119.72801,
+          "accident_count": 56,
+          "accident_percentage": 0.37,
+          "average_severity": 2.05,
+          "spread_radius_km": 7.48,
+          "dominant_city": "Santa Barbara",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 37.34399,
+          "center_lng": -120.5738,
+          "accident_count": 54,
+          "accident_percentage": 0.36,
+          "average_severity": 2.0,
+          "spread_radius_km": 8.27,
+          "dominant_city": "Merced",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 36.31556,
+          "center_lng": -119.34745,
+          "accident_count": 37,
+          "accident_percentage": 0.25,
+          "average_severity": 2.54,
+          "spread_radius_km": 5.72,
+          "dominant_city": "Visalia",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 38.94061,
+          "center_lng": -121.07205,
+          "accident_count": 36,
+          "accident_percentage": 0.24,
+          "average_severity": 2.06,
+          "spread_radius_km": 4.28,
+          "dominant_city": "Auburn",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 36.57126,
+          "center_lng": -121.87914,
+          "accident_count": 36,
+          "accident_percentage": 0.24,
+          "average_severity": 1.97,
+          "spread_radius_km": 5.09,
+          "dominant_city": "Carmel",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 39.1094,
+          "center_lng": -121.59684,
+          "accident_count": 35,
+          "accident_percentage": 0.23,
+          "average_severity": 2.0,
+          "spread_radius_km": 5.47,
+          "dominant_city": "Marysville",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 39.20704,
+          "center_lng": -121.04554,
+          "accident_count": 33,
+          "accident_percentage": 0.22,
+          "average_severity": 2.09,
+          "spread_radius_km": 5.5,
+          "dominant_city": "Grass Valley",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 35.01981,
+          "center_lng": -120.47752,
+          "accident_count": 25,
+          "accident_percentage": 0.17,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.86,
+          "dominant_city": "Nipomo",
+          "state": "CA"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 37.43431,
+          "center_lng": -120.79193,
+          "accident_count": 17,
+          "accident_percentage": 0.11,
+          "average_severity": 2.12,
+          "spread_radius_km": 2.54,
+          "dominant_city": "Delhi",
+          "state": "CA"
+        }
+      ]
+    },
+    "CO": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2246,
+      "identified_clusters_count": 7,
+      "clustered_points_count": 1856,
+      "noise_points_count": 390,
+      "noise_percentage": 17.36,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.72853,
+          "center_lng": -104.96393,
+          "accident_count": 1399,
+          "accident_percentage": 62.29,
+          "average_severity": 2.39,
+          "spread_radius_km": 14.54,
+          "dominant_city": "Denver",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 38.8476,
+          "center_lng": -104.78248,
+          "accident_count": 238,
+          "accident_percentage": 10.6,
+          "average_severity": 2.26,
+          "spread_radius_km": 8.63,
+          "dominant_city": "Colorado Springs",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 40.37205,
+          "center_lng": -104.98466,
+          "accident_count": 100,
+          "accident_percentage": 4.45,
+          "average_severity": 2.61,
+          "spread_radius_km": 11.77,
+          "dominant_city": "Johnstown",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 39.55097,
+          "center_lng": -106.20461,
+          "accident_count": 39,
+          "accident_percentage": 1.74,
+          "average_severity": 2.46,
+          "spread_radius_km": 5.95,
+          "dominant_city": "Frisco",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 38.27492,
+          "center_lng": -104.6233,
+          "accident_count": 33,
+          "accident_percentage": 1.47,
+          "average_severity": 2.61,
+          "spread_radius_km": 5.7,
+          "dominant_city": "Pueblo",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 39.67214,
+          "center_lng": -105.88921,
+          "accident_count": 29,
+          "accident_percentage": 1.29,
+          "average_severity": 2.48,
+          "spread_radius_km": 5.42,
+          "dominant_city": "Silver Plume",
+          "state": "CO"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 39.74924,
+          "center_lng": -105.63986,
+          "accident_count": 18,
+          "accident_percentage": 0.8,
+          "average_severity": 2.5,
+          "spread_radius_km": 3.97,
+          "dominant_city": "Dumont",
+          "state": "CO"
+        }
+      ]
+    },
+    "CT": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 1800,
+      "identified_clusters_count": 2,
+      "clustered_points_count": 1686,
+      "noise_points_count": 114,
+      "noise_percentage": 6.33,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 41.43761,
+          "center_lng": -72.99227,
+          "accident_count": 1605,
+          "accident_percentage": 89.17,
+          "average_severity": 2.32,
+          "spread_radius_km": 36.18,
+          "dominant_city": "Hartford",
+          "state": "CT"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 41.40335,
+          "center_lng": -72.13318,
+          "accident_count": 81,
+          "accident_percentage": 4.5,
+          "average_severity": 2.33,
+          "spread_radius_km": 12.93,
+          "dominant_city": "Uncasville",
+          "state": "CT"
+        }
+      ]
+    },
+    "DC": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 474,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 474,
+      "noise_points_count": 0,
+      "noise_percentage": 0.0,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 38.89671,
+          "center_lng": -77.00507,
+          "accident_count": 474,
+          "accident_percentage": 100.0,
+          "average_severity": 2.14,
+          "spread_radius_km": 3.76,
+          "dominant_city": "Washington",
+          "state": "DC"
+        }
+      ]
+    },
+    "DE": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 346,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 313,
+      "noise_points_count": 33,
+      "noise_percentage": 9.54,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.68847,
+          "center_lng": -75.60684,
+          "accident_count": 313,
+          "accident_percentage": 90.46,
+          "average_severity": 2.16,
+          "spread_radius_km": 10.35,
+          "dominant_city": "Wilmington",
+          "state": "DE"
+        }
+      ]
+    },
+    "FL": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 15000,
+      "identified_clusters_count": 18,
+      "clustered_points_count": 13763,
+      "noise_points_count": 1237,
+      "noise_percentage": 8.25,
+      "clusters": [
+        {
+          "cluster_id": 2,
+          "center_lat": 25.9221,
+          "center_lng": -80.26066,
+          "accident_count": 5665,
+          "accident_percentage": 37.77,
+          "average_severity": 2.15,
+          "spread_radius_km": 24.56,
+          "dominant_city": "Miami",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 28.50444,
+          "center_lng": -81.40704,
+          "accident_count": 2736,
+          "accident_percentage": 18.24,
+          "average_severity": 2.09,
+          "spread_radius_km": 15.13,
+          "dominant_city": "Orlando",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 28.01451,
+          "center_lng": -82.51212,
+          "accident_count": 2106,
+          "accident_percentage": 14.04,
+          "average_severity": 2.12,
+          "spread_radius_km": 25.06,
+          "dominant_city": "Tampa",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 30.25754,
+          "center_lng": -81.62477,
+          "accident_count": 798,
+          "accident_percentage": 5.32,
+          "average_severity": 2.35,
+          "spread_radius_km": 15.48,
+          "dominant_city": "Jacksonville",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 27.37159,
+          "center_lng": -82.5016,
+          "accident_count": 693,
+          "accident_percentage": 4.62,
+          "average_severity": 2.07,
+          "spread_radius_km": 13.12,
+          "dominant_city": "Sarasota",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 26.52094,
+          "center_lng": -81.80493,
+          "accident_count": 645,
+          "accident_percentage": 4.3,
+          "average_severity": 2.07,
+          "spread_radius_km": 14.7,
+          "dominant_city": "Fort Myers",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 30.50364,
+          "center_lng": -87.22635,
+          "accident_count": 299,
+          "accident_percentage": 1.99,
+          "average_severity": 2.07,
+          "spread_radius_km": 9.1,
+          "dominant_city": "Pensacola",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 29.14982,
+          "center_lng": -82.16077,
+          "accident_count": 199,
+          "accident_percentage": 1.33,
+          "average_severity": 2.11,
+          "spread_radius_km": 11.46,
+          "dominant_city": "Ocala",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 28.23733,
+          "center_lng": -80.70236,
+          "accident_count": 180,
+          "accident_percentage": 1.2,
+          "average_severity": 2.13,
+          "spread_radius_km": 14.26,
+          "dominant_city": "Melbourne",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 30.46251,
+          "center_lng": -84.2891,
+          "accident_count": 146,
+          "accident_percentage": 0.97,
+          "average_severity": 2.02,
+          "spread_radius_km": 7.39,
+          "dominant_city": "Tallahassee",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 29.64747,
+          "center_lng": -82.40965,
+          "accident_count": 56,
+          "accident_percentage": 0.37,
+          "average_severity": 2.11,
+          "spread_radius_km": 5.59,
+          "dominant_city": "Gainesville",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 27.34126,
+          "center_lng": -80.3967,
+          "accident_count": 53,
+          "accident_percentage": 0.35,
+          "average_severity": 2.32,
+          "spread_radius_km": 8.11,
+          "dominant_city": "Port Saint Lucie",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 30.43929,
+          "center_lng": -86.62556,
+          "accident_count": 49,
+          "accident_percentage": 0.33,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.35,
+          "dominant_city": "Fort Walton Beach",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 28.86414,
+          "center_lng": -82.06445,
+          "accident_count": 41,
+          "accident_percentage": 0.27,
+          "average_severity": 2.2,
+          "spread_radius_km": 5.18,
+          "dominant_city": "Wildwood",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 15,
+          "center_lat": 30.22794,
+          "center_lng": -85.60687,
+          "accident_count": 35,
+          "accident_percentage": 0.23,
+          "average_severity": 2.03,
+          "spread_radius_km": 5.73,
+          "dominant_city": "Panama City",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 16,
+          "center_lat": 30.16886,
+          "center_lng": -82.66895,
+          "accident_count": 25,
+          "accident_percentage": 0.17,
+          "average_severity": 2.32,
+          "spread_radius_km": 4.95,
+          "dominant_city": "Lake City",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 17,
+          "center_lat": 30.17681,
+          "center_lng": -85.77827,
+          "accident_count": 21,
+          "accident_percentage": 0.14,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.07,
+          "dominant_city": "Panama City",
+          "state": "FL"
+        },
+        {
+          "cluster_id": 14,
+          "center_lat": 28.65814,
+          "center_lng": -81.83027,
+          "accident_count": 16,
+          "accident_percentage": 0.11,
+          "average_severity": 2.12,
+          "spread_radius_km": 3.19,
+          "dominant_city": "Groveland",
+          "state": "FL"
+        }
+      ]
+    },
+    "GA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4245,
+      "identified_clusters_count": 11,
+      "clustered_points_count": 3652,
+      "noise_points_count": 593,
+      "noise_percentage": 13.97,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 33.79,
+          "center_lng": -84.36073,
+          "accident_count": 2930,
+          "accident_percentage": 69.02,
+          "average_severity": 2.55,
+          "spread_radius_km": 17.25,
+          "dominant_city": "Atlanta",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 33.45068,
+          "center_lng": -82.04465,
+          "accident_count": 367,
+          "accident_percentage": 8.65,
+          "average_severity": 2.05,
+          "spread_radius_km": 6.41,
+          "dominant_city": "Augusta",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 32.06565,
+          "center_lng": -81.19585,
+          "accident_count": 93,
+          "accident_percentage": 2.19,
+          "average_severity": 2.31,
+          "spread_radius_km": 7.95,
+          "dominant_city": "Savannah",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 32.833,
+          "center_lng": -83.67441,
+          "accident_count": 69,
+          "accident_percentage": 1.63,
+          "average_severity": 2.51,
+          "spread_radius_km": 6.94,
+          "dominant_city": "Macon",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 34.14816,
+          "center_lng": -83.65484,
+          "accident_count": 41,
+          "accident_percentage": 0.97,
+          "average_severity": 2.51,
+          "spread_radius_km": 5.93,
+          "dominant_city": "Jefferson",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 32.5544,
+          "center_lng": -83.74049,
+          "accident_count": 32,
+          "accident_percentage": 0.75,
+          "average_severity": 2.47,
+          "spread_radius_km": 6.77,
+          "dominant_city": "Perry",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 33.71021,
+          "center_lng": -85.02411,
+          "accident_count": 32,
+          "accident_percentage": 0.75,
+          "average_severity": 2.47,
+          "spread_radius_km": 6.58,
+          "dominant_city": "Temple",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 33.24582,
+          "center_lng": -84.28221,
+          "accident_count": 28,
+          "accident_percentage": 0.66,
+          "average_severity": 2.68,
+          "spread_radius_km": 4.43,
+          "dominant_city": "Griffin",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 33.36468,
+          "center_lng": -84.73235,
+          "accident_count": 24,
+          "accident_percentage": 0.57,
+          "average_severity": 2.5,
+          "spread_radius_km": 6.63,
+          "dominant_city": "Newnan",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 34.93915,
+          "center_lng": -85.15649,
+          "accident_count": 18,
+          "accident_percentage": 0.42,
+          "average_severity": 2.61,
+          "spread_radius_km": 4.7,
+          "dominant_city": "Ringgold",
+          "state": "GA"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 32.52712,
+          "center_lng": -84.94458,
+          "accident_count": 18,
+          "accident_percentage": 0.42,
+          "average_severity": 2.89,
+          "spread_radius_km": 4.63,
+          "dominant_city": "Columbus",
+          "state": "GA"
+        }
+      ]
+    },
+    "IA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 651,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 401,
+      "noise_points_count": 250,
+      "noise_percentage": 38.4,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 41.64988,
+          "center_lng": -93.65919,
+          "accident_count": 265,
+          "accident_percentage": 40.71,
+          "average_severity": 2.4,
+          "spread_radius_km": 11.89,
+          "dominant_city": "Des Moines",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 41.24424,
+          "center_lng": -95.85356,
+          "accident_count": 41,
+          "accident_percentage": 6.3,
+          "average_severity": 2.51,
+          "spread_radius_km": 3.7,
+          "dominant_city": "Council Bluffs",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 41.71545,
+          "center_lng": -91.61597,
+          "accident_count": 32,
+          "accident_percentage": 4.92,
+          "average_severity": 2.47,
+          "spread_radius_km": 5.29,
+          "dominant_city": "Iowa City",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 41.97645,
+          "center_lng": -91.66948,
+          "accident_count": 31,
+          "accident_percentage": 4.76,
+          "average_severity": 2.35,
+          "spread_radius_km": 6.26,
+          "dominant_city": "Cedar Rapids",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 41.57945,
+          "center_lng": -90.53916,
+          "accident_count": 20,
+          "accident_percentage": 3.07,
+          "average_severity": 2.35,
+          "spread_radius_km": 6.25,
+          "dominant_city": "Davenport",
+          "state": "IA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 41.49497,
+          "center_lng": -94.6518,
+          "accident_count": 12,
+          "accident_percentage": 1.84,
+          "average_severity": 2.25,
+          "spread_radius_km": 4.17,
+          "dominant_city": "Adair",
+          "state": "IA"
+        }
+      ]
+    },
+    "ID": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 269,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 174,
+      "noise_points_count": 95,
+      "noise_percentage": 35.32,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 43.61861,
+          "center_lng": -116.38793,
+          "accident_count": 174,
+          "accident_percentage": 64.68,
+          "average_severity": 2.05,
+          "spread_radius_km": 9.11,
+          "dominant_city": "Meridian",
+          "state": "ID"
+        }
+      ]
+    },
+    "IL": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4225,
+      "identified_clusters_count": 4,
+      "clustered_points_count": 3941,
+      "noise_points_count": 284,
+      "noise_percentage": 6.72,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 41.95754,
+          "center_lng": -87.9293,
+          "accident_count": 3799,
+          "accident_percentage": 89.92,
+          "average_severity": 2.35,
+          "spread_radius_km": 26.66,
+          "dominant_city": "Chicago",
+          "state": "IL"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 40.63091,
+          "center_lng": -89.56417,
+          "accident_count": 80,
+          "accident_percentage": 1.89,
+          "average_severity": 2.15,
+          "spread_radius_km": 8.67,
+          "dominant_city": "Pekin",
+          "state": "IL"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 38.62297,
+          "center_lng": -90.08787,
+          "accident_count": 40,
+          "accident_percentage": 0.95,
+          "average_severity": 2.77,
+          "spread_radius_km": 5.65,
+          "dominant_city": "East Saint Louis",
+          "state": "IL"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 42.26905,
+          "center_lng": -88.9913,
+          "accident_count": 22,
+          "accident_percentage": 0.52,
+          "average_severity": 2.41,
+          "spread_radius_km": 5.72,
+          "dominant_city": "Rockford",
+          "state": "IL"
+        }
+      ]
+    },
+    "IN": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 1699,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 1280,
+      "noise_points_count": 419,
+      "noise_percentage": 24.66,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 39.80587,
+          "center_lng": -86.14795,
+          "accident_count": 990,
+          "accident_percentage": 58.27,
+          "average_severity": 2.3,
+          "spread_radius_km": 12.89,
+          "dominant_city": "Indianapolis",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 41.56081,
+          "center_lng": -87.36515,
+          "accident_count": 153,
+          "accident_percentage": 9.01,
+          "average_severity": 2.43,
+          "spread_radius_km": 8.09,
+          "dominant_city": "Gary",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 38.32768,
+          "center_lng": -85.80993,
+          "accident_count": 60,
+          "accident_percentage": 3.53,
+          "average_severity": 2.55,
+          "spread_radius_km": 6.3,
+          "dominant_city": "New Albany",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 39.8432,
+          "center_lng": -84.91533,
+          "accident_count": 31,
+          "accident_percentage": 1.82,
+          "average_severity": 2.13,
+          "spread_radius_km": 5.26,
+          "dominant_city": "Richmond",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 39.21393,
+          "center_lng": -85.94262,
+          "accident_count": 26,
+          "accident_percentage": 1.53,
+          "average_severity": 2.12,
+          "spread_radius_km": 5.95,
+          "dominant_city": "Columbus",
+          "state": "IN"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 41.28047,
+          "center_lng": -87.29264,
+          "accident_count": 20,
+          "accident_percentage": 1.18,
+          "average_severity": 2.5,
+          "spread_radius_km": 3.45,
+          "dominant_city": "Hebron",
+          "state": "IN"
+        }
+      ]
+    },
+    "KS": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 517,
+      "identified_clusters_count": 2,
+      "clustered_points_count": 487,
+      "noise_points_count": 30,
+      "noise_percentage": 5.8,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.00298,
+          "center_lng": -94.72508,
+          "accident_count": 453,
+          "accident_percentage": 87.62,
+          "average_severity": 2.29,
+          "spread_radius_km": 10.76,
+          "dominant_city": "Kansas City",
+          "state": "KS"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 37.67296,
+          "center_lng": -97.32866,
+          "accident_count": 34,
+          "accident_percentage": 6.58,
+          "average_severity": 2.15,
+          "spread_radius_km": 5.15,
+          "dominant_city": "Wichita",
+          "state": "KS"
+        }
+      ]
+    },
+    "KY": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 810,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 748,
+      "noise_points_count": 62,
+      "noise_percentage": 7.65,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 38.21182,
+          "center_lng": -85.68611,
+          "accident_count": 427,
+          "accident_percentage": 52.72,
+          "average_severity": 2.6,
+          "spread_radius_km": 9.17,
+          "dominant_city": "Louisville",
+          "state": "KY"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 39.037,
+          "center_lng": -84.55853,
+          "accident_count": 209,
+          "accident_percentage": 25.8,
+          "average_severity": 2.44,
+          "spread_radius_km": 5.89,
+          "dominant_city": "Covington",
+          "state": "KY"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 38.04347,
+          "center_lng": -84.49716,
+          "accident_count": 112,
+          "accident_percentage": 13.83,
+          "average_severity": 2.19,
+          "spread_radius_km": 6.36,
+          "dominant_city": "Lexington",
+          "state": "KY"
+        }
+      ]
+    },
+    "LA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 3753,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 3549,
+      "noise_points_count": 204,
+      "noise_percentage": 5.44,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 30.44807,
+          "center_lng": -91.11263,
+          "accident_count": 1942,
+          "accident_percentage": 51.75,
+          "average_severity": 2.08,
+          "spread_radius_km": 7.22,
+          "dominant_city": "Baton Rouge",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 29.97875,
+          "center_lng": -90.07357,
+          "accident_count": 787,
+          "accident_percentage": 20.97,
+          "average_severity": 2.18,
+          "spread_radius_km": 5.8,
+          "dominant_city": "New Orleans",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 32.46506,
+          "center_lng": -93.77182,
+          "accident_count": 412,
+          "accident_percentage": 10.98,
+          "average_severity": 2.13,
+          "spread_radius_km": 6.73,
+          "dominant_city": "Shreveport",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 30.21229,
+          "center_lng": -92.03448,
+          "accident_count": 349,
+          "accident_percentage": 9.3,
+          "average_severity": 2.04,
+          "spread_radius_km": 5.6,
+          "dominant_city": "Lafayette",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 30.22351,
+          "center_lng": -93.26187,
+          "accident_count": 40,
+          "accident_percentage": 1.07,
+          "average_severity": 2.67,
+          "spread_radius_km": 5.83,
+          "dominant_city": "Lake Charles",
+          "state": "LA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 29.5987,
+          "center_lng": -90.71962,
+          "accident_count": 19,
+          "accident_percentage": 0.51,
+          "average_severity": 2.32,
+          "spread_radius_km": 2.91,
+          "dominant_city": "Houma",
+          "state": "LA"
+        }
+      ]
+    },
+    "MA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 1561,
+      "identified_clusters_count": 4,
+      "clustered_points_count": 1385,
+      "noise_points_count": 176,
+      "noise_percentage": 11.27,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 42.38179,
+          "center_lng": -71.16433,
+          "accident_count": 1308,
+          "accident_percentage": 83.79,
+          "average_severity": 2.3,
+          "spread_radius_km": 19.26,
+          "dominant_city": "Boston",
+          "state": "MA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 42.22342,
+          "center_lng": -71.80481,
+          "accident_count": 35,
+          "accident_percentage": 2.24,
+          "average_severity": 2.34,
+          "spread_radius_km": 6.48,
+          "dominant_city": "Worcester",
+          "state": "MA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 41.91273,
+          "center_lng": -71.02142,
+          "accident_count": 23,
+          "accident_percentage": 1.47,
+          "average_severity": 2.26,
+          "spread_radius_km": 5.26,
+          "dominant_city": "Middleboro",
+          "state": "MA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 42.01073,
+          "center_lng": -70.70505,
+          "accident_count": 19,
+          "accident_percentage": 1.22,
+          "average_severity": 2.16,
+          "spread_radius_km": 4.73,
+          "dominant_city": "Duxbury",
+          "state": "MA"
+        }
+      ]
+    },
+    "MD": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 3583,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 3353,
+      "noise_points_count": 230,
+      "noise_percentage": 6.42,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.18612,
+          "center_lng": -76.85078,
+          "accident_count": 3292,
+          "accident_percentage": 91.88,
+          "average_severity": 2.32,
+          "spread_radius_km": 35.73,
+          "dominant_city": "Baltimore",
+          "state": "MD"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 38.77173,
+          "center_lng": -76.05738,
+          "accident_count": 33,
+          "accident_percentage": 0.92,
+          "average_severity": 2.33,
+          "spread_radius_km": 3.83,
+          "dominant_city": "Easton",
+          "state": "MD"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 38.37574,
+          "center_lng": -75.1219,
+          "accident_count": 28,
+          "accident_percentage": 0.78,
+          "average_severity": 2.21,
+          "spread_radius_km": 5.32,
+          "dominant_city": "Ocean City",
+          "state": "MD"
+        }
+      ]
+    },
+    "ME": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 10.0,
+        "eps_radians": 0.00157,
+        "min_samples": 8
+      },
+      "total_analyzed_points": 80,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 25,
+      "noise_points_count": 55,
+      "noise_percentage": 68.75,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 43.70233,
+          "center_lng": -70.3148,
+          "accident_count": 25,
+          "accident_percentage": 31.25,
+          "average_severity": 2.16,
+          "spread_radius_km": 10.25,
+          "dominant_city": "Gray",
+          "state": "ME"
+        }
+      ]
+    },
+    "MI": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 3989,
+      "identified_clusters_count": 8,
+      "clustered_points_count": 3609,
+      "noise_points_count": 380,
+      "noise_percentage": 9.53,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 42.63696,
+          "center_lng": -83.39312,
+          "accident_count": 2713,
+          "accident_percentage": 68.01,
+          "average_severity": 2.37,
+          "spread_radius_km": 40.09,
+          "dominant_city": "Detroit",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 42.94764,
+          "center_lng": -85.65668,
+          "accident_count": 675,
+          "accident_percentage": 16.92,
+          "average_severity": 2.08,
+          "spread_radius_km": 6.26,
+          "dominant_city": "Grand Rapids",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 42.26955,
+          "center_lng": -85.59295,
+          "accident_count": 67,
+          "accident_percentage": 1.68,
+          "average_severity": 2.4,
+          "spread_radius_km": 8.59,
+          "dominant_city": "Kalamazoo",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 42.72951,
+          "center_lng": -84.52552,
+          "accident_count": 54,
+          "accident_percentage": 1.35,
+          "average_severity": 2.52,
+          "spread_radius_km": 5.24,
+          "dominant_city": "Lansing",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 42.27159,
+          "center_lng": -84.42471,
+          "accident_count": 39,
+          "accident_percentage": 0.98,
+          "average_severity": 2.41,
+          "spread_radius_km": 6.9,
+          "dominant_city": "Jackson",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 41.93686,
+          "center_lng": -83.37952,
+          "accident_count": 23,
+          "accident_percentage": 0.58,
+          "average_severity": 2.78,
+          "spread_radius_km": 5.92,
+          "dominant_city": "Monroe",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 42.80262,
+          "center_lng": -86.07695,
+          "accident_count": 20,
+          "accident_percentage": 0.5,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.49,
+          "dominant_city": "Holland",
+          "state": "MI"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 43.40782,
+          "center_lng": -83.91289,
+          "accident_count": 18,
+          "accident_percentage": 0.45,
+          "average_severity": 2.5,
+          "spread_radius_km": 5.06,
+          "dominant_city": "Saginaw",
+          "state": "MI"
+        }
+      ]
+    },
+    "MN": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4841,
+      "identified_clusters_count": 9,
+      "clustered_points_count": 3609,
+      "noise_points_count": 1232,
+      "noise_percentage": 25.45,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 44.99297,
+          "center_lng": -93.27947,
+          "accident_count": 3291,
+          "accident_percentage": 67.98,
+          "average_severity": 2.21,
+          "spread_radius_km": 19.9,
+          "dominant_city": "Minneapolis",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 44.21518,
+          "center_lng": -93.95583,
+          "accident_count": 76,
+          "accident_percentage": 1.57,
+          "average_severity": 2.0,
+          "spread_radius_km": 9.58,
+          "dominant_city": "Mankato",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 44.27315,
+          "center_lng": -93.29559,
+          "accident_count": 57,
+          "accident_percentage": 1.18,
+          "average_severity": 2.09,
+          "spread_radius_km": 8.26,
+          "dominant_city": "Faribault",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 44.02253,
+          "center_lng": -92.4819,
+          "accident_count": 56,
+          "accident_percentage": 1.16,
+          "average_severity": 1.98,
+          "spread_radius_km": 7.99,
+          "dominant_city": "Rochester",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 45.70305,
+          "center_lng": -94.8949,
+          "accident_count": 32,
+          "accident_percentage": 0.66,
+          "average_severity": 2.03,
+          "spread_radius_km": 6.12,
+          "dominant_city": "Sauk Centre",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 43.66165,
+          "center_lng": -93.33092,
+          "accident_count": 32,
+          "accident_percentage": 0.66,
+          "average_severity": 2.12,
+          "spread_radius_km": 7.53,
+          "dominant_city": "Albert Lea",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 46.75234,
+          "center_lng": -92.15919,
+          "accident_count": 32,
+          "accident_percentage": 0.66,
+          "average_severity": 2.03,
+          "spread_radius_km": 4.88,
+          "dominant_city": "Duluth",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 45.87984,
+          "center_lng": -95.472,
+          "accident_count": 19,
+          "accident_percentage": 0.39,
+          "average_severity": 2.11,
+          "spread_radius_km": 5.43,
+          "dominant_city": "Alexandria",
+          "state": "MN"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 44.52192,
+          "center_lng": -92.96015,
+          "accident_count": 14,
+          "accident_percentage": 0.29,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.48,
+          "dominant_city": "Cannon Falls",
+          "state": "MN"
+        }
+      ]
+    },
+    "MO": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 1891,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 1722,
+      "noise_points_count": 169,
+      "noise_percentage": 8.94,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 38.64939,
+          "center_lng": -90.39189,
+          "accident_count": 772,
+          "accident_percentage": 40.82,
+          "average_severity": 2.56,
+          "spread_radius_km": 14.69,
+          "dominant_city": "Saint Louis",
+          "state": "MO"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 39.06882,
+          "center_lng": -94.519,
+          "accident_count": 761,
+          "accident_percentage": 40.24,
+          "average_severity": 2.32,
+          "spread_radius_km": 11.9,
+          "dominant_city": "Kansas City",
+          "state": "MO"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 37.18555,
+          "center_lng": -93.30346,
+          "accident_count": 189,
+          "accident_percentage": 9.99,
+          "average_severity": 2.06,
+          "spread_radius_km": 5.5,
+          "dominant_city": "Springfield",
+          "state": "MO"
+        }
+      ]
+    },
+    "MS": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 360,
+      "identified_clusters_count": 4,
+      "clustered_points_count": 227,
+      "noise_points_count": 133,
+      "noise_percentage": 36.94,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 32.30243,
+          "center_lng": -90.17944,
+          "accident_count": 129,
+          "accident_percentage": 35.83,
+          "average_severity": 2.43,
+          "spread_radius_km": 6.14,
+          "dominant_city": "Jackson",
+          "state": "MS"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 31.31681,
+          "center_lng": -89.34351,
+          "accident_count": 59,
+          "accident_percentage": 16.39,
+          "average_severity": 2.15,
+          "spread_radius_km": 4.73,
+          "dominant_city": "Hattiesburg",
+          "state": "MS"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 34.9369,
+          "center_lng": -89.97311,
+          "accident_count": 27,
+          "accident_percentage": 7.5,
+          "average_severity": 2.37,
+          "spread_radius_km": 6.01,
+          "dominant_city": "Southaven",
+          "state": "MS"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 32.33454,
+          "center_lng": -90.8361,
+          "accident_count": 12,
+          "accident_percentage": 3.33,
+          "average_severity": 2.17,
+          "spread_radius_km": 4.64,
+          "dominant_city": "Vicksburg",
+          "state": "MS"
+        }
+      ]
+    },
+    "MT": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 683,
+      "identified_clusters_count": 9,
+      "clustered_points_count": 273,
+      "noise_points_count": 410,
+      "noise_percentage": 60.03,
+      "clusters": [
+        {
+          "cluster_id": 3,
+          "center_lat": 45.69029,
+          "center_lng": -111.01252,
+          "accident_count": 95,
+          "accident_percentage": 13.91,
+          "average_severity": 2.03,
+          "spread_radius_km": 12.17,
+          "dominant_city": "Bozeman",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 46.88961,
+          "center_lng": -114.05548,
+          "accident_count": 42,
+          "accident_percentage": 6.15,
+          "average_severity": 2.05,
+          "spread_radius_km": 8.76,
+          "dominant_city": "Missoula",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 48.25211,
+          "center_lng": -114.26479,
+          "accident_count": 26,
+          "accident_percentage": 3.81,
+          "average_severity": 2.0,
+          "spread_radius_km": 7.64,
+          "dominant_city": "Kalispell",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 45.79436,
+          "center_lng": -108.47852,
+          "accident_count": 25,
+          "accident_percentage": 3.66,
+          "average_severity": 2.2,
+          "spread_radius_km": 5.88,
+          "dominant_city": "Billings",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 45.63252,
+          "center_lng": -108.9247,
+          "accident_count": 21,
+          "accident_percentage": 3.07,
+          "average_severity": 2.1,
+          "spread_radius_km": 8.29,
+          "dominant_city": "Park City",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 46.65574,
+          "center_lng": -111.97134,
+          "accident_count": 21,
+          "accident_percentage": 3.07,
+          "average_severity": 2.1,
+          "spread_radius_km": 7.31,
+          "dominant_city": "Helena",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 46.70598,
+          "center_lng": -113.46029,
+          "accident_count": 16,
+          "accident_percentage": 2.34,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.86,
+          "dominant_city": "Clinton",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 45.9175,
+          "center_lng": -112.36746,
+          "accident_count": 14,
+          "accident_percentage": 2.05,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.44,
+          "dominant_city": "Whitehall",
+          "state": "MT"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 46.24548,
+          "center_lng": -114.15358,
+          "accident_count": 13,
+          "accident_percentage": 1.9,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.67,
+          "dominant_city": "Hamilton",
+          "state": "MT"
+        }
+      ]
+    },
+    "NC": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 8443,
+      "identified_clusters_count": 8,
+      "clustered_points_count": 7510,
+      "noise_points_count": 933,
+      "noise_percentage": 11.05,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 35.2223,
+          "center_lng": -80.83262,
+          "accident_count": 3762,
+          "accident_percentage": 44.56,
+          "average_severity": 2.05,
+          "spread_radius_km": 10.26,
+          "dominant_city": "Charlotte",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 35.80897,
+          "center_lng": -78.66089,
+          "accident_count": 3079,
+          "accident_percentage": 36.47,
+          "average_severity": 2.11,
+          "spread_radius_km": 11.74,
+          "dominant_city": "Raleigh",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 35.48767,
+          "center_lng": -82.54321,
+          "accident_count": 252,
+          "accident_percentage": 2.98,
+          "average_severity": 2.29,
+          "spread_radius_km": 11.42,
+          "dominant_city": "Asheville",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 36.07324,
+          "center_lng": -80.02679,
+          "accident_count": 249,
+          "accident_percentage": 2.95,
+          "average_severity": 2.38,
+          "spread_radius_km": 18.99,
+          "dominant_city": "Greensboro",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 35.24752,
+          "center_lng": -78.64218,
+          "accident_count": 73,
+          "accident_percentage": 0.86,
+          "average_severity": 2.25,
+          "spread_radius_km": 8.19,
+          "dominant_city": "Dunn",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 35.51826,
+          "center_lng": -80.56922,
+          "accident_count": 39,
+          "accident_percentage": 0.46,
+          "average_severity": 2.59,
+          "spread_radius_km": 5.69,
+          "dominant_city": "Kannapolis",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 34.27639,
+          "center_lng": -77.90315,
+          "accident_count": 31,
+          "accident_percentage": 0.37,
+          "average_severity": 2.26,
+          "spread_radius_km": 5.88,
+          "dominant_city": "Wilmington",
+          "state": "NC"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 36.0636,
+          "center_lng": -79.38635,
+          "accident_count": 25,
+          "accident_percentage": 0.3,
+          "average_severity": 2.16,
+          "spread_radius_km": 4.19,
+          "dominant_city": "Graham",
+          "state": "NC"
+        }
+      ]
+    },
+    "ND": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 10.0,
+        "eps_radians": 0.00157,
+        "min_samples": 8
+      },
+      "total_analyzed_points": 94,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 17,
+      "noise_points_count": 77,
+      "noise_percentage": 81.91,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 46.85361,
+          "center_lng": -96.87438,
+          "accident_count": 17,
+          "accident_percentage": 18.09,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.91,
+          "dominant_city": "Fargo",
+          "state": "ND"
+        }
+      ]
+    },
+    "NE": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 737,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 674,
+      "noise_points_count": 63,
+      "noise_percentage": 8.55,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 41.23215,
+          "center_lng": -96.04612,
+          "accident_count": 674,
+          "accident_percentage": 91.45,
+          "average_severity": 2.16,
+          "spread_radius_km": 8.17,
+          "dominant_city": "Omaha",
+          "state": "NE"
+        }
+      ]
+    },
+    "NH": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 10.0,
+        "eps_radians": 0.00157,
+        "min_samples": 8
+      },
+      "total_analyzed_points": 247,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 198,
+      "noise_points_count": 49,
+      "noise_percentage": 19.84,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 42.93666,
+          "center_lng": -71.42793,
+          "accident_count": 141,
+          "accident_percentage": 57.09,
+          "average_severity": 2.28,
+          "spread_radius_km": 13.71,
+          "dominant_city": "Manchester",
+          "state": "NH"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 43.05459,
+          "center_lng": -70.87676,
+          "accident_count": 31,
+          "accident_percentage": 12.55,
+          "average_severity": 2.19,
+          "spread_radius_km": 12.02,
+          "dominant_city": "Dover",
+          "state": "NH"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 43.61028,
+          "center_lng": -71.62323,
+          "accident_count": 26,
+          "accident_percentage": 10.53,
+          "average_severity": 2.38,
+          "spread_radius_km": 13.63,
+          "dominant_city": "Ashland",
+          "state": "NH"
+        }
+      ]
+    },
+    "NJ": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 3554,
+      "identified_clusters_count": 3,
+      "clustered_points_count": 3412,
+      "noise_points_count": 142,
+      "noise_percentage": 4.0,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 40.53204,
+          "center_lng": -74.38542,
+          "accident_count": 3346,
+          "accident_percentage": 94.15,
+          "average_severity": 2.21,
+          "spread_radius_km": 43.56,
+          "dominant_city": "Newark",
+          "state": "NJ"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 39.41996,
+          "center_lng": -74.54921,
+          "accident_count": 51,
+          "accident_percentage": 1.44,
+          "average_severity": 2.22,
+          "spread_radius_km": 5.92,
+          "dominant_city": "Egg Harbor Township",
+          "state": "NJ"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 39.65202,
+          "center_lng": -74.83493,
+          "accident_count": 15,
+          "accident_percentage": 0.42,
+          "average_severity": 2.2,
+          "spread_radius_km": 4.25,
+          "dominant_city": "Hammonton",
+          "state": "NJ"
+        }
+      ]
+    },
+    "NM": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 259,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 175,
+      "noise_points_count": 84,
+      "noise_percentage": 32.43,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 35.10826,
+          "center_lng": -106.6178,
+          "accident_count": 175,
+          "accident_percentage": 67.57,
+          "average_severity": 2.29,
+          "spread_radius_km": 5.41,
+          "dominant_city": "Albuquerque",
+          "state": "NM"
+        }
+      ]
+    },
+    "NV": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 506,
+      "identified_clusters_count": 2,
+      "clustered_points_count": 330,
+      "noise_points_count": 176,
+      "noise_percentage": 34.78,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.46459,
+          "center_lng": -119.7692,
+          "accident_count": 286,
+          "accident_percentage": 56.52,
+          "average_severity": 2.22,
+          "spread_radius_km": 13.78,
+          "dominant_city": "Reno",
+          "state": "NV"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 36.14919,
+          "center_lng": -115.16076,
+          "accident_count": 44,
+          "accident_percentage": 8.7,
+          "average_severity": 2.2,
+          "spread_radius_km": 6.06,
+          "dominant_city": "Las Vegas",
+          "state": "NV"
+        }
+      ]
+    },
+    "NY": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 8794,
+      "identified_clusters_count": 13,
+      "clustered_points_count": 8084,
+      "noise_points_count": 710,
+      "noise_percentage": 8.07,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 40.88229,
+          "center_lng": -73.79571,
+          "accident_count": 5757,
+          "accident_percentage": 65.47,
+          "average_severity": 2.25,
+          "spread_radius_km": 27.59,
+          "dominant_city": "Bronx",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 43.15063,
+          "center_lng": -77.60817,
+          "accident_count": 858,
+          "accident_percentage": 9.76,
+          "average_severity": 2.1,
+          "spread_radius_km": 7.48,
+          "dominant_city": "Rochester",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 42.82556,
+          "center_lng": -73.78426,
+          "accident_count": 654,
+          "accident_percentage": 7.44,
+          "average_severity": 2.33,
+          "spread_radius_km": 18.35,
+          "dominant_city": "Albany",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 42.91973,
+          "center_lng": -78.83393,
+          "accident_count": 293,
+          "accident_percentage": 3.33,
+          "average_severity": 2.38,
+          "spread_radius_km": 8.18,
+          "dominant_city": "Buffalo",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 43.07623,
+          "center_lng": -76.14124,
+          "accident_count": 221,
+          "accident_percentage": 2.51,
+          "average_severity": 2.26,
+          "spread_radius_km": 6.31,
+          "dominant_city": "Syracuse",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 43.11226,
+          "center_lng": -75.28396,
+          "accident_count": 94,
+          "accident_percentage": 1.07,
+          "average_severity": 2.17,
+          "spread_radius_km": 5.31,
+          "dominant_city": "Utica",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 41.93204,
+          "center_lng": -74.01308,
+          "accident_count": 48,
+          "accident_percentage": 0.55,
+          "average_severity": 2.33,
+          "spread_radius_km": 7.31,
+          "dominant_city": "Kingston",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 42.46221,
+          "center_lng": -73.64985,
+          "accident_count": 47,
+          "accident_percentage": 0.53,
+          "average_severity": 2.49,
+          "spread_radius_km": 7.33,
+          "dominant_city": "Valatie",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 43.1682,
+          "center_lng": -75.53608,
+          "accident_count": 27,
+          "accident_percentage": 0.31,
+          "average_severity": 2.19,
+          "spread_radius_km": 6.26,
+          "dominant_city": "Verona",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 42.2317,
+          "center_lng": -73.86916,
+          "accident_count": 25,
+          "accident_percentage": 0.28,
+          "average_severity": 2.24,
+          "spread_radius_km": 4.64,
+          "dominant_city": "Catskill",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 41.41185,
+          "center_lng": -74.34952,
+          "accident_count": 20,
+          "accident_percentage": 0.23,
+          "average_severity": 2.25,
+          "spread_radius_km": 3.17,
+          "dominant_city": "Goshen",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 42.38136,
+          "center_lng": -73.47324,
+          "accident_count": 20,
+          "accident_percentage": 0.23,
+          "average_severity": 2.2,
+          "spread_radius_km": 4.48,
+          "dominant_city": "Canaan",
+          "state": "NY"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 41.74169,
+          "center_lng": -74.06374,
+          "accident_count": 20,
+          "accident_percentage": 0.23,
+          "average_severity": 2.3,
+          "spread_radius_km": 0.76,
+          "dominant_city": "New Paltz",
+          "state": "NY"
+        }
+      ]
+    },
+    "OH": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2977,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 2552,
+      "noise_points_count": 425,
+      "noise_percentage": 14.28,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 39.73868,
+          "center_lng": -84.20935,
+          "accident_count": 742,
+          "accident_percentage": 24.92,
+          "average_severity": 2.13,
+          "spread_radius_km": 8.74,
+          "dominant_city": "Dayton",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 40.01852,
+          "center_lng": -82.98472,
+          "accident_count": 726,
+          "accident_percentage": 24.39,
+          "average_severity": 2.38,
+          "spread_radius_km": 12.71,
+          "dominant_city": "Columbus",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 39.19983,
+          "center_lng": -84.45978,
+          "accident_count": 444,
+          "accident_percentage": 14.91,
+          "average_severity": 2.4,
+          "spread_radius_km": 11.72,
+          "dominant_city": "Cincinnati",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 41.457,
+          "center_lng": -81.66633,
+          "accident_count": 426,
+          "accident_percentage": 14.31,
+          "average_severity": 2.34,
+          "spread_radius_km": 10.54,
+          "dominant_city": "Cleveland",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 41.08206,
+          "center_lng": -81.51895,
+          "accident_count": 132,
+          "accident_percentage": 4.43,
+          "average_severity": 2.46,
+          "spread_radius_km": 8.41,
+          "dominant_city": "Akron",
+          "state": "OH"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 41.64123,
+          "center_lng": -83.61154,
+          "accident_count": 82,
+          "accident_percentage": 2.75,
+          "average_severity": 2.55,
+          "spread_radius_km": 7.49,
+          "dominant_city": "Toledo",
+          "state": "OH"
+        }
+      ]
+    },
+    "OK": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2093,
+      "identified_clusters_count": 2,
+      "clustered_points_count": 2040,
+      "noise_points_count": 53,
+      "noise_percentage": 2.53,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 35.48097,
+          "center_lng": -97.55255,
+          "accident_count": 1271,
+          "accident_percentage": 60.73,
+          "average_severity": 2.12,
+          "spread_radius_km": 9.39,
+          "dominant_city": "Oklahoma City",
+          "state": "OK"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 36.11241,
+          "center_lng": -95.92067,
+          "accident_count": 769,
+          "accident_percentage": 36.74,
+          "average_severity": 1.99,
+          "spread_radius_km": 6.99,
+          "dominant_city": "Tulsa",
+          "state": "OK"
+        }
+      ]
+    },
+    "OR": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4533,
+      "identified_clusters_count": 24,
+      "clustered_points_count": 3200,
+      "noise_points_count": 1333,
+      "noise_percentage": 29.41,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 45.35492,
+          "center_lng": -122.76333,
+          "accident_count": 1659,
+          "accident_percentage": 36.6,
+          "average_severity": 2.13,
+          "spread_radius_km": 28.38,
+          "dominant_city": "Portland",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 42.40685,
+          "center_lng": -123.01714,
+          "accident_count": 273,
+          "accident_percentage": 6.02,
+          "average_severity": 2.07,
+          "spread_radius_km": 26.04,
+          "dominant_city": "Ashland",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 45.45894,
+          "center_lng": -118.39219,
+          "accident_count": 251,
+          "accident_percentage": 5.54,
+          "average_severity": 2.13,
+          "spread_radius_km": 25.44,
+          "dominant_city": "Pendleton",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 43.98898,
+          "center_lng": -123.09462,
+          "accident_count": 211,
+          "accident_percentage": 4.65,
+          "average_severity": 2.09,
+          "spread_radius_km": 15.63,
+          "dominant_city": "Eugene",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 44.15702,
+          "center_lng": -121.25223,
+          "accident_count": 164,
+          "accident_percentage": 3.62,
+          "average_severity": 2.07,
+          "spread_radius_km": 13.88,
+          "dominant_city": "Bend",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 43.17378,
+          "center_lng": -123.35452,
+          "accident_count": 82,
+          "accident_percentage": 1.81,
+          "average_severity": 2.04,
+          "spread_radius_km": 10.62,
+          "dominant_city": "Roseburg",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 42.18401,
+          "center_lng": -121.73916,
+          "accident_count": 61,
+          "accident_percentage": 1.35,
+          "average_severity": 2.03,
+          "spread_radius_km": 6.91,
+          "dominant_city": "Klamath Falls",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 45.64779,
+          "center_lng": -121.27738,
+          "accident_count": 61,
+          "accident_percentage": 1.35,
+          "average_severity": 2.05,
+          "spread_radius_km": 11.45,
+          "dominant_city": "The Dalles",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 46.13158,
+          "center_lng": -123.87866,
+          "accident_count": 51,
+          "accident_percentage": 1.13,
+          "average_severity": 2.06,
+          "spread_radius_km": 6.81,
+          "dominant_city": "Warrenton",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 44.72087,
+          "center_lng": -117.71146,
+          "accident_count": 49,
+          "accident_percentage": 1.08,
+          "average_severity": 2.18,
+          "spread_radius_km": 10.14,
+          "dominant_city": "Baker City",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 45.83438,
+          "center_lng": -119.31797,
+          "accident_count": 42,
+          "accident_percentage": 0.93,
+          "average_severity": 2.1,
+          "spread_radius_km": 7.75,
+          "dominant_city": "Hermiston",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 43.23445,
+          "center_lng": -124.24237,
+          "accident_count": 36,
+          "accident_percentage": 0.79,
+          "average_severity": 2.0,
+          "spread_radius_km": 8.86,
+          "dominant_city": "Coos Bay",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 44.42026,
+          "center_lng": -121.91207,
+          "accident_count": 34,
+          "accident_percentage": 0.75,
+          "average_severity": 2.0,
+          "spread_radius_km": 6.61,
+          "dominant_city": "Blue River",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 45.06113,
+          "center_lng": -123.50098,
+          "accident_count": 31,
+          "accident_percentage": 0.68,
+          "average_severity": 2.06,
+          "spread_radius_km": 5.52,
+          "dominant_city": "Sheridan",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 17,
+          "center_lat": 45.58885,
+          "center_lng": -122.08805,
+          "accident_count": 30,
+          "accident_percentage": 0.66,
+          "average_severity": 2.6,
+          "spread_radius_km": 6.49,
+          "dominant_city": "Corbett",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 18,
+          "center_lat": 44.07528,
+          "center_lng": -116.9911,
+          "accident_count": 25,
+          "accident_percentage": 0.55,
+          "average_severity": 2.0,
+          "spread_radius_km": 5.29,
+          "dominant_city": "Ontario",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 14,
+          "center_lat": 44.40675,
+          "center_lng": -117.31258,
+          "accident_count": 23,
+          "accident_percentage": 0.51,
+          "average_severity": 2.22,
+          "spread_radius_km": 4.88,
+          "dominant_city": "Huntington",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 22,
+          "center_lat": 45.654,
+          "center_lng": -120.89364,
+          "accident_count": 19,
+          "accident_percentage": 0.42,
+          "average_severity": 2.05,
+          "spread_radius_km": 4.79,
+          "dominant_city": "Wasco",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 16,
+          "center_lat": 42.36095,
+          "center_lng": -123.53027,
+          "accident_count": 18,
+          "accident_percentage": 0.4,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.97,
+          "dominant_city": "Wilderville",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 19,
+          "center_lat": 45.30029,
+          "center_lng": -121.74503,
+          "accident_count": 18,
+          "accident_percentage": 0.4,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.41,
+          "dominant_city": "Government Camp",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 20,
+          "center_lat": 45.81077,
+          "center_lng": -122.85083,
+          "accident_count": 18,
+          "accident_percentage": 0.4,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.87,
+          "dominant_city": "Saint Helens",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 21,
+          "center_lat": 44.22538,
+          "center_lng": -117.15799,
+          "accident_count": 18,
+          "accident_percentage": 0.4,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.64,
+          "dominant_city": "Huntington",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 15,
+          "center_lat": 44.55341,
+          "center_lng": -117.42653,
+          "accident_count": 14,
+          "accident_percentage": 0.31,
+          "average_severity": 2.07,
+          "spread_radius_km": 2.53,
+          "dominant_city": "Huntington",
+          "state": "OR"
+        },
+        {
+          "cluster_id": 23,
+          "center_lat": 45.07659,
+          "center_lng": -123.75737,
+          "accident_count": 12,
+          "accident_percentage": 0.26,
+          "average_severity": 2.17,
+          "spread_radius_km": 2.98,
+          "dominant_city": "Grand Ronde",
+          "state": "OR"
+        }
+      ]
+    },
+    "PA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 7293,
+      "identified_clusters_count": 14,
+      "clustered_points_count": 5725,
+      "noise_points_count": 1568,
+      "noise_percentage": 21.5,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 40.12864,
+          "center_lng": -75.31395,
+          "accident_count": 3067,
+          "accident_percentage": 42.05,
+          "average_severity": 2.15,
+          "spread_radius_km": 21.42,
+          "dominant_city": "Philadelphia",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 40.09759,
+          "center_lng": -76.57127,
+          "accident_count": 1523,
+          "accident_percentage": 20.88,
+          "average_severity": 2.16,
+          "spread_radius_km": 26.67,
+          "dominant_city": "Lancaster",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 40.42074,
+          "center_lng": -79.91969,
+          "accident_count": 568,
+          "accident_percentage": 7.79,
+          "average_severity": 2.38,
+          "spread_radius_km": 14.09,
+          "dominant_city": "Pittsburgh",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 40.47435,
+          "center_lng": -78.41389,
+          "accident_count": 85,
+          "accident_percentage": 1.17,
+          "average_severity": 2.01,
+          "spread_radius_km": 5.92,
+          "dominant_city": "Altoona",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 40.83254,
+          "center_lng": -77.8074,
+          "accident_count": 82,
+          "accident_percentage": 1.12,
+          "average_severity": 2.34,
+          "spread_radius_km": 8.01,
+          "dominant_city": "State College",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 41.24366,
+          "center_lng": -76.99986,
+          "accident_count": 64,
+          "accident_percentage": 0.88,
+          "average_severity": 2.08,
+          "spread_radius_km": 6.57,
+          "dominant_city": "Williamsport",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 40.34712,
+          "center_lng": -75.94563,
+          "accident_count": 57,
+          "accident_percentage": 0.78,
+          "average_severity": 2.11,
+          "spread_radius_km": 4.55,
+          "dominant_city": "Reading",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 40.29532,
+          "center_lng": -78.86944,
+          "accident_count": 57,
+          "accident_percentage": 0.78,
+          "average_severity": 2.11,
+          "spread_radius_km": 6.2,
+          "dominant_city": "Johnstown",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 41.04239,
+          "center_lng": -78.42922,
+          "accident_count": 56,
+          "accident_percentage": 0.77,
+          "average_severity": 2.12,
+          "spread_radius_km": 6.78,
+          "dominant_city": "Clearfield",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 40.86269,
+          "center_lng": -76.84043,
+          "accident_count": 48,
+          "accident_percentage": 0.66,
+          "average_severity": 2.12,
+          "spread_radius_km": 5.96,
+          "dominant_city": "Selinsgrove",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 41.12277,
+          "center_lng": -78.74216,
+          "accident_count": 43,
+          "accident_percentage": 0.59,
+          "average_severity": 2.19,
+          "spread_radius_km": 5.17,
+          "dominant_city": "Du Bois",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 41.03189,
+          "center_lng": -76.84166,
+          "accident_count": 32,
+          "accident_percentage": 0.44,
+          "average_severity": 2.28,
+          "spread_radius_km": 4.37,
+          "dominant_city": "Milton",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 40.93702,
+          "center_lng": -78.21664,
+          "accident_count": 25,
+          "accident_percentage": 0.34,
+          "average_severity": 2.56,
+          "spread_radius_km": 3.93,
+          "dominant_city": "Morrisdale",
+          "state": "PA"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 40.5575,
+          "center_lng": -75.79308,
+          "accident_count": 18,
+          "accident_percentage": 0.25,
+          "average_severity": 2.61,
+          "spread_radius_km": 3.57,
+          "dominant_city": "Lenhartsville",
+          "state": "PA"
+        }
+      ]
+    },
+    "RI": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 438,
+      "identified_clusters_count": 1,
+      "clustered_points_count": 428,
+      "noise_points_count": 10,
+      "noise_percentage": 2.28,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 41.80696,
+          "center_lng": -71.4301,
+          "accident_count": 428,
+          "accident_percentage": 97.72,
+          "average_severity": 2.48,
+          "spread_radius_km": 6.66,
+          "dominant_city": "Providence",
+          "state": "RI"
+        }
+      ]
+    },
+    "SC": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 9572,
+      "identified_clusters_count": 18,
+      "clustered_points_count": 8488,
+      "noise_points_count": 1084,
+      "noise_percentage": 11.32,
+      "clusters": [
+        {
+          "cluster_id": 3,
+          "center_lat": 34.83369,
+          "center_lng": -82.30363,
+          "accident_count": 3567,
+          "accident_percentage": 37.26,
+          "average_severity": 2.08,
+          "spread_radius_km": 27.15,
+          "dominant_city": "Greenville",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 33.96124,
+          "center_lng": -81.02243,
+          "accident_count": 2056,
+          "accident_percentage": 21.48,
+          "average_severity": 2.21,
+          "spread_radius_km": 27.69,
+          "dominant_city": "Columbia",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 32.98024,
+          "center_lng": -80.08842,
+          "accident_count": 769,
+          "accident_percentage": 8.03,
+          "average_severity": 2.2,
+          "spread_radius_km": 12.88,
+          "dominant_city": "Summerville",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 9,
+          "center_lat": 33.74934,
+          "center_lng": -78.96858,
+          "accident_count": 525,
+          "accident_percentage": 5.48,
+          "average_severity": 2.01,
+          "spread_radius_km": 14.57,
+          "dominant_city": "Myrtle Beach",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 12,
+          "center_lat": 34.98789,
+          "center_lng": -80.97494,
+          "accident_count": 319,
+          "accident_percentage": 3.33,
+          "average_severity": 2.15,
+          "spread_radius_km": 11.39,
+          "dominant_city": "Fort Mill",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 34.21778,
+          "center_lng": -79.77724,
+          "accident_count": 304,
+          "accident_percentage": 3.18,
+          "average_severity": 2.11,
+          "spread_radius_km": 10.99,
+          "dominant_city": "Florence",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 33.54724,
+          "center_lng": -81.81295,
+          "accident_count": 190,
+          "accident_percentage": 1.98,
+          "average_severity": 2.09,
+          "spread_radius_km": 10.95,
+          "dominant_city": "Aiken",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 34.2279,
+          "center_lng": -82.13178,
+          "accident_count": 119,
+          "accident_percentage": 1.24,
+          "average_severity": 2.02,
+          "spread_radius_km": 8.67,
+          "dominant_city": "Greenwood",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 10,
+          "center_lat": 33.94499,
+          "center_lng": -80.40583,
+          "accident_count": 114,
+          "accident_percentage": 1.19,
+          "average_severity": 2.0,
+          "spread_radius_km": 9.52,
+          "dominant_city": "Sumter",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 34.49008,
+          "center_lng": -81.91259,
+          "accident_count": 81,
+          "accident_percentage": 0.85,
+          "average_severity": 2.15,
+          "spread_radius_km": 9.28,
+          "dominant_city": "Clinton",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 13,
+          "center_lat": 32.27945,
+          "center_lng": -80.91585,
+          "accident_count": 78,
+          "accident_percentage": 0.81,
+          "average_severity": 2.05,
+          "spread_radius_km": 7.63,
+          "dominant_city": "Bluffton",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 7,
+          "center_lat": 32.92144,
+          "center_lng": -80.67117,
+          "accident_count": 66,
+          "accident_percentage": 0.69,
+          "average_severity": 2.14,
+          "spread_radius_km": 6.31,
+          "dominant_city": "Walterboro",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 16,
+          "center_lat": 32.43361,
+          "center_lng": -80.68589,
+          "accident_count": 60,
+          "accident_percentage": 0.63,
+          "average_severity": 2.0,
+          "spread_radius_km": 7.1,
+          "dominant_city": "Beaufort",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 11,
+          "center_lat": 34.7301,
+          "center_lng": -80.75866,
+          "accident_count": 55,
+          "accident_percentage": 0.57,
+          "average_severity": 1.95,
+          "spread_radius_km": 6.67,
+          "dominant_city": "Lancaster",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 14,
+          "center_lat": 33.90072,
+          "center_lng": -79.76794,
+          "accident_count": 51,
+          "accident_percentage": 0.53,
+          "average_severity": 2.04,
+          "spread_radius_km": 6.52,
+          "dominant_city": "Lake City",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 8,
+          "center_lat": 32.68053,
+          "center_lng": -80.86778,
+          "accident_count": 48,
+          "accident_percentage": 0.5,
+          "average_severity": 2.4,
+          "spread_radius_km": 7.48,
+          "dominant_city": "Yemassee",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 15,
+          "center_lat": 34.42923,
+          "center_lng": -79.36334,
+          "accident_count": 44,
+          "accident_percentage": 0.46,
+          "average_severity": 2.11,
+          "spread_radius_km": 4.95,
+          "dominant_city": "Dillon",
+          "state": "SC"
+        },
+        {
+          "cluster_id": 17,
+          "center_lat": 33.70436,
+          "center_lng": -80.24674,
+          "accident_count": 42,
+          "accident_percentage": 0.44,
+          "average_severity": 2.29,
+          "spread_radius_km": 5.75,
+          "dominant_city": "Manning",
+          "state": "SC"
+        }
+      ]
+    },
+    "SD": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 12.0,
+        "eps_radians": 0.001884,
+        "min_samples": 10
+      },
+      "total_analyzed_points": 5,
+      "identified_clusters_count": 0,
+      "clustered_points_count": 0,
+      "noise_points_count": 5,
+      "noise_percentage": 100.0,
+      "clusters": [],
+      "status_message": "Insufficient spatial incident density for corridor clusters (5 incidents < 10 min threshold). All incidents are spatially isolated."
+    },
+    "TN": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 4115,
+      "identified_clusters_count": 7,
+      "clustered_points_count": 3721,
+      "noise_points_count": 394,
+      "noise_percentage": 9.57,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 36.14479,
+          "center_lng": -86.74439,
+          "accident_count": 2453,
+          "accident_percentage": 59.61,
+          "average_severity": 2.15,
+          "spread_radius_km": 8.98,
+          "dominant_city": "Nashville",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 35.05303,
+          "center_lng": -85.22113,
+          "accident_count": 511,
+          "accident_percentage": 12.42,
+          "average_severity": 2.15,
+          "spread_radius_km": 9.46,
+          "dominant_city": "Chattanooga",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 35.10843,
+          "center_lng": -89.93141,
+          "accident_count": 461,
+          "accident_percentage": 11.2,
+          "average_severity": 2.29,
+          "spread_radius_km": 9.13,
+          "dominant_city": "Memphis",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 35.95819,
+          "center_lng": -84.0058,
+          "accident_count": 181,
+          "accident_percentage": 4.4,
+          "average_severity": 2.5,
+          "spread_radius_km": 9.67,
+          "dominant_city": "Knoxville",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 36.36067,
+          "center_lng": -82.41611,
+          "accident_count": 84,
+          "accident_percentage": 2.04,
+          "average_severity": 2.02,
+          "spread_radius_km": 7.14,
+          "dominant_city": "Johnson City",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 35.29435,
+          "center_lng": -84.80017,
+          "accident_count": 18,
+          "accident_percentage": 0.44,
+          "average_severity": 2.17,
+          "spread_radius_km": 3.78,
+          "dominant_city": "Charleston",
+          "state": "TN"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 35.81078,
+          "center_lng": -86.40164,
+          "accident_count": 13,
+          "accident_percentage": 0.32,
+          "average_severity": 2.31,
+          "spread_radius_km": 5.0,
+          "dominant_city": "Murfreesboro",
+          "state": "TN"
+        }
+      ]
+    },
+    "TX": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 14463,
+      "identified_clusters_count": 7,
+      "clustered_points_count": 14049,
+      "noise_points_count": 414,
+      "noise_percentage": 2.86,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 32.81534,
+          "center_lng": -96.86806,
+          "accident_count": 4994,
+          "accident_percentage": 34.53,
+          "average_severity": 2.31,
+          "spread_radius_km": 18.9,
+          "dominant_city": "Dallas",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 29.76987,
+          "center_lng": -95.41714,
+          "accident_count": 4654,
+          "accident_percentage": 32.18,
+          "average_severity": 2.19,
+          "spread_radius_km": 14.39,
+          "dominant_city": "Houston",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 30.30799,
+          "center_lng": -97.72731,
+          "accident_count": 2880,
+          "accident_percentage": 19.91,
+          "average_severity": 2.09,
+          "spread_radius_km": 11.31,
+          "dominant_city": "Austin",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 29.46862,
+          "center_lng": -98.50409,
+          "accident_count": 954,
+          "accident_percentage": 6.6,
+          "average_severity": 2.27,
+          "spread_radius_km": 11.17,
+          "dominant_city": "San Antonio",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 31.76911,
+          "center_lng": -106.36439,
+          "accident_count": 389,
+          "accident_percentage": 2.69,
+          "average_severity": 2.04,
+          "spread_radius_km": 7.79,
+          "dominant_city": "El Paso",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 32.32461,
+          "center_lng": -95.3002,
+          "accident_count": 110,
+          "accident_percentage": 0.76,
+          "average_severity": 2.0,
+          "spread_radius_km": 3.53,
+          "dominant_city": "Tyler",
+          "state": "TX"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 33.88796,
+          "center_lng": -98.52628,
+          "accident_count": 68,
+          "accident_percentage": 0.47,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.07,
+          "dominant_city": "Wichita Falls",
+          "state": "TX"
+        }
+      ]
+    },
+    "UT": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2439,
+      "identified_clusters_count": 4,
+      "clustered_points_count": 1935,
+      "noise_points_count": 504,
+      "noise_percentage": 20.66,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 40.71534,
+          "center_lng": -111.89625,
+          "accident_count": 1835,
+          "accident_percentage": 75.24,
+          "average_severity": 2.18,
+          "spread_radius_km": 26.01,
+          "dominant_city": "Salt Lake City",
+          "state": "UT"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 37.15666,
+          "center_lng": -113.48324,
+          "accident_count": 36,
+          "accident_percentage": 1.48,
+          "average_severity": 2.31,
+          "spread_radius_km": 7.82,
+          "dominant_city": "Saint George",
+          "state": "UT"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 37.69326,
+          "center_lng": -113.07683,
+          "accident_count": 34,
+          "accident_percentage": 1.39,
+          "average_severity": 2.24,
+          "spread_radius_km": 5.66,
+          "dominant_city": "Cedar City",
+          "state": "UT"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 41.49555,
+          "center_lng": -112.02626,
+          "accident_count": 30,
+          "accident_percentage": 1.23,
+          "average_severity": 2.23,
+          "spread_radius_km": 4.94,
+          "dominant_city": "Brigham City",
+          "state": "UT"
+        }
+      ]
+    },
+    "VA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.0,
+        "eps_radians": 0.001256,
+        "min_samples": 25
+      },
+      "total_analyzed_points": 7731,
+      "identified_clusters_count": 7,
+      "clustered_points_count": 6484,
+      "noise_points_count": 1247,
+      "noise_percentage": 16.13,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 38.21762,
+          "center_lng": -77.38202,
+          "accident_count": 4714,
+          "accident_percentage": 60.98,
+          "average_severity": 2.21,
+          "spread_radius_km": 70.03,
+          "dominant_city": "Richmond",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 36.91614,
+          "center_lng": -76.32081,
+          "accident_count": 1095,
+          "accident_percentage": 14.16,
+          "average_severity": 2.35,
+          "spread_radius_km": 17.09,
+          "dominant_city": "Norfolk",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 38.15442,
+          "center_lng": -78.81416,
+          "accident_count": 344,
+          "accident_percentage": 4.45,
+          "average_severity": 2.4,
+          "spread_radius_km": 24.49,
+          "dominant_city": "Charlottesville",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 37.29971,
+          "center_lng": -80.03621,
+          "accident_count": 170,
+          "accident_percentage": 2.2,
+          "average_severity": 2.29,
+          "spread_radius_km": 13.14,
+          "dominant_city": "Roanoke",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 39.16931,
+          "center_lng": -78.15515,
+          "accident_count": 85,
+          "accident_percentage": 1.1,
+          "average_severity": 2.32,
+          "spread_radius_km": 7.17,
+          "dominant_city": "Winchester",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 6,
+          "center_lat": 38.89267,
+          "center_lng": -78.5133,
+          "accident_count": 44,
+          "accident_percentage": 0.57,
+          "average_severity": 2.34,
+          "spread_radius_km": 6.69,
+          "dominant_city": "Woodstock",
+          "state": "VA"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 38.87818,
+          "center_lng": -77.89865,
+          "accident_count": 32,
+          "accident_percentage": 0.41,
+          "average_severity": 2.41,
+          "spread_radius_km": 5.45,
+          "dominant_city": "Marshall",
+          "state": "VA"
+        }
+      ]
+    },
+    "VT": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 12.0,
+        "eps_radians": 0.001884,
+        "min_samples": 10
+      },
+      "total_analyzed_points": 17,
+      "identified_clusters_count": 0,
+      "clustered_points_count": 0,
+      "noise_points_count": 17,
+      "noise_percentage": 100.0,
+      "clusters": []
+    },
+    "WA": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 8.5,
+        "eps_radians": 0.001334,
+        "min_samples": 18
+      },
+      "total_analyzed_points": 2614,
+      "identified_clusters_count": 5,
+      "clustered_points_count": 2293,
+      "noise_points_count": 321,
+      "noise_percentage": 12.28,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 47.54732,
+          "center_lng": -122.31226,
+          "accident_count": 2049,
+          "accident_percentage": 78.39,
+          "average_severity": 2.34,
+          "spread_radius_km": 22.62,
+          "dominant_city": "Seattle",
+          "state": "WA"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 47.6763,
+          "center_lng": -117.36206,
+          "accident_count": 99,
+          "accident_percentage": 3.79,
+          "average_severity": 2.19,
+          "spread_radius_km": 6.58,
+          "dominant_city": "Spokane",
+          "state": "WA"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 45.67018,
+          "center_lng": -122.59578,
+          "accident_count": 98,
+          "accident_percentage": 3.75,
+          "average_severity": 2.24,
+          "spread_radius_km": 8.27,
+          "dominant_city": "Vancouver",
+          "state": "WA"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 47.48794,
+          "center_lng": -121.8725,
+          "accident_count": 28,
+          "accident_percentage": 1.07,
+          "average_severity": 2.57,
+          "spread_radius_km": 5.88,
+          "dominant_city": "Snoqualmie",
+          "state": "WA"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 48.45845,
+          "center_lng": -122.34158,
+          "accident_count": 19,
+          "accident_percentage": 0.73,
+          "average_severity": 2.42,
+          "spread_radius_km": 3.74,
+          "dominant_city": "Burlington",
+          "state": "WA"
+        }
+      ]
+    },
+    "WI": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 857,
+      "identified_clusters_count": 6,
+      "clustered_points_count": 628,
+      "noise_points_count": 229,
+      "noise_percentage": 26.72,
+      "clusters": [
+        {
+          "cluster_id": 0,
+          "center_lat": 43.0068,
+          "center_lng": -87.99501,
+          "accident_count": 427,
+          "accident_percentage": 49.82,
+          "average_severity": 2.4,
+          "spread_radius_km": 10.98,
+          "dominant_city": "Milwaukee",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 43.09318,
+          "center_lng": -89.35421,
+          "accident_count": 102,
+          "accident_percentage": 11.9,
+          "average_severity": 2.23,
+          "spread_radius_km": 8.72,
+          "dominant_city": "Madison",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 1,
+          "center_lat": 44.26081,
+          "center_lng": -88.4064,
+          "accident_count": 45,
+          "accident_percentage": 5.25,
+          "average_severity": 2.49,
+          "spread_radius_km": 7.76,
+          "dominant_city": "Appleton",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 44.51514,
+          "center_lng": -88.04422,
+          "accident_count": 29,
+          "accident_percentage": 3.38,
+          "average_severity": 2.52,
+          "spread_radius_km": 5.96,
+          "dominant_city": "Green Bay",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 5,
+          "center_lat": 42.60895,
+          "center_lng": -88.98244,
+          "accident_count": 13,
+          "accident_percentage": 1.52,
+          "average_severity": 2.23,
+          "spread_radius_km": 5.46,
+          "dominant_city": "Janesville",
+          "state": "WI"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 42.88008,
+          "center_lng": -89.04939,
+          "accident_count": 12,
+          "accident_percentage": 1.4,
+          "average_severity": 2.42,
+          "spread_radius_km": 3.86,
+          "dominant_city": "Edgerton",
+          "state": "WI"
+        }
+      ]
+    },
+    "WV": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 9.0,
+        "eps_radians": 0.001413,
+        "min_samples": 12
+      },
+      "total_analyzed_points": 325,
+      "identified_clusters_count": 5,
+      "clustered_points_count": 193,
+      "noise_points_count": 132,
+      "noise_percentage": 40.62,
+      "clusters": [
+        {
+          "cluster_id": 1,
+          "center_lat": 38.37838,
+          "center_lng": -81.6976,
+          "accident_count": 89,
+          "accident_percentage": 27.38,
+          "average_severity": 2.1,
+          "spread_radius_km": 9.62,
+          "dominant_city": "Charleston",
+          "state": "WV"
+        },
+        {
+          "cluster_id": 4,
+          "center_lat": 38.4126,
+          "center_lng": -82.34073,
+          "accident_count": 37,
+          "accident_percentage": 11.38,
+          "average_severity": 2.08,
+          "spread_radius_km": 8.44,
+          "dominant_city": "Huntington",
+          "state": "WV"
+        },
+        {
+          "cluster_id": 0,
+          "center_lat": 39.45361,
+          "center_lng": -77.98118,
+          "accident_count": 35,
+          "accident_percentage": 10.77,
+          "average_severity": 2.06,
+          "spread_radius_km": 9.15,
+          "dominant_city": "Inwood",
+          "state": "WV"
+        },
+        {
+          "cluster_id": 3,
+          "center_lat": 40.06513,
+          "center_lng": -80.65003,
+          "accident_count": 19,
+          "accident_percentage": 5.85,
+          "average_severity": 2.21,
+          "spread_radius_km": 5.9,
+          "dominant_city": "Wheeling",
+          "state": "WV"
+        },
+        {
+          "cluster_id": 2,
+          "center_lat": 37.78711,
+          "center_lng": -81.20001,
+          "accident_count": 13,
+          "accident_percentage": 4.0,
+          "average_severity": 2.0,
+          "spread_radius_km": 4.19,
+          "dominant_city": "Beckley",
+          "state": "WV"
+        }
+      ]
+    },
+    "WY": {
+      "algorithm": "DBSCAN (Density-Based Spatial Clustering of Applications with Noise)",
+      "distance_metric": "Haversine (Great-Circle Spherical Distance)",
+      "parameters": {
+        "eps_km": 10.0,
+        "eps_radians": 0.00157,
+        "min_samples": 8
+      },
+      "total_analyzed_points": 98,
+      "identified_clusters_count": 0,
+      "clustered_points_count": 0,
+      "noise_points_count": 98,
+      "noise_percentage": 100.0,
+      "clusters": []
+    }
+  }
 }

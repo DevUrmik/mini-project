@@ -8,6 +8,7 @@ from fastapi import APIRouter, Query, HTTPException
 from server.app.schemas.accident import (
     DashboardSummaryResponse,
     AccidentSummary,
+    PaginatedAccidentsResponse,
     HealthResponse
 )
 from server.app.services.data_service import DataService
@@ -34,9 +35,11 @@ def get_dashboard_summary():
     ds = DataService.get_instance()
     return ds.get_summary()
 
-@router.get("/accidents", response_model=List[AccidentSummary])
+@router.get("/accidents", response_model=PaginatedAccidentsResponse)
 def get_accidents(
-    limit: int = Query(500, ge=1, le=2500, description="Max number of sampled accidents to return"),
+    page: int = Query(1, ge=1, description="Page number for pagination"),
+    page_size: int = Query(1000, ge=1, le=5000, description="Items per page"),
+    limit: Optional[int] = Query(None, ge=1, le=5000, description="Optional legacy limit override"),
     state: Optional[str] = Query(None, description="Filter by state abbreviation (e.g. CA, FL, TX)"),
     city: Optional[str] = Query(None, description="Filter by city name"),
     severity: Optional[int] = Query(None, ge=1, le=4, description="Filter by severity level (1-4)"),
@@ -47,10 +50,15 @@ def get_accidents(
     start_date: Optional[str] = Query(None, description="Filter start date (YYYY-MM-DD)"),
     end_date: Optional[str] = Query(None, description="Filter end date (YYYY-MM-DD)")
 ):
-    """Retrieves sampled accident records with optional geographic viewport, date range, and state filtering."""
+    """
+    Retrieves accident records with server-side filtering and pagination.
+    Returns total matching record count separately from returned page items.
+    """
     ds = DataService.get_instance()
     return ds.get_accidents(
         limit=limit,
+        page=page,
+        page_size=page_size,
         state=state,
         city=city,
         severity=severity,

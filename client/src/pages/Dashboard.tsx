@@ -29,6 +29,20 @@ import {
 
 const SEVERITY_PALETTE = ['#529871', '#28634D', '#D69A43', '#C24E42'];
 
+const US_STATE_NAMES: Record<string, string> = {
+  AL: 'Alabama', AK: 'Alaska', AZ: 'Arizona', AR: 'Arkansas', CA: 'California',
+  CO: 'Colorado', CT: 'Connecticut', DE: 'Delaware', FL: 'Florida', GA: 'Georgia',
+  HI: 'Hawaii', ID: 'Idaho', IL: 'Illinois', IN: 'Indiana', IA: 'Iowa',
+  KS: 'Kansas', KY: 'Kentucky', LA: 'Louisiana', ME: 'Maine', MD: 'Maryland',
+  MA: 'Massachusetts', MI: 'Michigan', MN: 'Minnesota', MS: 'Mississippi', MO: 'Missouri',
+  MT: 'Montana', NE: 'Nebraska', NV: 'Nevada', NH: 'New Hampshire', NJ: 'New Jersey',
+  NM: 'New Mexico', NY: 'New York', NC: 'North Carolina', ND: 'North Dakota', OH: 'Ohio',
+  OK: 'Oklahoma', OR: 'Oregon', PA: 'Pennsylvania', RI: 'Rhode Island', SC: 'South Carolina',
+  SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
+  VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
+  DC: 'District of Columbia'
+};
+
 export const Dashboard: React.FC = () => {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [timeData, setTimeData] = useState<TimeAnalyticsResponse | null>(null);
@@ -91,19 +105,12 @@ export const Dashboard: React.FC = () => {
   }));
 
   // Geographic distribution by State
-  const stateData = Object.entries(summary.top_states).map(([st, count]) => {
-    const stateNames: Record<string, string> = {
-      CA: 'California',
-      FL: 'Florida',
-      TX: 'Texas'
-    };
-    return {
-      stateCode: st,
-      stateName: stateNames[st] || st,
-      count,
-      pct: ((count / summary.total_accidents) * 100).toFixed(1)
-    };
-  });
+  const stateData = Object.entries(summary.top_states).map(([st, count]) => ({
+    stateCode: st,
+    stateName: US_STATE_NAMES[st] || st,
+    count,
+    pct: ((count / summary.total_accidents) * 100).toFixed(1)
+  }));
 
   // Weather conditions
   const weatherData = Object.entries(summary.top_weather_conditions).slice(0, 6).map(([condition, count]) => ({
@@ -119,6 +126,9 @@ export const Dashboard: React.FC = () => {
       peakHourStr = `${String(maxHourObj.hour).padStart(2, '0')}:00`;
     }
   }
+
+  const earliestDate = summary.temporal_range?.earliest?.slice(0, 10) || '2016';
+  const latestDate = summary.temporal_range?.latest?.slice(0, 10) || '2023';
 
   return (
     <div className="space-y-6">
@@ -136,8 +146,9 @@ export const Dashboard: React.FC = () => {
       <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-3 text-xs text-[#252923] flex items-start gap-2.5">
         <Info className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
         <div className="space-y-0.5 text-[11px] leading-relaxed">
-          <span className="font-semibold text-[#252923]">Data Scope & Metric Definition: </span>
-          This development sample contains 35,000 verified incident records across California, Florida, and Texas.
+          <span className="font-semibold text-[#252923]">Dataset Information: </span>
+          Source: {summary.data_source} ({earliestDate} to {latestDate}) · 
+          <strong> {summary.total_accidents.toLocaleString()} records</strong> across {summary.total_states || 49} states ({summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} unique cities).
           Severity is an integer score (1–4) representing the extent of vehicular traffic disruption and delay caused by the incident; it does not measure injuries or fatalities.
         </div>
       </div>
@@ -147,7 +158,7 @@ export const Dashboard: React.FC = () => {
         <StatCard
           label="Total accident records"
           value={summary.total_accidents.toLocaleString()}
-          description="Sample across CA, FL, and TX"
+          description={`${earliestDate} to ${latestDate}`}
         />
         <StatCard
           label="Average recorded severity"
@@ -326,7 +337,7 @@ export const Dashboard: React.FC = () => {
             ))}
 
             <div className="pt-2 border-t border-[#E5E7E1] text-[11px] text-[#777D78] leading-tight">
-              33,052 of 35,000 records reside in California (94.4%), with targeted urban samples in Miami, FL (1,173) and Houston, TX (775).
+              Dynamic multi-state distribution across all {summary.total_states || 49} US states and {summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} unique cities.
             </div>
           </div>
         </div>

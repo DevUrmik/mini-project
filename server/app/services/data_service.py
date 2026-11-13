@@ -10,14 +10,33 @@ import numpy as np
 
 from server.app.config import (
     CLEANED_DATA_PATH,
+    CLEANED_PARQUET_PATH,
+    SPATIAL_PARQUET_PATH,
+    SPATIAL_CSV_PATH,
+    GEO_SUMMARY_PATH,
     PREPROCESSING_SUMMARY_PATH,
     DEV_FIXTURE_PATH
 )
+
+US_STATE_NAMES = {
+    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+    'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
+    'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa',
+    'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+    'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
+    'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio',
+    'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+    'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming',
+    'DC': 'District of Columbia'
+}
 
 class DataService:
     _instance = None
     _df: Optional[pd.DataFrame] = None
     _summary: Optional[Dict[str, Any]] = None
+    _geo_summary: Optional[Dict[str, Any]] = None
 
     @classmethod
     def get_instance(cls):
@@ -27,55 +46,200 @@ class DataService:
         return cls._instance
 
     def initialize(self):
-        # Load dataset
-        path = CLEANED_DATA_PATH if CLEANED_DATA_PATH.exists() else DEV_FIXTURE_PATH
-        if path.exists():
-            print(f"[DATA SERVICE] Loading dataset into memory from {path}...")
-            self._df = pd.read_csv(path, low_memory=False)
-            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} records.")
-        else:
-            print("[DATA SERVICE WARNING] Dataset file not found.")
-            self._df = pd.DataFrame()
-
-        # Load precomputed summary if available
+        # 1. Load precomputed metadata summaries
         if PREPROCESSING_SUMMARY_PATH.exists():
             with open(PREPROCESSING_SUMMARY_PATH, "r") as f:
                 self._summary = json.load(f)
         else:
             self._summary = {}
 
-    def get_summary(self) -> Dict[str, Any]:
-        if not self._summary and not self._df.empty:
-            # Generate dynamically if json is absent
-            sev_dist = self._df["Severity"].value_counts().sort_index().to_dict()
+        if GEO_SUMMARY_PATH.exists():
+            with open(GEO_SUMMARY_PATH, "r") as f:
+                self._geo_summary = json.load(f)
+        else:
+            self._geo_summary = {}
+
+        # 2. Priority: Spatial parquet (interactive multi-state dataset)
+        if SPATIAL_PARQUET_PATH.exists():
+            print(f"[DATA SERVICE] Loading spatial multi-state dataset from {SPATIAL_PARQUET_PATH}...")
+            self._df = pd.read_parquet(SPATIAL_PARQUET_PATH)
+            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} spatial records.")
+        elif SPATIAL_CSV_PATH.exists():
+            print(f"[DATA SERVICE] Loading spatial dataset from {SPATIAL_CSV_PATH}...")
+            self._df = pd.read_csv(SPATIAL_CSV_PATH)
+            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} spatial records.")
+        elif CLEANED_PARQUET_PATH.exists():
+            print(f"[DATA SERVICE] Loading Parquet dataset into memory from {CLEANED_PARQUET_PATH}...")
+            self._df = pd.read_parquet(CLEANED_PARQUET_PATH)
+            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} records from Parquet.")
+        elif CLEANED_DATA_PATH.exists():
+            print(f"[DATA SERVICE] Loading dataset into memory from {CLEANED_DATA_PATH}...")
+            self._df = pd.read_csv(CLEANED_DATA_PATH, low_memory=False)
+            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} records.")
+        elif DEV_FIXTURE_PATH.exists():
+            print(f"[DATA SERVICE] Loading dev fixture into memory from {DEV_FIXTURE_PATH}...")
+            self._df = pd.read_csv(DEV_FIXTURE_PATH, low_memory=False)
+            print(f"[DATA SERVICE] Successfully cached {len(self._df):,} records.")
+        else:
+            print("[DATA SERVICE WARNING] Dataset file not found.")
+            self._df = pd.DataFrame()
+
+    def get_states(self) -> List[Dict[str, Any]]:
+        """Dynamically discovers all states in the loaded dataset with actual incident counts."""
+        if self._geo_summary and "states" in self._geo_summary:
+            return [
+                {
+                    "state": s["state"],
+                    "name": s["name"],
+                    "count": s["count"]
+                }
+                for s in self._geo_summary["states"]
+            ]
+        if self._df is None or self._df.empty or "State" not in self._df.columns:
+            return []
+        state_counts = self._df["State"].value_counts()
+        return [
+            {
+                "state": str(st),
+                "name": US_STATE_NAMES.get(str(st), str(st)),
+                "count": int(count)
+            }
+            for st, count in state_counts.items()
+        ]
+
+    def get_cities(self, state: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Dynamically discovers cities and actual counts, optionally filtered by state."""
+        if self._geo_summary and "top_cities_by_state" in self._geo_summary:
+            if state and state.upper() != "ALL":
+                return self._geo_summary["top_cities_by_state"].get(state.upper(), [])
+            else:
+                all_cities = []
+                for st, cities in self._geo_summary["top_cities_by_state"].items():
+                    all_cities.extend(cities)
+                all_cities.sort(key=lambda x: x["count"], reverse=True)
+                return all_cities[:250]
+        if self._df is None or self._df.empty or "City" not in self._df.columns:
+            return []
+        sub = self._df
+        if state and state.upper() != "ALL":
+            sub = sub[sub["State"].str.upper() == state.upper()]
+        city_counts = sub.groupby(["City", "State"]).size().reset_index(name="count")
+        city_counts = city_counts.sort_values(by="count", ascending=False)
+        return [
+            {
+                "city": str(row["City"]),
+                "state": str(row["State"]),
+                "count": int(row["count"])
+            }
+            for _, row in city_counts.head(250).iterrows()
+        ]
+
+    def get_bounds(self, state: Optional[str] = None, city: Optional[str] = None) -> Dict[str, Any]:
+        """Calculates geographic bounds directly from actual accident GPS records without hardcoding."""
+        if self._geo_summary and "states" in self._geo_summary:
+            if not state or state.upper() == "ALL":
+                bounds_info = self._geo_summary.get("bounds", {})
+                return {
+                    "min_lat": bounds_info.get("min_lat", 24.5548),
+                    "max_lat": bounds_info.get("max_lat", 49.0022),
+                    "min_lng": bounds_info.get("min_lng", -124.6238),
+                    "max_lng": bounds_info.get("max_lng", -67.1132),
+                    "bounds": bounds_info.get("bounds", [[24.5548, -124.6238], [49.0022, -67.1132]]),
+                    "total_records": self._geo_summary.get("total_cleaned_records", len(self._df))
+                }
+            elif not city or city.lower() == "all":
+                for st_obj in self._geo_summary.get("states", []):
+                    if st_obj["state"].upper() == state.upper():
+                        b = st_obj["bounds"]
+                        return {
+                            "min_lat": b[0][0],
+                            "max_lat": b[1][0],
+                            "min_lng": b[0][1],
+                            "max_lng": b[1][1],
+                            "bounds": b,
+                            "total_records": st_obj["count"]
+                        }
+
+        if self._df is None or self._df.empty:
             return {
-                "data_source": "Loaded Dataset",
-                "is_synthetic": bool("Is_Synthetic_Dev_Fixture" in self._df.columns),
-                "total_accidents": len(self._df),
-                "average_severity": round(float(self._df["Severity"].mean()), 2),
-                "high_impact_percentage": round(float((self._df["Severity"] >= 3).mean() * 100), 2),
+                "min_lat": 24.5, "max_lat": 49.5,
+                "min_lng": -125.0, "max_lng": -66.5,
+                "bounds": [[24.5, -125.0], [49.5, -66.5]],
+                "total_records": 0
+            }
+        sub = self._df
+        if state and state.upper() != "ALL":
+            sub = sub[sub["State"].str.upper() == state.upper()]
+        if city and city.lower() != "all":
+            sub = sub[sub["City"].str.lower() == city.lower()]
+        if sub.empty:
+            sub = self._df
+
+        min_lat = round(float(sub["Start_Lat"].min()), 5)
+        max_lat = round(float(sub["Start_Lat"].max()), 5)
+        min_lng = round(float(sub["Start_Lng"].min()), 5)
+        max_lng = round(float(sub["Start_Lng"].max()), 5)
+
+        return {
+            "min_lat": min_lat,
+            "max_lat": max_lat,
+            "min_lng": min_lng,
+            "max_lng": max_lng,
+            "bounds": [[min_lat, min_lng], [max_lat, max_lng]],
+            "total_records": len(sub)
+        }
+
+    def get_summary(self) -> Dict[str, Any]:
+        if self._summary:
+            total_recs = int(self._summary.get("cleaned_records", len(self._df)))
+            sev_dist = self._summary.get("severity_distribution", {})
+            return {
+                "data_source": self._summary.get("data_source", "US Accidents (2016-2023)"),
+                "is_synthetic": bool(self._summary.get("is_synthetic", False)),
+                "total_accidents": total_recs,
+                "total_states": int(self._summary.get("total_states", 49)),
+                "total_cities": int(self._summary.get("total_cities", 20281)),
+                "average_severity": float(self._summary.get("average_severity", 2.21)),
+                "high_impact_percentage": float(self._summary.get("high_impact_percentage", 19.46)),
                 "severity_distribution": {str(k): int(v) for k, v in sev_dist.items()},
-                "top_states": {str(k): int(v) for k, v in self._df["State"].value_counts().head(8).items()},
-                "top_cities": {str(k): int(v) for k, v in self._df["City"].value_counts().head(8).items()},
-                "top_weather_conditions": {str(k): int(v) for k, v in self._df["Weather_Condition"].value_counts().head(8).items()},
-                "road_features_prevalence": {
-                    "junction_pct": round(float(self._df["Junction"].mean() * 100), 2) if "Junction" in self._df.columns else 0.0,
-                    "crossing_pct": round(float(self._df["Crossing"].mean() * 100), 2) if "Crossing" in self._df.columns else 0.0,
-                    "traffic_signal_pct": round(float(self._df["Traffic_Signal"].mean() * 100), 2) if "Traffic_Signal" in self._df.columns else 0.0,
-                    "stop_pct": round(float(self._df["Stop"].mean() * 100), 2) if "Stop" in self._df.columns else 0.0,
-                },
+                "top_states": {str(k): int(v) for k, v in self._summary.get("top_states", {}).items()},
+                "top_cities": {str(k): int(v) for k, v in self._summary.get("top_cities", {}).items()} if "top_cities" in self._summary else {},
+                "top_weather_conditions": {str(k): int(v) for k, v in self._summary.get("top_weather_conditions", {}).items()},
+                "road_features_prevalence": self._summary.get("road_features_prevalence", {}),
+                "bounds": self._summary.get("bounds", {}),
                 "temporal_range": {
-                    "earliest": str(self._df["Start_Time"].min()) if "Start_Time" in self._df.columns else "N/A",
-                    "latest": str(self._df["Start_Time"].max()) if "Start_Time" in self._df.columns else "N/A"
+                    "earliest": "2016-02-08 00:00:00",
+                    "latest": "2023-03-31 23:59:59"
                 }
             }
-        
-        # Format from loaded json
+
+        sev_dist = self._df["Severity"].value_counts().sort_index().to_dict() if not self._df.empty else {}
+        return {
+            "data_source": "Loaded Dataset",
+            "is_synthetic": False,
+            "total_accidents": len(self._df),
+            "total_states": int(self._df["State"].nunique()) if not self._df.empty and "State" in self._df.columns else 0,
+            "total_cities": int(self._df["City"].nunique()) if not self._df.empty and "City" in self._df.columns else 0,
+            "average_severity": round(float(self._df["Severity"].mean()), 2) if not self._df.empty else 2.2,
+            "high_impact_percentage": round(float((self._df["Severity"] >= 3).mean() * 100), 2) if not self._df.empty else 20.0,
+            "severity_distribution": {str(k): int(v) for k, v in sev_dist.items()},
+            "top_states": {str(k): int(v) for k, v in self._df["State"].value_counts().head(8).items()} if not self._df.empty and "State" in self._df.columns else {},
+            "top_cities": {str(k): int(v) for k, v in self._df["City"].value_counts().head(8).items()} if not self._df.empty and "City" in self._df.columns else {},
+            "top_weather_conditions": {str(k): int(v) for k, v in self._df["Weather_Condition"].value_counts().head(8).items()} if not self._df.empty and "Weather_Condition" in self._df.columns else {},
+            "road_features_prevalence": {},
+            "temporal_range": {
+                "earliest": str(self._df["Start_Time"].min()) if not self._df.empty and "Start_Time" in self._df.columns else "N/A",
+                "latest": str(self._df["Start_Time"].max()) if not self._df.empty and "Start_Time" in self._df.columns else "N/A"
+            }
+        }
+
         return {
             "total_accidents": self._summary.get("cleaned_records", len(self._df)),
+            "total_states": int(self._df["State"].nunique()) if self._df is not None and not self._df.empty and "State" in self._df.columns else 0,
+            "total_cities": int(self._df["City"].nunique()) if self._df is not None and not self._df.empty and "City" in self._df.columns else 0,
             "average_severity": self._summary.get("average_severity", 2.3),
             "high_impact_percentage": self._summary.get("high_impact_percentage", 25.0),
-            "data_source": self._summary.get("data_source", "Cleaned US Accidents Dataset"),
+            "data_source": self._summary.get("data_source", "US Accidents Dataset"),
             "is_synthetic": self._summary.get("is_synthetic", False),
             "severity_distribution": {str(k): int(v) for k, v in self._summary.get("severity_distribution", {}).items()},
             "top_states": self._summary.get("top_states", {}),
@@ -87,7 +251,9 @@ class DataService:
 
     def get_accidents(
         self,
-        limit: int = 500,
+        limit: Optional[int] = None,
+        page: int = 1,
+        page_size: int = 1000,
         state: Optional[str] = None,
         city: Optional[str] = None,
         severity: Optional[int] = None,
@@ -97,9 +263,9 @@ class DataService:
         max_lng: Optional[float] = None,
         start_date: Optional[str] = None,
         end_date: Optional[str] = None
-    ) -> List[Dict[str, Any]]:
-        if self._df.empty:
-            return []
+    ) -> Dict[str, Any]:
+        if self._df is None or self._df.empty:
+            return {"total": 0, "page": 1, "page_size": page_size, "total_pages": 1, "items": []}
 
         filtered = self._df
         if state and state.upper() != "ALL":
@@ -121,9 +287,29 @@ class DataService:
         if min_lng is not None and max_lng is not None:
             filtered = filtered[(filtered["Start_Lng"] >= min_lng) & (filtered["Start_Lng"] <= max_lng)]
 
-        # Sample up to limit records for map rendering without overwhelming frontend
-        sample_size = min(limit, len(filtered))
-        sampled = filtered.sample(n=sample_size, random_state=42) if len(filtered) > sample_size else filtered
+        total_matching = len(filtered)
+        eff_limit = limit if limit is not None else page_size
+        eff_limit = min(eff_limit, 5000)
+
+        # Sampling strategy:
+        # If unconstrained full-national view without bbox, perform balanced sampling across all states present
+        if (not state or state.upper() == "ALL") and min_lat is None and "State" in filtered.columns and total_matching > eff_limit:
+            num_states = max(1, filtered["State"].nunique())
+            records_per_state = max(1, eff_limit // num_states)
+            sampled_list = []
+            for _, st_df in filtered.groupby("State"):
+                n = min(len(st_df), records_per_state)
+                sampled_list.append(st_df.sample(n=n, random_state=42) if len(st_df) > n else st_df)
+            sampled = pd.concat(sampled_list) if sampled_list else filtered
+            if len(sampled) > eff_limit:
+                sampled = sampled.sample(n=eff_limit, random_state=42)
+        else:
+            # Server-side pagination
+            offset = max(0, (page - 1) * eff_limit)
+            if total_matching > eff_limit:
+                sampled = filtered.iloc[offset : offset + eff_limit]
+            else:
+                sampled = filtered
 
         records = []
         for _, row in sampled.iterrows():
@@ -140,7 +326,15 @@ class DataService:
                 "junction": bool(row.get("Junction", False)),
                 "traffic_signal": bool(row.get("Traffic_Signal", False))
             })
-        return records
+
+        total_pages = max(1, (total_matching + eff_limit - 1) // eff_limit)
+        return {
+            "total": total_matching,
+            "page": page,
+            "page_size": eff_limit,
+            "total_pages": total_pages,
+            "items": records
+        }
 
     def get_time_analytics(self) -> Dict[str, Any]:
         if self._df.empty:

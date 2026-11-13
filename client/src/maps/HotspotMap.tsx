@@ -17,19 +17,26 @@ interface HotspotMapProps {
   clusters: HotspotCluster[];
   algorithm: 'kmeans' | 'dbscan';
   rawAccidents: AccidentRecord[];
-  center: [number, number];
-  zoom: number;
+  bounds: [[number, number], [number, number]];
   selectedClusterId?: number | null;
   onSelectCluster?: (cluster: HotspotCluster) => void;
   onViewportChange?: (bounds: { min_lat: number; max_lat: number; min_lng: number; max_lng: number }) => void;
 }
 
-// Helper to recenter map view programmatically when state/city changes
-const RecenterView: React.FC<{ center: [number, number]; zoom: number }> = ({ center, zoom }) => {
+// Controller component to dynamically fit bounds with padding
+const BoundsController: React.FC<{
+  bounds: [[number, number], [number, number]];
+}> = ({ bounds }) => {
   const map = useMap();
   useEffect(() => {
-    map.setView(center, zoom, { animate: true });
-  }, [center, zoom, map]);
+    if (bounds && bounds.length === 2) {
+      map.fitBounds(bounds, {
+        padding: [50, 50],
+        maxZoom: 13,
+        animate: true,
+      });
+    }
+  }, [bounds, map]);
   return null;
 };
 
@@ -74,8 +81,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
   clusters,
   algorithm,
   rawAccidents = [],
-  center,
-  zoom,
+  bounds,
   selectedClusterId,
   onSelectCluster,
   onViewportChange
@@ -95,15 +101,19 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
 
   const maxAccidents = clusters.length > 0 ? Math.max(...clusters.map((c) => c.accident_count)) : 1;
 
+  // Initial center and zoom fallbacks
+  const defaultCenter: [number, number] = [34.0, -98.0];
+  const defaultZoom = 4;
+
   return (
     <div className="relative w-full h-[580px] md:h-[620px] rounded-lg overflow-hidden border border-[#E5E7E1] bg-[#F7F7F4] shadow-subtle">
       <MapContainer
-        center={center}
-        zoom={zoom}
+        center={defaultCenter}
+        zoom={defaultZoom}
         scrollWheelZoom={true}
         className="w-full h-full z-10"
       >
-        <RecenterView center={center} zoom={zoom} />
+        <BoundsController bounds={bounds} />
         <ViewportListener onViewportChange={onViewportChange} />
 
         {/* Clean Standard OpenStreetMap Tiles */}
@@ -123,7 +133,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
               pathOptions={{
                 color: getSeverityColor(acc.severity),
                 fillColor: getSeverityColor(acc.severity),
-                fillOpacity: 0.8,
+                fillOpacity: 0.82,
                 weight: 1,
               }}
             >
@@ -184,13 +194,13 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
               pathOptions={{
                 color: 'transparent',
                 fillColor: acc.severity >= 3 ? '#C24E42' : '#D69A43',
-                fillOpacity: 0.18,
+                fillOpacity: 0.22,
                 weight: 0,
               }}
             >
               <Tooltip direction="top" opacity={0.9}>
                 <span className="text-[11px] font-medium text-[#252923]">
-                  {acc.city} — Severity {acc.severity}
+                  {acc.city}, {acc.state} — Severity {acc.severity}
                 </span>
               </Tooltip>
             </CircleMarker>
@@ -205,7 +215,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
 
             return (
               <CircleMarker
-                key={`${algorithm}-${cluster.cluster_id}`}
+                key={`${algorithm}-${cluster.dominant_city}-${cluster.cluster_id}`}
                 center={[cluster.center_lat, cluster.center_lng]}
                 radius={radius}
                 pathOptions={{
@@ -222,9 +232,9 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
               >
                 <Tooltip direction="top" offset={[0, -radius]} opacity={0.95}>
                   <div className="text-xs font-semibold text-[#252923]">
-                    {cluster.dominant_city} Hotspot #{cluster.cluster_id + 1}
+                    {cluster.dominant_city} {cluster.state ? `(${cluster.state})` : ''} Hotspot #{cluster.cluster_id + 1}
                     <div className="font-normal text-[11px] text-[#777D78]">
-                      {cluster.accident_count.toLocaleString()} accidents ({cluster.accident_percentage}% of sample)
+                      {cluster.accident_count.toLocaleString()} accidents ({cluster.accident_percentage}%)
                     </div>
                   </div>
                 </Tooltip>
@@ -233,7 +243,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
                   <div className="text-xs p-1 min-w-[220px] space-y-1.5">
                     <div className="flex items-center justify-between border-b border-[#E5E7E1] pb-1.5 mb-1.5">
                       <span className="font-semibold text-xs text-[#252923]">
-                        {cluster.dominant_city} Hotspot #{cluster.cluster_id + 1}
+                        {cluster.dominant_city} {cluster.state ? `(${cluster.state})` : ''} #{cluster.cluster_id + 1}
                       </span>
                       <span
                         className="px-1.5 py-0.5 rounded text-[10px] font-bold text-white"
@@ -246,7 +256,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
                     <div className="space-y-1 text-[#252923]">
                       <div className="flex justify-between">
                         <span className="text-[#777D78]">Method:</span>
-                        <span className="font-medium">{algorithm === 'kmeans' ? 'K-Means Centroid' : 'DBSCAN Area'}</span>
+                        <span className="font-medium">{algorithm === 'kmeans' ? 'K-Means Centroid' : 'DBSCAN Corridor'}</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-[#777D78]">Coordinates:</span>
@@ -257,8 +267,8 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
                         <span className="font-bold">{cluster.accident_count.toLocaleString()}</span>
                       </div>
                       <div className="flex justify-between">
-                        <span className="text-[#777D78]">Share of CA sample:</span>
-                        <span>{cluster.accident_percentage}% (of 20k points)</span>
+                        <span className="text-[#777D78]">Regional share:</span>
+                        <span>{cluster.accident_percentage}%</span>
                       </div>
                       <div className="flex justify-between">
                         <span className="text-[#777D78]">Average severity:</span>
@@ -309,12 +319,12 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
         </div>
         <div className="mt-2 pt-1.5 border-t border-[#E5E7E1] text-[10px] text-[#777D78] leading-tight">
           {viewMode === 'individual'
-            ? `Displaying ${rawAccidents.length.toLocaleString()} individual records in current viewport`
+            ? `Displaying ${rawAccidents.length.toLocaleString()} locations across active map extent`
             : viewMode === 'density'
-            ? `Heat concentrations derived from ${rawAccidents.length.toLocaleString()} incidents`
+            ? `Density concentrations from ${rawAccidents.length.toLocaleString()} records`
             : algorithm === 'dbscan'
-            ? 'DBSCAN: 5 dense metropolitan clusters + 37 noise points (from 20k CA sample)'
-            : 'K-Means: Centroid partitions across regional accident coordinates'}
+            ? `DBSCAN: ${clusters.length} spatial corridor clusters across active geographic extent`
+            : `K-Means: ${clusters.length} regional centroids across active geographic extent`}
         </div>
       </div>
     </div>
