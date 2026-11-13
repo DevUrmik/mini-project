@@ -51,36 +51,49 @@ class PredictionService:
         return cls._instance
 
     def initialize(self):
-        print("[PREDICTION SERVICE] Loading trained ML models and pipeline...")
-        if CLASSIFIER_MODEL_PATH.exists():
-            self._rf_model = joblib.load(CLASSIFIER_MODEL_PATH)
-            print(f"[PREDICTION SERVICE] Loaded Random Forest from {CLASSIFIER_MODEL_PATH}")
-        else:
-            print("[PREDICTION SERVICE WARNING] Random Forest model not found.")
-
-        if PREPROCESSOR_PIPELINE_PATH.exists():
-            self._preprocessor = joblib.load(PREPROCESSOR_PIPELINE_PATH)
-            # Patch cross-version scikit-learn SimpleImputer attribute incompatibility
-            if hasattr(self._preprocessor, "transformers_"):
-                for _, trans, _ in self._preprocessor.transformers_:
-                    if hasattr(trans, "named_steps"):
-                        for step in trans.named_steps.values():
-                            if hasattr(step, "statistics_") and not hasattr(step, "_fill_dtype"):
-                                step._fill_dtype = step.statistics_.dtype
-            print(f"[PREDICTION SERVICE] Loaded Preprocessor from {PREPROCESSOR_PIPELINE_PATH}")
-        else:
-            print("[PREDICTION SERVICE WARNING] Preprocessor pipeline not found.")
-
+        # Fast initialization: load metrics metadata (sub-millisecond)
         if MODEL_METRICS_PATH.exists():
             with open(MODEL_METRICS_PATH, "r") as f:
                 self._metrics = json.load(f)
         else:
             self._metrics = {}
 
+    def _ensure_models_loaded(self):
+        """Loads Scikit-Learn pipeline and Random Forest on-demand to optimize cold-start."""
+        if self._rf_model is not None and self._preprocessor is not None:
+            return
+
+        if CLASSIFIER_MODEL_PATH.exists():
+            try:
+                self._rf_model = joblib.load(CLASSIFIER_MODEL_PATH)
+                print(f"[PREDICTION SERVICE] Loaded Random Forest from {CLASSIFIER_MODEL_PATH}")
+            except Exception as e:
+                print(f"[PREDICTION SERVICE ERROR] Failed to load Random Forest: {e}")
+
+        if PREPROCESSOR_PIPELINE_PATH.exists():
+            try:
+                self._preprocessor = joblib.load(PREPROCESSOR_PIPELINE_PATH)
+                # Patch cross-version scikit-learn SimpleImputer attribute incompatibility
+                if hasattr(self._preprocessor, "transformers_"):
+                    for _, trans, _ in self._preprocessor.transformers_:
+                        if hasattr(trans, "named_steps"):
+                            for step in trans.named_steps.values():
+                                if hasattr(step, "statistics_") and not hasattr(step, "_fill_dtype"):
+                                    step._fill_dtype = step.statistics_.dtype
+                print(f"[PREDICTION SERVICE] Loaded Preprocessor from {PREPROCESSOR_PIPELINE_PATH}")
+            except Exception as e:
+                print(f"[PREDICTION SERVICE ERROR] Failed to load Preprocessor: {e}")
+
+    def is_model_ready(self) -> bool:
+        return (self._rf_model is not None and self._preprocessor is not None) or (
+            CLASSIFIER_MODEL_PATH.exists() and PREPROCESSOR_PIPELINE_PATH.exists()
+        )
+
     def get_model_metrics(self) -> Dict[str, Any]:
         return self._metrics or {}
 
     def predict(self, input_dict: dict) -> Dict[str, Any]:
+        self._ensure_models_loaded()
         if self._rf_model is None or self._preprocessor is None:
             raise RuntimeError("Model or Preprocessor pipeline is not loaded. Please train models first.")
 

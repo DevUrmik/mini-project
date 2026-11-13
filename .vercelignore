@@ -1,0 +1,15 @@
+data/raw/
+data/processed/cleaned_accidents.csv
+data/processed/california_accidents.csv
+data/processed/cleaned_accidents.parquet
+data/samples/
+.git/
+.pytest_cache/
+tests/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.env*
+scripts/
+

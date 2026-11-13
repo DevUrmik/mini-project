@@ -25,8 +25,8 @@ def get_health():
         "status": "healthy",
         "version": "1.0.0",
         "uptime": "online",
-        "data_loaded": ds._df is not None and not ds._df.empty,
-        "model_loaded": ps._rf_model is not None and ps._preprocessor is not None
+        "data_loaded": ds.is_data_ready(),
+        "model_loaded": ps.is_model_ready()
     }
 
 @router.get("/dashboard/summary", response_model=DashboardSummaryResponse)

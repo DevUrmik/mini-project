@@ -7,13 +7,12 @@
     },
     "server": {
       "root": "server",
-      "framework": "fastapi",
       "entrypoint": "main:app"
     }
   },
   "rewrites": [
     {
-      "source": "/api/(.*)",
+      "source": "/api/:path*",
       "destination": {
         "service": "server"
       }
@@ -26,4 +25,3 @@
     }
   ]
 }
-

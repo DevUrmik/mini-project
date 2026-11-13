@@ -41,14 +41,16 @@ from server.app.routes import (
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    # Startup: preload dataset and ML models once into memory
-    print("[STARTUP] Preloading data and machine learning artifacts...")
-    DataService.get_instance()
-    HotspotService.get_instance()
-    PredictionService.get_instance()
-    print("[STARTUP] Services ready.")
+    # Resilient startup for serverless environments (cold-start optimized)
+    try:
+        DataService.get_instance()
+    except Exception as e:
+        print(f"[STARTUP WARNING] DataService initialization: {e}")
+    try:
+        HotspotService.get_instance()
+    except Exception as e:
+        print(f"[STARTUP WARNING] HotspotService initialization: {e}")
     yield
-    print("[SHUTDOWN] Releasing resources...")
 
 app = FastAPI(
     title=API_TITLE,
@@ -65,19 +67,21 @@ app = FastAPI(
 # Configure CORS for Vite + React 19 frontend
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],  # Permits all local Vite ports (5173, 3000, etc.)
+    allow_origins=["*"],  # Permits all local and deployed origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
 
-# Register API Route Routers under /api
-app.include_router(dashboard.router, prefix="/api")
-app.include_router(hotspots.router, prefix="/api")
-app.include_router(models.router, prefix="/api")
-app.include_router(predict.router, prefix="/api")
-app.include_router(analytics.router, prefix="/api")
-app.include_router(geo.router, prefix="/api")
+# Register API Route Routers under both "/api" and "" (root)
+# This guarantees routes match whether Vercel preserves or strips the /api prefix
+for prefix in ["/api", ""]:
+    app.include_router(dashboard.router, prefix=prefix)
+    app.include_router(hotspots.router, prefix=prefix)
+    app.include_router(models.router, prefix=prefix)
+    app.include_router(predict.router, prefix=prefix)
+    app.include_router(analytics.router, prefix=prefix)
+    app.include_router(geo.router, prefix=prefix)
 
 @app.get("/", include_in_schema=False)
 def root():

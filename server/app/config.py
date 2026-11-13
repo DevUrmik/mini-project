@@ -10,7 +10,7 @@ REPO_ROOT = Path(__file__).resolve().parent.parent.parent
 SERVER_ROOT = Path(__file__).resolve().parent.parent
 
 # Check if data directory is located within server/ (Vercel) or REPO_ROOT (local monorepo)
-if (SERVER_ROOT / "data" / "processed" / "cleaned_accidents.csv").exists():
+if (SERVER_ROOT / "data" / "processed" / "geographic_summary.json").exists():
     DATA_DIR = SERVER_ROOT / "data"
 elif (REPO_ROOT / "data").exists():
     DATA_DIR = REPO_ROOT / "data"
