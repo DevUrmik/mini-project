@@ -241,21 +241,21 @@ export const HotspotExplorer: React.FC = () => {
       <div className="pb-1 border-b border-[#E5E7E1] flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-[#252923]">
-            Accident Map & Hotspots
+            Hotspot Explorer
           </h1>
           <p className="text-xs text-[#777D78] mt-0.5">
-            Geographic analysis of road incidents across all available US regions with dynamic discovery of states, cities, and cluster corridors.
+            Explore individual accident locations, K-Means geographic clusters, and DBSCAN hotspot corridors across {availableStates.length} US states + DC.
           </p>
         </div>
       </div>
 
-      {/* Dataset & Dynamic Discovery Scope Card */}
+      {/* Spatial Sample & Terminology Scope Card */}
       <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-3 text-xs text-[#252923] flex items-start gap-2.5">
         <Info className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
         <div className="space-y-0.5 text-[11px] leading-relaxed">
-          <span className="font-semibold text-[#252923]">Dynamic Dataset Discovery: </span>
-          The application has dynamically discovered <strong>{availableStates.length} states</strong> and{' '}
-          <strong>{availableCities.length}+ cities</strong> from the loaded dataset. Map bounds, coordinates, and regional statistics are computed server-side directly from actual accident records without hardcoded regional constraints.
+          <span className="font-semibold text-[#252923]">Map Sample & Layer Definitions: </span>
+          Interactive markers and spatial clustering use a <strong>193,209-record stratified spatial sample</strong> (2.5% of the 7,728,394-record dataset) across <strong>{availableStates.length} states</strong> and <strong>{availableCities.length}+ cities</strong> for responsive browser rendering.
+          {' '}<strong>Accident Locations</strong> plot individual coordinates; <strong>K-Means</strong> partitions coordinates into <em>K</em> geographic regions; <strong>DBSCAN</strong> identifies dense highway hotspot corridors (7.5 km Haversine radius).
         </div>
       </div>
 

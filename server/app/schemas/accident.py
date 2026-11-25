@@ -20,6 +20,8 @@ class AccidentSummary(BaseModel):
 
 class DashboardSummaryResponse(BaseModel):
     total_accidents: int
+    total_states: Optional[int] = None
+    total_cities: Optional[int] = None
     average_severity: float
     high_impact_percentage: float
     data_source: str

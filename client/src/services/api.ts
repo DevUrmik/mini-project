@@ -1,7 +1,6 @@
 import axios from 'axios';
 import {
   DashboardSummary,
-  AccidentRecord,
   PaginatedAccidentsResponse,
   StateSummary,
   CitySummary,
@@ -12,7 +11,6 @@ import {
   PredictionRequest,
   PredictionResponse,
   TimeAnalyticsResponse,
-  WeatherAnalyticsResponse,
   InfrastructureAnalyticsResponse
 } from '../types';
 
@@ -88,11 +86,6 @@ export const getDBSCANHotspots = async (state?: string): Promise<DBSCANResponse>
   return data;
 };
 
-export const getClusteringComparison = async () => {
-  const { data } = await api.get('/hotspots/comparison');
-  return data;
-};
-
 export const getModelMetrics = async (): Promise<ModelMetricsResponse> => {
   const { data } = await api.get<ModelMetricsResponse>('/models/metrics');
   return data;
@@ -107,11 +100,6 @@ export const predictSeverity = async (
 
 export const getTimeAnalytics = async (): Promise<TimeAnalyticsResponse> => {
   const { data } = await api.get<TimeAnalyticsResponse>('/analytics/time');
-  return data;
-};
-
-export const getWeatherAnalytics = async (): Promise<WeatherAnalyticsResponse> => {
-  const { data } = await api.get<WeatherAnalyticsResponse>('/analytics/weather');
   return data;
 };
 

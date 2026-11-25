@@ -231,10 +231,10 @@ export const Dashboard: React.FC = () => {
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Severity distribution
+              Traffic severity distribution
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Level 2 (moderate delay) represents 71.8% of recorded incidents
+              Level 2 (moderate delay) represents {severityData.find((s) => s.levelKey === '2')?.pct ?? '79.7'}% of recorded incidents
             </p>
           </div>
 
@@ -312,7 +312,7 @@ export const Dashboard: React.FC = () => {
               Geographic distribution by state
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Record counts and share across states present in this development dataset
+              Top states by incident count across all {summary.total_states || 49} states + DC
             </p>
           </div>
 

@@ -107,10 +107,10 @@ export const SeverityPredictor: React.FC = () => {
       <div className="pb-1 border-b border-[#E5E7E1] flex flex-col sm:flex-row sm:items-baseline justify-between gap-3">
         <div>
           <h1 className="text-xl font-bold tracking-tight text-[#252923]">
-            Severity Prediction
+            Traffic Severity Prediction
           </h1>
           <p className="text-xs text-[#777D78] mt-1">
-            Estimate expected traffic delay duration based on weather conditions, time of day, and road features.
+            Predict expected traffic-impact severity (Level 1–4) from pre-incident weather, time, state, and road features using the trained HistGradientBoosting model.
           </p>
         </div>
 
@@ -396,6 +396,15 @@ export const SeverityPredictor: React.FC = () => {
                 )}
               </div>
 
+              {/* Concise Prediction Explanation */}
+              <div className="p-3 rounded bg-[#F0F2ED] border border-[#E5E7E1] text-[11px] text-[#252923] leading-relaxed">
+                <span className="font-semibold">Model Explanation: </span>
+                Estimated by <span className="font-medium">{response.model_used}</span> for{' '}
+                <span className="font-medium">{formData.state || 'CA'}</span> at{' '}
+                <span className="font-medium">{String(formData.hour).padStart(2, '0')}:00</span> ({formData.day_of_week}) under{' '}
+                <span className="font-medium">{formData.weather_condition}</span> ({formData.temperature}°F, {formData.visibility} mi visibility).
+              </div>
+
               {/* Class Probability Breakdown */}
               <div className="space-y-2">
                 <span className="text-xs font-semibold text-[#252923] block">
@@ -424,18 +433,18 @@ export const SeverityPredictor: React.FC = () => {
                 })}
               </div>
 
-              {/* Natural Human Disclaimer */}
+              {/* Traffic Severity Scope Note */}
               <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1] text-[11px] text-[#777D78] leading-relaxed">
-                This prediction represents traffic delay impact derived from historical records. It does not predict personal injury or fatality probability.
+                Traffic severity reflects historical traffic delay impact (Levels 1–4), not injury or fatality outcomes.
               </div>
             </div>
           ) : (
-            <div className="bg-white border border-[#E5E7E1] rounded-lg p-6 text-center flex flex-col items-center justify-center min-h-[350px] shadow-subtle">
-              <h3 className="text-sm font-semibold text-[#252923] mb-1">
-                Ready for Input
+            <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle space-y-2">
+              <h3 className="text-sm font-semibold text-[#252923]">
+                Traffic Severity Output
               </h3>
-              <p className="text-xs text-[#777D78] max-w-xs leading-relaxed">
-                Adjust weather, time, and road conditions on the left, then click Predict Severity to calculate estimated traffic delay duration.
+              <p className="text-xs text-[#777D78] leading-relaxed">
+                Configure weather, time, state, and road infrastructure inputs on the left, then click <strong>Predict Severity</strong> to run inference with the trained HistGradientBoosting model.
               </p>
             </div>
           )}
