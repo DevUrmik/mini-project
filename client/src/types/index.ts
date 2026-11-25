@@ -139,6 +139,19 @@ export interface MajorityBaseline {
   explanation: string;
 }
 
+export interface BinaryHighImpactMetrics {
+  name: string;
+  accuracy: number;
+  balanced_accuracy: number;
+  macro_f1: number;
+  high_impact_precision: number;
+  high_impact_recall: number;
+  high_impact_f1: number;
+  roc_auc: number;
+  confusion_matrix: number[][];
+  training_time_sec?: number;
+}
+
 export interface ModelMetricsResponse {
   dataset_split: {
     total_samples: number;
@@ -156,6 +169,7 @@ export interface ModelMetricsResponse {
   majority_baseline?: MajorityBaseline;
   selected_best_model: string;
   models: Record<string, ModelMetricDetails>;
+  binary_high_impact?: BinaryHighImpactMetrics;
   feature_importances: FeatureImportance[];
   evaluation_notes: string[];
 }
@@ -172,6 +186,8 @@ export interface PredictionRequest {
   crossing: boolean;
   traffic_signal: boolean;
   stop: boolean;
+  state?: string;
+  month?: number;
 }
 
 export interface ClassProbability {
@@ -187,6 +203,12 @@ export interface PredictionResponse {
   traffic_impact_description: string;
   model_used: string;
   class_probabilities: ClassProbability[];
+  high_impact_risk?: {
+    high_impact_probability: number;
+    high_impact_percentage: number;
+    classification: string;
+    model: string;
+  };
   input_summary: {
     weather: string;
     temperature: string;

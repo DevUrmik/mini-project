@@ -12,4 +12,5 @@ __pycache__/
 *.pyd
 .env*
 scripts/
+server/models/severity_random_forest.joblib
 

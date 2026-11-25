@@ -1,19 +1,17 @@
 """
-Prediction Service: Loads Persisted Machine Learning Pipeline and Serves Inference
+Prediction Service: Loads Persisted Machine Learning Pipelines and Serves Inference
 """
 
 import json
-from pathlib import Path
-from typing import Dict, Any, Optional
-import numpy as np
-import pandas as pd
+from typing import Dict, Any
 import joblib
 
 from server.app.config import (
     CLASSIFIER_MODEL_PATH,
-    LOGISTIC_MODEL_PATH,
-    DECISION_TREE_MODEL_PATH,
+    HIST_GBM_MODEL_PATH,
+    BINARY_HIST_GBM_MODEL_PATH,
     PREPROCESSOR_PIPELINE_PATH,
+    HGB_PREPROCESSOR_PIPELINE_PATH,
     MODEL_METRICS_PATH
 )
 from server.app.ml.preprocessor import prepare_inference_features
@@ -40,7 +38,10 @@ SEVERITY_DESCRIPTIONS = {
 class PredictionService:
     _instance = None
     _rf_model = None
+    _hgb_model = None
+    _binary_model = None
     _preprocessor = None
+    _hgb_preprocessor = None
     _metrics = None
 
     @classmethod
@@ -58,35 +59,51 @@ class PredictionService:
         else:
             self._metrics = {}
 
+    def _patch_imputer(self, pipeline):
+        """Patch cross-version scikit-learn SimpleImputer attribute incompatibility."""
+        if hasattr(pipeline, "transformers_"):
+            for _, trans, _ in pipeline.transformers_:
+                if hasattr(trans, "named_steps"):
+                    for step in trans.named_steps.values():
+                        if hasattr(step, "statistics_") and not hasattr(step, "_fill_dtype"):
+                            step._fill_dtype = step.statistics_.dtype
+
     def _ensure_models_loaded(self):
-        """Loads Scikit-Learn pipeline and Random Forest on-demand to optimize cold-start."""
-        if self._rf_model is not None and self._preprocessor is not None:
+        """Loads Scikit-Learn pipelines and models on-demand to optimize cold-start."""
+        if (self._hgb_model is not None and self._hgb_preprocessor is not None) or (
+            self._rf_model is not None and self._preprocessor is not None
+        ):
             return
 
-        if CLASSIFIER_MODEL_PATH.exists():
+        if HIST_GBM_MODEL_PATH.exists() and HGB_PREPROCESSOR_PIPELINE_PATH.exists():
+            try:
+                self._hgb_model = joblib.load(HIST_GBM_MODEL_PATH)
+                self._hgb_preprocessor = joblib.load(HGB_PREPROCESSOR_PIPELINE_PATH)
+                self._patch_imputer(self._hgb_preprocessor)
+                print(f"[PREDICTION SERVICE] Loaded HistGradientBoosting from {HIST_GBM_MODEL_PATH}")
+            except Exception as e:
+                print(f"[PREDICTION SERVICE ERROR] Failed to load HistGBM: {e}")
+
+        if BINARY_HIST_GBM_MODEL_PATH.exists():
+            try:
+                self._binary_model = joblib.load(BINARY_HIST_GBM_MODEL_PATH)
+            except Exception as e:
+                print(f"[PREDICTION SERVICE WARNING] Failed to load Binary High-Impact model: {e}")
+
+        if self._hgb_model is None and CLASSIFIER_MODEL_PATH.exists() and PREPROCESSOR_PIPELINE_PATH.exists():
             try:
                 self._rf_model = joblib.load(CLASSIFIER_MODEL_PATH)
-                print(f"[PREDICTION SERVICE] Loaded Random Forest from {CLASSIFIER_MODEL_PATH}")
+                self._preprocessor = joblib.load(PREPROCESSOR_PIPELINE_PATH)
+                self._patch_imputer(self._preprocessor)
+                print(f"[PREDICTION SERVICE] Loaded fallback Random Forest from {CLASSIFIER_MODEL_PATH}")
             except Exception as e:
                 print(f"[PREDICTION SERVICE ERROR] Failed to load Random Forest: {e}")
 
-        if PREPROCESSOR_PIPELINE_PATH.exists():
-            try:
-                self._preprocessor = joblib.load(PREPROCESSOR_PIPELINE_PATH)
-                # Patch cross-version scikit-learn SimpleImputer attribute incompatibility
-                if hasattr(self._preprocessor, "transformers_"):
-                    for _, trans, _ in self._preprocessor.transformers_:
-                        if hasattr(trans, "named_steps"):
-                            for step in trans.named_steps.values():
-                                if hasattr(step, "statistics_") and not hasattr(step, "_fill_dtype"):
-                                    step._fill_dtype = step.statistics_.dtype
-                print(f"[PREDICTION SERVICE] Loaded Preprocessor from {PREPROCESSOR_PIPELINE_PATH}")
-            except Exception as e:
-                print(f"[PREDICTION SERVICE ERROR] Failed to load Preprocessor: {e}")
-
     def is_model_ready(self) -> bool:
-        return (self._rf_model is not None and self._preprocessor is not None) or (
-            CLASSIFIER_MODEL_PATH.exists() and PREPROCESSOR_PIPELINE_PATH.exists()
+        return (
+            (self._hgb_model is not None and self._hgb_preprocessor is not None)
+            or (HIST_GBM_MODEL_PATH.exists() and HGB_PREPROCESSOR_PIPELINE_PATH.exists())
+            or (CLASSIFIER_MODEL_PATH.exists() and PREPROCESSOR_PIPELINE_PATH.exists())
         )
 
     def get_model_metrics(self) -> Dict[str, Any]:
@@ -94,60 +111,72 @@ class PredictionService:
 
     def predict(self, input_dict: dict) -> Dict[str, Any]:
         self._ensure_models_loaded()
-        if self._rf_model is None or self._preprocessor is None:
+
+        if self._hgb_model is not None and self._hgb_preprocessor is not None:
+            active_model = self._hgb_model
+            active_preprocessor = self._hgb_preprocessor
+            model_name = "HistGradientBoosting Classifier (28-Feature)"
+        elif self._rf_model is not None and self._preprocessor is not None:
+            active_model = self._rf_model
+            active_preprocessor = self._preprocessor
+            model_name = "Random Forest Classifier"
+        else:
             raise RuntimeError("Model or Preprocessor pipeline is not loaded. Please train models first.")
 
         # 1. Feature Engineering (match training format)
         single_row_df = prepare_inference_features(input_dict)
 
         # 2. Transform through fitted Scikit-Learn ColumnTransformer
-        X_proc = self._preprocessor.transform(single_row_df)
+        X_proc = active_preprocessor.transform(single_row_df)
 
-        # 3. Model Inference
-        pred_class = int(self._rf_model.predict(X_proc)[0])
-        
-        # 4. Probabilities
+        # 3. 4-Class Model Inference
+        pred_class = int(active_model.predict(X_proc)[0])
+
         probabilities = []
-        if hasattr(self._rf_model, "predict_proba"):
-            probs = self._rf_model.predict_proba(X_proc)[0]
-            classes = self._rf_model.classes_
+        if hasattr(active_model, "predict_proba"):
+            probs = active_model.predict_proba(X_proc)[0]
+            classes = active_model.classes_
             for c, p in zip(classes, probs):
                 c_int = int(c)
                 probabilities.append({
                     "severity_class": c_int,
-                    "label": f"Severity {c_int}: {SEVERITY_DESCRIPTIONS.get(c_int, {}).get('category', '')}",
+                    "label": SEVERITY_DESCRIPTIONS.get(c_int, {}).get("category", f"Severity {c_int}"),
                     "probability": round(float(p), 4),
-                    "percentage": round(float(p * 100), 2)
+                    "percentage": round(float(p * 100), 1)
                 })
         else:
-            probabilities = [{
-                "severity_class": pred_class,
-                "label": f"Severity {pred_class}",
-                "probability": 1.0,
-                "percentage": 100.0
-            }]
+            for c_int in [1, 2, 3, 4]:
+                p = 1.0 if c_int == pred_class else 0.0
+                probabilities.append({
+                    "severity_class": c_int,
+                    "label": SEVERITY_DESCRIPTIONS.get(c_int, {}).get("category", f"Severity {c_int}"),
+                    "probability": p,
+                    "percentage": p * 100.0
+                })
 
-        sev_meta = SEVERITY_DESCRIPTIONS.get(pred_class, {
-            "category": f"Severity Level {pred_class}",
-            "description": "Historical traffic delay impact estimate."
+        # 4. Binary High-Impact (Severity 3-4) Risk Inference
+        high_impact_risk = None
+        if self._binary_model is not None and self._hgb_preprocessor is not None:
+            X_hgb = self._hgb_preprocessor.transform(single_row_df)
+            hi_prob = float(self._binary_model.predict_proba(X_hgb)[0][1])
+            high_impact_risk = {
+                "high_impact_probability": round(hi_prob, 4),
+                "high_impact_percentage": round(hi_prob * 100.0, 1),
+                "classification": "High Impact (Severity 3-4)" if hi_prob >= 0.5 else "Standard Impact (Severity 1-2)",
+                "model": "HistGradientBoosting Binary"
+            }
+
+        desc_info = SEVERITY_DESCRIPTIONS.get(pred_class, {
+            "category": f"Severity {pred_class}",
+            "description": "Traffic delay impact level."
         })
 
         return {
             "predicted_severity": pred_class,
-            "severity_category": sev_meta["category"],
-            "traffic_impact_description": sev_meta["description"],
-            "model_used": "Random Forest Classifier (Balanced Class Weights)",
+            "severity_category": desc_info["category"],
+            "traffic_impact_description": desc_info["description"],
+            "model_used": model_name,
             "class_probabilities": probabilities,
-            "input_summary": {
-                "weather": input_dict.get("weather_condition", "Fair"),
-                "temperature": f"{input_dict.get('temperature', 65)}°F",
-                "time": f"{input_dict.get('hour', 12):02d}:00 on {input_dict.get('day_of_week', 'Monday')}",
-                "is_rush_hour": bool(int(input_dict.get("hour", 12)) in [7, 8, 9, 16, 17, 18]),
-                "road_features": [k for k in ["junction", "traffic_signal", "crossing", "stop"] if input_dict.get(k)]
-            },
-            "disclaimer": (
-                "Notice: This prediction represents traffic impact duration based on historical records. "
-                "It is not an indicator of personal bodily injury or fatality probability."
-            )
+            "high_impact_risk": high_impact_risk,
+            "input_summary": input_dict
         }
-

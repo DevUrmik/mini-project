@@ -17,6 +17,14 @@ class SeverityPredictionRequest(BaseModel):
     crossing: bool = Field(False, description="Whether incident occurred near a pedestrian/road crossing")
     traffic_signal: bool = Field(False, description="Whether incident occurred near a traffic signal")
     stop: bool = Field(False, description="Whether incident occurred near a stop sign")
+    state: Optional[str] = Field("CA", description="Optional US state abbreviation (e.g. CA, FL, TX, NY)")
+    latitude: Optional[float] = Field(None, ge=24.0, le=50.0, description="Optional latitude")
+    longitude: Optional[float] = Field(None, ge=-125.0, le=-66.0, description="Optional longitude")
+    month: Optional[int] = Field(6, ge=1, le=12, description="Optional month (1 to 12)")
+    amenity: bool = Field(False, description="Nearby point-of-interest/amenity")
+    give_way: bool = Field(False, description="Yield / give-way sign")
+    railway: bool = Field(False, description="Nearby railway crossing")
+    station: bool = Field(False, description="Nearby transit station")
 
 class ClassProbability(BaseModel):
     severity_class: int
@@ -30,6 +38,7 @@ class SeverityPredictionResponse(BaseModel):
     traffic_impact_description: str
     model_used: str
     class_probabilities: List[ClassProbability]
+    high_impact_risk: Optional[Dict[str, Any]] = None
     input_summary: Dict[str, Any]
     disclaimer: str = (
         "This prediction estimates historical traffic delay impact (Severity 1-4) "

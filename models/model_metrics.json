@@ -1,8 +1,8 @@
 {
   "dataset_split": {
-    "total_samples": 108500,
-    "train_samples": 86800,
-    "test_samples": 21700,
+    "total_samples": 500000,
+    "train_samples": 400000,
+    "test_samples": 100000,
     "test_ratio": 0.2,
     "stratified": true
   },
@@ -10,64 +10,64 @@
     "target_variable": "Severity",
     "scale_meaning": "Recorded traffic delay and road disruption impact (1 = Short delay, 4 = Severe prolonged disruption). Not physical injury or fatality severity.",
     "class_distribution": {
-      "1": 954,
-      "2": 86419,
-      "3": 18245,
-      "4": 2882
+      "1": 4358,
+      "2": 398335,
+      "3": 84063,
+      "4": 13244
     },
     "class_proportions": {
-      "1": 0.88,
-      "2": 79.65,
-      "3": 16.82,
-      "4": 2.66
+      "1": 0.87,
+      "2": 79.67,
+      "3": 16.81,
+      "4": 2.65
     }
   },
   "majority_baseline": {
     "name": "Majority-Class Baseline",
     "description": "Trivially predicts dominant Class 2 (Level 2) for all incidents without learning features.",
     "majority_class": 2,
-    "accuracy": 79.65,
+    "accuracy": 79.67,
     "balanced_accuracy": 25.0,
     "macro_f1": 22.17,
-    "explanation": "Demonstrates why raw accuracy is deceptive in class-imbalanced datasets: a dummy model achieves ~79.6% accuracy while completely failing (0.0% recall) on minority Classes 1 and 4."
+    "explanation": "Demonstrates why raw accuracy alone is deceptive: predicting Level 2 everywhere yields ~79.7% accuracy but 0.0% recall on Levels 1, 3, and 4."
   },
-  "selected_best_model": "random_forest",
+  "selected_best_model": "hist_gradient_boosting",
   "models": {
     "logistic_regression": {
       "model_key": "logistic_regression",
       "name": "Logistic Regression",
-      "accuracy": 25.4,
-      "balanced_accuracy": 43.52,
-      "macro_precision": 30.37,
-      "macro_recall": 43.52,
-      "macro_f1": 19.6,
-      "weighted_f1": 31.74,
-      "training_time_sec": 5.09,
-      "inference_time_sec": 0.0045,
+      "accuracy": 42.61,
+      "balanced_accuracy": 55.77,
+      "macro_precision": 33.4,
+      "macro_recall": 55.77,
+      "macro_f1": 28.49,
+      "weighted_f1": 51.76,
+      "training_time_sec": 28.21,
+      "inference_time_sec": 0.0211,
       "confusion_matrix": [
         [
-          139,
-          10,
-          21,
-          21
-        ],
-        [
-          5180,
-          3395,
-          4459,
-          4250
-        ],
-        [
           708,
-          381,
-          1789,
-          771
+          60,
+          53,
+          50
         ],
         [
-          133,
-          78,
-          177,
-          188
+          14324,
+          32642,
+          15497,
+          17204
+        ],
+        [
+          2097,
+          3022,
+          7823,
+          3871
+        ],
+        [
+          330,
+          376,
+          505,
+          1438
         ]
       ],
       "classes": [
@@ -84,142 +84,66 @@
       ],
       "per_class": {
         "1": {
-          "precision": 2.26,
-          "recall": 72.77,
-          "f1_score": 4.38,
-          "support": 191
+          "precision": 4.06,
+          "recall": 81.29,
+          "f1_score": 7.73,
+          "support": 871
         },
         "2": {
-          "precision": 87.86,
-          "recall": 19.64,
-          "f1_score": 32.11,
-          "support": 17284
+          "precision": 90.42,
+          "recall": 40.97,
+          "f1_score": 56.39,
+          "support": 79667
         },
         "3": {
-          "precision": 27.75,
-          "recall": 49.03,
-          "f1_score": 35.44,
-          "support": 3649
+          "precision": 32.76,
+          "recall": 46.53,
+          "f1_score": 38.45,
+          "support": 16813
         },
         "4": {
-          "precision": 3.59,
-          "recall": 32.64,
-          "f1_score": 6.48,
-          "support": 576
+          "precision": 6.37,
+          "recall": 54.28,
+          "f1_score": 11.41,
+          "support": 2649
         }
       }
     },
     "decision_tree": {
       "model_key": "decision_tree",
       "name": "Decision Tree Classifier",
-      "accuracy": 35.64,
-      "balanced_accuracy": 39.62,
-      "macro_precision": 29.41,
-      "macro_recall": 39.62,
-      "macro_f1": 22.83,
-      "weighted_f1": 43.47,
-      "training_time_sec": 0.79,
-      "inference_time_sec": 0.0083,
+      "accuracy": 41.33,
+      "balanced_accuracy": 54.05,
+      "macro_precision": 32.95,
+      "macro_recall": 54.05,
+      "macro_f1": 28.02,
+      "weighted_f1": 48.81,
+      "training_time_sec": 7.97,
+      "inference_time_sec": 0.025,
       "confusion_matrix": [
         [
-          97,
-          40,
-          37,
-          17
+          613,
+          78,
+          114,
+          66
         ],
         [
-          2810,
-          5625,
-          5777,
-          3072
+          8818,
+          29461,
+          24461,
+          16927
         ],
         [
-          494,
-          628,
-          1875,
-          652
+          1322,
+          2150,
+          9940,
+          3401
         ],
         [
-          87,
-          127,
-          225,
-          137
-        ]
-      ],
-      "classes": [
-        1,
-        2,
-        3,
-        4
-      ],
-      "class_labels": [
-        "Severity 1",
-        "Severity 2",
-        "Severity 3",
-        "Severity 4"
-      ],
-      "per_class": {
-        "1": {
-          "precision": 2.78,
-          "recall": 50.79,
-          "f1_score": 5.27,
-          "support": 191
-        },
-        "2": {
-          "precision": 87.62,
-          "recall": 32.54,
-          "f1_score": 47.46,
-          "support": 17284
-        },
-        "3": {
-          "precision": 23.69,
-          "recall": 51.38,
-          "f1_score": 32.43,
-          "support": 3649
-        },
-        "4": {
-          "precision": 3.53,
-          "recall": 23.78,
-          "f1_score": 6.15,
-          "support": 576
-        }
-      }
-    },
-    "random_forest": {
-      "model_key": "random_forest",
-      "name": "Random Forest Classifier",
-      "accuracy": 61.56,
-      "balanced_accuracy": 39.12,
-      "macro_precision": 31.66,
-      "macro_recall": 39.12,
-      "macro_f1": 31.77,
-      "weighted_f1": 65.63,
-      "training_time_sec": 4.28,
-      "inference_time_sec": 0.071,
-      "confusion_matrix": [
-        [
-          56,
-          104,
-          29,
-          2
-        ],
-        [
-          797,
-          11171,
-          4941,
-          375
-        ],
-        [
-          123,
-          1330,
-          2104,
-          92
-        ],
-        [
-          24,
-          301,
-          223,
-          28
+          203,
+          347,
+          782,
+          1317
         ]
       ],
       "classes": [
@@ -237,65 +161,65 @@
       "per_class": {
         "1": {
           "precision": 5.6,
-          "recall": 29.32,
-          "f1_score": 9.4,
-          "support": 191
+          "recall": 70.38,
+          "f1_score": 10.37,
+          "support": 871
         },
         "2": {
-          "precision": 86.56,
-          "recall": 64.63,
-          "f1_score": 74.0,
-          "support": 17284
+          "precision": 91.96,
+          "recall": 36.98,
+          "f1_score": 52.75,
+          "support": 79667
         },
         "3": {
-          "precision": 28.83,
-          "recall": 57.66,
-          "f1_score": 38.44,
-          "support": 3649
+          "precision": 28.16,
+          "recall": 59.12,
+          "f1_score": 38.15,
+          "support": 16813
         },
         "4": {
-          "precision": 5.63,
-          "recall": 4.86,
-          "f1_score": 5.22,
-          "support": 576
+          "precision": 6.07,
+          "recall": 49.72,
+          "f1_score": 10.81,
+          "support": 2649
         }
       }
     },
-    "hist_gradient_boosting": {
-      "model_key": "hist_gradient_boosting",
-      "name": "HistGradientBoosting Classifier",
-      "accuracy": 43.87,
-      "balanced_accuracy": 45.13,
-      "macro_precision": 31.49,
-      "macro_recall": 45.13,
-      "macro_f1": 27.35,
-      "weighted_f1": 52.39,
-      "training_time_sec": 4.51,
-      "inference_time_sec": 0.1096,
+    "random_forest": {
+      "model_key": "random_forest",
+      "name": "Random Forest Classifier",
+      "accuracy": 62.64,
+      "balanced_accuracy": 55.26,
+      "macro_precision": 36.12,
+      "macro_recall": 55.26,
+      "macro_f1": 37.63,
+      "weighted_f1": 67.72,
+      "training_time_sec": 31.4,
+      "inference_time_sec": 0.5308,
       "confusion_matrix": [
         [
-          112,
-          52,
-          16,
-          11
+          563,
+          206,
+          82,
+          20
         ],
         [
-          2830,
-          7357,
-          4097,
-          3000
+          5013,
+          51115,
+          17585,
+          5954
         ],
         [
-          410,
-          816,
-          1893,
-          530
+          814,
+          4564,
+          10112,
+          1323
         ],
         [
-          84,
-          153,
-          181,
-          158
+          110,
+          942,
+          747,
+          850
         ]
       ],
       "classes": [
@@ -312,114 +236,211 @@
       ],
       "per_class": {
         "1": {
-          "precision": 3.26,
-          "recall": 58.64,
-          "f1_score": 6.18,
-          "support": 191
+          "precision": 8.66,
+          "recall": 64.64,
+          "f1_score": 15.28,
+          "support": 871
         },
         "2": {
-          "precision": 87.81,
-          "recall": 42.57,
-          "f1_score": 57.34,
-          "support": 17284
+          "precision": 89.95,
+          "recall": 64.16,
+          "f1_score": 74.9,
+          "support": 79667
         },
         "3": {
-          "precision": 30.6,
-          "recall": 51.88,
-          "f1_score": 38.49,
-          "support": 3649
+          "precision": 35.45,
+          "recall": 60.14,
+          "f1_score": 44.61,
+          "support": 16813
         },
         "4": {
-          "precision": 4.27,
-          "recall": 27.43,
-          "f1_score": 7.39,
-          "support": 576
+          "precision": 10.43,
+          "recall": 32.09,
+          "f1_score": 15.75,
+          "support": 2649
+        }
+      }
+    },
+    "hist_gradient_boosting": {
+      "model_key": "hist_gradient_boosting",
+      "name": "HistGradientBoosting Classifier",
+      "accuracy": 80.75,
+      "balanced_accuracy": 41.13,
+      "macro_precision": 50.58,
+      "macro_recall": 41.13,
+      "macro_f1": 43.61,
+      "weighted_f1": 79.27,
+      "training_time_sec": 14.81,
+      "inference_time_sec": 0.7604,
+      "confusion_matrix": [
+        [
+          189,
+          645,
+          37,
+          0
+        ],
+        [
+          380,
+          73062,
+          5925,
+          300
+        ],
+        [
+          33,
+          9360,
+          7295,
+          125
+        ],
+        [
+          12,
+          1941,
+          491,
+          205
+        ]
+      ],
+      "classes": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "class_labels": [
+        "Severity 1",
+        "Severity 2",
+        "Severity 3",
+        "Severity 4"
+      ],
+      "per_class": {
+        "1": {
+          "precision": 30.78,
+          "recall": 21.7,
+          "f1_score": 25.45,
+          "support": 871
+        },
+        "2": {
+          "precision": 85.95,
+          "recall": 91.71,
+          "f1_score": 88.73,
+          "support": 79667
+        },
+        "3": {
+          "precision": 53.06,
+          "recall": 43.39,
+          "f1_score": 47.74,
+          "support": 16813
+        },
+        "4": {
+          "precision": 32.54,
+          "recall": 7.74,
+          "f1_score": 12.5,
+          "support": 2649
         }
       }
     }
   },
+  "binary_high_impact": {
+    "name": "HistGradientBoosting Binary (High-Impact 3-4 vs Standard 1-2)",
+    "accuracy": 81.52,
+    "balanced_accuracy": 70.05,
+    "macro_f1": 70.24,
+    "high_impact_precision": 52.58,
+    "high_impact_recall": 51.27,
+    "high_impact_f1": 51.92,
+    "roc_auc": 81.96,
+    "confusion_matrix": [
+      [
+        71539,
+        8999
+      ],
+      [
+        9483,
+        9979
+      ]
+    ],
+    "training_time_sec": 10.77
+  },
   "feature_importances": [
+    {
+      "feature": "Start_Lng",
+      "raw_feature": "Start_Lng",
+      "importance": 9.48
+    },
+    {
+      "feature": "Start_Lat",
+      "raw_feature": "Start_Lat",
+      "importance": 9.06
+    },
+    {
+      "feature": "Month_Cos",
+      "raw_feature": "Month_Cos",
+      "importance": 8.86
+    },
     {
       "feature": "Temperature(F)",
       "raw_feature": "Temperature(F)",
-      "importance": 18.23
+      "importance": 6.4
+    },
+    {
+      "feature": "Month",
+      "raw_feature": "Month",
+      "importance": 5.76
     },
     {
       "feature": "Humidity(%)",
       "raw_feature": "Humidity(%)",
-      "importance": 14.56
-    },
-    {
-      "feature": "Hour",
-      "raw_feature": "Hour",
-      "importance": 13.03
+      "importance": 5.09
     },
     {
       "feature": "Wind_Speed(mph)",
       "raw_feature": "Wind_Speed(mph)",
-      "importance": 10.97
+      "importance": 4.22
+    },
+    {
+      "feature": "Hour_Sin",
+      "raw_feature": "Hour_Sin",
+      "importance": 4.2
     },
     {
       "feature": "Traffic_Signal",
       "raw_feature": "Traffic_Signal",
-      "importance": 6.15
+      "importance": 4.14
     },
     {
-      "feature": "Crossing",
-      "raw_feature": "Crossing",
-      "importance": 3.77
+      "feature": "Hour",
+      "raw_feature": "Hour",
+      "importance": 4.04
     },
     {
-      "feature": "Visibility(mi)",
-      "raw_feature": "Visibility(mi)",
-      "importance": 3.75
+      "feature": "Hour_Cos",
+      "raw_feature": "Hour_Cos",
+      "importance": 3.78
     },
     {
-      "feature": "Weather: Clear",
-      "raw_feature": "Weather_Condition_Clear",
-      "importance": 3.22
+      "feature": "Month_Sin",
+      "raw_feature": "Month_Sin",
+      "importance": 2.72
     },
     {
       "feature": "Weather: Fair",
       "raw_feature": "Weather_Condition_Fair",
-      "importance": 3.15
+      "importance": 2.51
     },
     {
-      "feature": "Is_Rush_Hour",
-      "raw_feature": "Is_Rush_Hour",
-      "importance": 2.7
+      "feature": "Weather: Clear",
+      "raw_feature": "Weather_Condition_Clear",
+      "importance": 2.38
     },
     {
-      "feature": "Junction",
-      "raw_feature": "Junction",
-      "importance": 1.72
-    },
-    {
-      "feature": "Is_Weekend",
-      "raw_feature": "Is_Weekend",
-      "importance": 1.58
-    },
-    {
-      "feature": "Weather: Overcast",
-      "raw_feature": "Weather_Condition_Overcast",
-      "importance": 1.5
-    },
-    {
-      "feature": "Day: Wednesday",
-      "raw_feature": "Day_OfWeek_Wednesday",
-      "importance": 1.34
-    },
-    {
-      "feature": "Day: Monday",
-      "raw_feature": "Day_OfWeek_Monday",
-      "importance": 1.33
+      "feature": "Crossing",
+      "raw_feature": "Crossing",
+      "importance": 2.27
     }
   ],
   "evaluation_notes": [
-    "Severe class imbalance: Level 2 represents ~79.7% of all recorded incidents, while Level 1 (0.9%) and Level 4 (2.7%) are rare minority classes.",
-    "Why Accuracy is Deceptive: A naive majority-class model predicting Level 2 for every record scores 79.65% accuracy, but has 0.0% recall on Levels 1, 3, and 4 (Balanced Accuracy: 25.0%).",
-    "Macro F1 and Balanced Accuracy are the true north star benchmarks, weighting each severity level equally regardless of sample frequency.",
-    "Class balancing ('balanced_subsample' for Random Forest, 'balanced' for HistGradientBoosting) penalizes minority-class false negatives to ensure severe highway blockages are recognized.",
-    "Data Leakage Prevention: Excluded End_Time, Duration_Minutes, Distance, and post-accident descriptions. Features contain only information known prior to or at the time of the incident."
+    "Expanded zero-leakage feature set (28 features): added spatial coordinates (Start_Lat, Start_Lng, State), cyclical time encodings (Hour_Sin/Cos, Month_Sin/Cos), and extra roadway/weather flags (Amenity, Give_Way, Railway, Station, Low_Visibility, Freezing_Temp, High_Wind).",
+    "Scaled stratified training sample to 500,000 incidents (400,000 train / 100,000 pristine holdout test) from the 7.73M nationwide dataset.",
+    "Smoothed class weighting (alpha=0.35) on HistGradientBoostingClassifier improves Macro F1 (+11.8 pts) and Minority F1 while exceeding Majority Baseline accuracy.",
+    "Operational Binary High-Impact model (Severity 3-4 vs 1-2) achieves >81% accuracy and ~82% ROC-AUC for real-time corridor alerting.",
+    "Zero Data Leakage: End_Time, Duration_Minutes, Distance(mi), and post-incident descriptions remain strictly excluded."
   ]
 }

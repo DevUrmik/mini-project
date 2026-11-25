@@ -15,6 +15,8 @@ export const SeverityPredictor: React.FC = () => {
     crossing: false,
     traffic_signal: false,
     stop: false,
+    state: 'CA',
+    month: 6,
   });
 
   const [loading, setLoading] = useState<boolean>(false);
@@ -276,6 +278,33 @@ export const SeverityPredictor: React.FC = () => {
                     ))}
                   </select>
                 </div>
+
+                {/* State & Month */}
+                <div>
+                  <label className="block text-xs font-medium text-[#252923] mb-1">US State</label>
+                  <select
+                    value={formData.state || 'CA'}
+                    onChange={(e) => setFormData({ ...formData, state: e.target.value })}
+                    className="w-full bg-[#F7F7F4] border border-[#E5E7E1] rounded px-3 py-2 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
+                  >
+                    {['CA', 'FL', 'TX', 'NY', 'SC', 'NC', 'VA', 'PA', 'MN', 'OR', 'AZ', 'GA', 'IL', 'TN', 'MI', 'WA', 'OH', 'CO', 'NJ', 'MA', 'MD'].map((st) => (
+                      <option key={st} value={st}>{st}</option>
+                    ))}
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-medium text-[#252923] mb-1">Month</label>
+                  <select
+                    value={formData.month || 6}
+                    onChange={(e) => setFormData({ ...formData, month: Number(e.target.value) })}
+                    className="w-full bg-[#F7F7F4] border border-[#E5E7E1] rounded px-3 py-2 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
+                  >
+                    {['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].map((m, idx) => (
+                      <option key={m} value={idx + 1}>{m}</option>
+                    ))}
+                  </select>
+                </div>
               </div>
             </div>
 
@@ -353,6 +382,18 @@ export const SeverityPredictor: React.FC = () => {
                 <p className="text-xs text-[#777D78] leading-relaxed max-w-sm mx-auto">
                   {response.traffic_impact_description}
                 </p>
+                {response.high_impact_risk && (
+                  <div className="pt-2 border-t border-[#E5E7E1]/80 flex items-center justify-between text-xs px-2">
+                    <span className="text-[#777D78]">High-Impact Risk (Level 3–4):</span>
+                    <span className={`font-semibold px-2 py-0.5 rounded border ${
+                      response.high_impact_risk.high_impact_percentage >= 50
+                        ? 'bg-[#FDF6ED] text-[#D69A43] border-[#D69A43]/40'
+                        : 'bg-[#EBF2EE] text-[#28634D] border-[#28634D]/30'
+                    }`}>
+                      {response.high_impact_risk.high_impact_percentage}% — {response.high_impact_risk.classification}
+                    </span>
+                  </div>
+                )}
               </div>
 
               {/* Class Probability Breakdown */}

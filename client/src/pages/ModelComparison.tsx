@@ -460,10 +460,54 @@ export const ModelComparison: React.FC = () => {
           </div>
 
           <div className="text-[11px] text-[#777D78] pt-2 border-t border-[#E5E7E1]">
-            Weather conditions (humidity, temp, wind) and temporal peak hours dominate feature splits.
+            Spatial coordinates (Lat/Lng), state context, weather measurements, and cyclical peak hours drive feature splits.
           </div>
         </div>
       </div>
+
+      {/* Operational Binary High-Impact (Severity 3-4 vs 1-2) Benchmark */}
+      {metrics.binary_high_impact && (
+        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle space-y-3">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#E5E7E1] pb-2">
+            <div>
+              <h2 className="text-sm font-semibold text-[#252923]">
+                Operational Formulation: High-Impact (Severity 3–4) vs Standard (Severity 1–2)
+              </h2>
+              <p className="text-xs text-[#777D78] mt-0.5">
+                {metrics.binary_high_impact.name} — evaluates corridor-level disruption risk without post-incident leakage.
+              </p>
+            </div>
+            <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#EBF2EE] text-[#28634D] border border-[#28634D]/20 self-start sm:self-auto">
+              ROC-AUC: {metrics.binary_high_impact.roc_auc}%
+            </span>
+          </div>
+
+          <div className="grid grid-cols-2 sm:grid-cols-5 gap-3 text-xs">
+            <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
+              <div className="text-[11px] text-[#777D78]">Binary Accuracy</div>
+              <div className="text-base font-bold text-[#252923] mt-0.5">{metrics.binary_high_impact.accuracy}%</div>
+            </div>
+            <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
+              <div className="text-[11px] text-[#777D78]">Balanced Accuracy</div>
+              <div className="text-base font-bold text-[#28634D] mt-0.5">{metrics.binary_high_impact.balanced_accuracy}%</div>
+            </div>
+            <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
+              <div className="text-[11px] text-[#777D78]">Macro F1</div>
+              <div className="text-base font-bold text-[#28634D] mt-0.5">{metrics.binary_high_impact.macro_f1}%</div>
+            </div>
+            <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
+              <div className="text-[11px] text-[#777D78]">High-Impact F1</div>
+              <div className="text-base font-bold text-[#252923] mt-0.5">{metrics.binary_high_impact.high_impact_f1}%</div>
+            </div>
+            <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
+              <div className="text-[11px] text-[#777D78]">High-Impact Recall / Prec</div>
+              <div className="text-sm font-bold text-[#252923] mt-0.5">
+                {metrics.binary_high_impact.high_impact_recall}% / {metrics.binary_high_impact.high_impact_precision}%
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* 4 Viva-Ready Methodology & Limitation Cards */}
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#252923]">

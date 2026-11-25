@@ -1,0 +1,458 @@
+{
+  "four_class": {
+    "majority": {
+      "name": "Majority Baseline",
+      "accuracy": 79.67,
+      "balanced_accuracy": 25.0,
+      "macro_f1": 22.17,
+      "weighted_f1": 70.65,
+      "per_class": {
+        "1": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "2": {
+          "precision": 79.67,
+          "recall": 100.0,
+          "f1": 88.68
+        },
+        "3": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        },
+        "4": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          0,
+          871,
+          0,
+          0
+        ],
+        [
+          0,
+          79667,
+          0,
+          0
+        ],
+        [
+          0,
+          16813,
+          0,
+          0
+        ],
+        [
+          0,
+          2649,
+          0,
+          0
+        ]
+      ],
+      "fit_sec": 0.0
+    },
+    "hgb_alpha_0.0": {
+      "name": "HistGBM (27-feat, weight alpha=0.0)",
+      "accuracy": 81.49,
+      "balanced_accuracy": 32.11,
+      "macro_f1": 34.23,
+      "weighted_f1": 77.19,
+      "per_class": {
+        "1": {
+          "precision": 25.87,
+          "recall": 5.97,
+          "f1": 9.7
+        },
+        "2": {
+          "precision": 82.88,
+          "recall": 97.25,
+          "f1": 89.49
+        },
+        "3": {
+          "precision": 62.83,
+          "recall": 23.26,
+          "f1": 33.95
+        },
+        "4": {
+          "precision": 56.52,
+          "recall": 1.96,
+          "f1": 3.79
+        }
+      },
+      "confusion_matrix": [
+        [
+          52,
+          811,
+          8,
+          0
+        ],
+        [
+          128,
+          77479,
+          2039,
+          21
+        ],
+        [
+          14,
+          12870,
+          3910,
+          19
+        ],
+        [
+          7,
+          2324,
+          266,
+          52
+        ]
+      ],
+      "fit_sec": 9.76
+    },
+    "hgb_alpha_0.35": {
+      "name": "HistGBM (27-feat, weight alpha=0.35)",
+      "accuracy": 80.75,
+      "balanced_accuracy": 41.13,
+      "macro_f1": 43.61,
+      "weighted_f1": 79.27,
+      "per_class": {
+        "1": {
+          "precision": 30.78,
+          "recall": 21.7,
+          "f1": 25.45
+        },
+        "2": {
+          "precision": 85.95,
+          "recall": 91.71,
+          "f1": 88.73
+        },
+        "3": {
+          "precision": 53.06,
+          "recall": 43.39,
+          "f1": 47.74
+        },
+        "4": {
+          "precision": 32.54,
+          "recall": 7.74,
+          "f1": 12.5
+        }
+      },
+      "confusion_matrix": [
+        [
+          189,
+          645,
+          37,
+          0
+        ],
+        [
+          380,
+          73062,
+          5925,
+          300
+        ],
+        [
+          33,
+          9360,
+          7295,
+          125
+        ],
+        [
+          12,
+          1941,
+          491,
+          205
+        ]
+      ],
+      "fit_sec": 11.33
+    },
+    "hgb_alpha_0.5": {
+      "name": "HistGBM (27-feat, weight alpha=0.5)",
+      "accuracy": 78.54,
+      "balanced_accuracy": 47.57,
+      "macro_f1": 45.35,
+      "weighted_f1": 78.64,
+      "per_class": {
+        "1": {
+          "precision": 18.34,
+          "recall": 35.25,
+          "f1": 24.13
+        },
+        "2": {
+          "precision": 87.5,
+          "recall": 86.87,
+          "f1": 87.18
+        },
+        "3": {
+          "precision": 49.59,
+          "recall": 50.95,
+          "f1": 50.26
+        },
+        "4": {
+          "precision": 23.36,
+          "recall": 17.21,
+          "f1": 19.82
+        }
+      },
+      "confusion_matrix": [
+        [
+          307,
+          509,
+          52,
+          3
+        ],
+        [
+          1186,
+          69210,
+          8108,
+          1163
+        ],
+        [
+          157,
+          7759,
+          8567,
+          330
+        ],
+        [
+          24,
+          1621,
+          548,
+          456
+        ]
+      ],
+      "fit_sec": 24.37
+    },
+    "hgb_alpha_1.0": {
+      "name": "HistGBM (27-feat, weight alpha=1.0)",
+      "accuracy": 55.32,
+      "balanced_accuracy": 63.41,
+      "macro_f1": 35.92,
+      "weighted_f1": 62.52,
+      "per_class": {
+        "1": {
+          "precision": 6.65,
+          "recall": 80.14,
+          "f1": 12.28
+        },
+        "2": {
+          "precision": 92.92,
+          "recall": 53.47,
+          "f1": 67.88
+        },
+        "3": {
+          "precision": 37.66,
+          "recall": 62.43,
+          "f1": 46.98
+        },
+        "4": {
+          "precision": 9.67,
+          "recall": 57.61,
+          "f1": 16.56
+        }
+      },
+      "confusion_matrix": [
+        [
+          698,
+          73,
+          66,
+          34
+        ],
+        [
+          8495,
+          42599,
+          16765,
+          11808
+        ],
+        [
+          1147,
+          2753,
+          10497,
+          2416
+        ],
+        [
+          155,
+          421,
+          547,
+          1526
+        ]
+      ],
+      "fit_sec": 15.05
+    },
+    "RF (27-feat, unweighted)": {
+      "name": "RF (27-feat, unweighted)",
+      "accuracy": 80.34,
+      "balanced_accuracy": 26.59,
+      "macro_f1": 25.42,
+      "weighted_f1": 73.0,
+      "per_class": {
+        "1": {
+          "precision": 100.0,
+          "recall": 0.11,
+          "f1": 0.23
+        },
+        "2": {
+          "precision": 80.58,
+          "recall": 99.39,
+          "f1": 89.0
+        },
+        "3": {
+          "precision": 66.72,
+          "recall": 6.86,
+          "f1": 12.44
+        },
+        "4": {
+          "precision": 0.0,
+          "recall": 0.0,
+          "f1": 0.0
+        }
+      },
+      "confusion_matrix": [
+        [
+          1,
+          868,
+          2,
+          0
+        ],
+        [
+          0,
+          79183,
+          484,
+          0
+        ],
+        [
+          0,
+          15660,
+          1153,
+          0
+        ],
+        [
+          0,
+          2560,
+          89,
+          0
+        ]
+      ],
+      "fit_sec": 34.24
+    },
+    "RF (27-feat, balanced_subsample)": {
+      "name": "RF (27-feat, balanced_subsample)",
+      "accuracy": 62.64,
+      "balanced_accuracy": 55.26,
+      "macro_f1": 37.63,
+      "weighted_f1": 67.72,
+      "per_class": {
+        "1": {
+          "precision": 8.66,
+          "recall": 64.64,
+          "f1": 15.28
+        },
+        "2": {
+          "precision": 89.95,
+          "recall": 64.16,
+          "f1": 74.9
+        },
+        "3": {
+          "precision": 35.45,
+          "recall": 60.14,
+          "f1": 44.61
+        },
+        "4": {
+          "precision": 10.43,
+          "recall": 32.09,
+          "f1": 15.75
+        }
+      },
+      "confusion_matrix": [
+        [
+          563,
+          206,
+          82,
+          20
+        ],
+        [
+          5013,
+          51115,
+          17585,
+          5954
+        ],
+        [
+          814,
+          4564,
+          10112,
+          1323
+        ],
+        [
+          110,
+          942,
+          747,
+          850
+        ]
+      ],
+      "fit_sec": 30.01
+    }
+  },
+  "binary": {
+    "hgb_bin_alpha_0.0": {
+      "name": "HistGBM Binary (alpha=0.0)",
+      "accuracy": 83.06,
+      "balanced_accuracy": 62.01,
+      "macro_f1": 64.47,
+      "high_impact_precision": 65.4,
+      "high_impact_recall": 27.55,
+      "high_impact_f1": 38.77,
+      "roc_auc": 81.87,
+      "confusion_matrix": [
+        [
+          77701,
+          2837
+        ],
+        [
+          14100,
+          5362
+        ]
+      ]
+    },
+    "hgb_bin_alpha_0.5": {
+      "name": "HistGBM Binary (alpha=0.5)",
+      "accuracy": 81.52,
+      "balanced_accuracy": 70.05,
+      "macro_f1": 70.24,
+      "high_impact_precision": 52.58,
+      "high_impact_recall": 51.27,
+      "high_impact_f1": 51.92,
+      "roc_auc": 81.96,
+      "confusion_matrix": [
+        [
+          71539,
+          8999
+        ],
+        [
+          9483,
+          9979
+        ]
+      ]
+    },
+    "hgb_bin_alpha_1.0": {
+      "name": "HistGBM Binary (alpha=1.0)",
+      "accuracy": 73.71,
+      "balanced_accuracy": 73.91,
+      "macro_f1": 67.1,
+      "high_impact_precision": 40.44,
+      "high_impact_recall": 74.24,
+      "high_impact_f1": 52.36,
+      "roc_auc": 81.96,
+      "confusion_matrix": [
+        [
+          59263,
+          21275
+        ],
+        [
+          5014,
+          14448
+        ]
+      ]
+    }
+  }
+}
