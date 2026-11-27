@@ -1,205 +1,130 @@
-# Accident Hotspot Prediction and Road Safety Intelligence System
+# US Accidents Prediction & Hotspot Analytics
 
-[![Python 3.12](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
-[![FastAPI](https://img.shields.io/badge/FastAPI-1.0-emerald.svg)](https://fastapi.tiangolo.com/)
-[![React 19](https://img.shields.io/badge/React-19.0-sky.svg)](https://react.dev/)
-[![Tailwind CSS](https://img.shields.io/badge/Tailwind-3.4-indigo.svg)](https://tailwindcss.com/)
-[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-1.4-orange.svg)](https://scikit-learn.org/)
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-
-A comprehensive, production-grade Road Safety Intelligence Platform built for a 7-day college Python Machine Learning lab project. The application integrates unsupervised geospatial clustering, supervised leak-free severity classification, an interactive OpenStreetMap Leaflet dashboard, and a reactive FastAPI backend.
+Full-stack machine learning and geospatial analytics application built on the nationwide **US Accidents (2016–2023)** dataset (`7,728,394` records across 49 US states and the District of Columbia).
 
 ---
 
-## 1. Project Overview & Problem Statement
+## What the Project Does
 
-Traffic accidents impose immense economic delays and safety risks on modern urban networks. Transportation authorities require data-driven tools to:
-1. **Identify recurring spatial accident hotspots** across major highway corridors without geometric distortion.
-2. **Predict accident traffic delay severity** using strictly pre-incident environmental, temporal, and road infrastructure factors.
-3. **Analyze road safety intelligence** to assist transportation agencies in targeted infrastructure improvements.
-
-### Dataset Attribution & Semantics
-- **Dataset Source:** [US Accidents (2016–2023) on Kaggle](https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents) by Dr. Sobhan Moosavi et al.
-- **Licensing:** Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0).
-- **Important Semantic Clarification:** The dataset's `Severity` metric (scale 1 to 4) indicates **traffic delay duration and road impact**, not human injury or fatality severity:
-  - **Severity 1:** Short delay (< 15 mins), minimal lane disruption.
-  - **Severity 2:** Standard commute delay (15–45 mins), moderate traffic slowdown.
-  - **Severity 3:** Substantial delay (45–90 mins), multi-lane closure.
-  - **Severity 4:** Severe delay (> 90 mins), full roadway closure or major arterial blockage.
+1. **Overview Dashboard:** Displays nationwide accident volume, severity distribution, hourly patterns, weather breakdowns, top states, and roadway infrastructure prevalence across all `7,728,394` cleaned records.
+2. **Hotspot Explorer:** Interactive Leaflet map backed by a `193,209`-record stratified spatial sample across all 49 states + DC, supporting individual accident locations, density heatmaps, K-Means regional centroids, and DBSCAN highway corridors using spherical Haversine distance.
+3. **ML Model Analysis:** Reports evaluation metrics (`Accuracy`, `Macro F1`, `Balanced Accuracy`, `Weighted F1`), per-class precision/recall/F1, 4×4 confusion matrix, class distribution, majority-class baseline comparison, and feature importances for the selected `HistGradientBoostingClassifier`.
+4. **Accident Severity Prediction:** Predicts accident severity (**Level 1 — Minor Accident** through **Level 4 — Critical Accident**) and Serious/Critical (Level 3–4) risk from pre-incident weather, time (`HH:MM`), state, and roadway inputs.
 
 ---
 
-## 2. System Architecture
+## Dataset Source & Coverage
 
-```
-mini-project/
-│
-├── client/                                  # React 19 + TypeScript + Vite + Tailwind CSS
+- **Source:** [US Accidents (2016–2023) on Kaggle](https://www.kaggle.com/datasets/sobhanmoosavi/us-accidents) (`data/raw/US_Accidents_March23.csv`)
+- **Time Range:** `2016-02-08` to `2023-03-31`
+- **Geographic Coverage:** 49 US states + DC (`20,281` cities)
+- **Processed Artifacts:**
+  - `data/processed/cleaned_accidents.parquet`: `7,728,394` cleaned records
+  - `data/processed/spatial_accidents.parquet`: `193,209` stratified spatial records (2.5% sample for interactive map rendering)
+  - `data/processed/ml_sample.parquet`: `108,500` stratified records (plus `500,000` stratified sampling from `cleaned_accidents.parquet` in `scripts/train_classification.py`)
+
+### Standardized Severity Labels
+
+| Level | Label |
+| :---: | :--- |
+| **1** | Minor Accident |
+| **2** | Moderate Accident |
+| **3** | Serious Accident |
+| **4** | Critical Accident |
+
+---
+
+## Tech Stack
+
+- **Frontend:** React 19, TypeScript, Vite, Tailwind CSS, Recharts, Leaflet (`react-leaflet`), Axios, Lucide Icons
+- **Backend:** Python 3.12, FastAPI, Pydantic, Pandas, NumPy, PyArrow, Scikit-Learn, Joblib
+- **Deployment:** Vercel Services (`vercel.json`)
+
+---
+
+## Project Structure
+
+```text
+├── client/                         # React + TypeScript + Vite frontend
 │   ├── src/
-│   │   ├── components/                      # Navbar, Sidebar, StatCards, Skeletons, ErrorBanner
-│   │   ├── pages/                           # 5 Main Intelligence Pages
-│   │   │   ├── Dashboard.tsx                # Page 1: Overview Dashboard
-│   │   │   ├── HotspotExplorer.tsx          # Page 2: Accident Hotspot Explorer (Leaflet Map)
-│   │   │   ├── ModelComparison.tsx          # Page 3: ML Model Comparison & Confusion Matrix
-│   │   │   ├── SeverityPredictor.tsx        # Page 4: Interactive Prediction Inference Form
-│   │   │   └── Analytics.tsx                # Page 5: Road Safety Insights & Weather Trends
-│   │   ├── maps/                            # Leaflet Map Container & Hotspot Cluster Overlays
-│   │   ├── services/                        # Axios API Client
-│   │   └── types/                           # TypeScript Schema Interfaces
+│   │   ├── components/             # DigitalTimePicker, ErrorBanner, LoadingSkeleton, Navbar, Sidebar, StatCard
+│   │   ├── maps/                   # HotspotMap (Leaflet + OpenStreetMap)
+│   │   ├── pages/                  # Dashboard, HotspotExplorer, ModelComparison, SeverityPredictor
+│   │   ├── services/               # Axios API client (api.ts)
+│   │   └── types/                  # TypeScript interfaces
 │   └── package.json
-│
-├── server/                                  # FastAPI Production Backend
+├── server/                         # FastAPI backend
 │   ├── app/
-│   │   ├── routes/                          # Modular API Routers (dashboard, hotspots, models, predict, analytics)
-│   │   ├── services/                        # DataService, HotspotService, PredictionService
-│   │   ├── schemas/                         # Pydantic Request/Response Models
-│   │   ├── ml/                              # Feature Pipeline, Preprocessor, Haversine Math
-│   │   ├── config.py                        # Central Settings & File Paths
-│   │   └── main.py                          # Application Entry & CORS Setup
+│   │   ├── ml/                     # Preprocessor pipeline & Haversine math
+│   │   ├── routes/                 # analytics, dashboard, geo, hotspots, models, predict
+│   │   ├── schemas/                # Pydantic request/response schemas
+│   │   ├── services/               # DataService, HotspotService, PredictionService
+│   │   ├── config.py
+│   │   └── main.py
+│   ├── data/processed/             # Server-packaged spatial parquet & summary JSONs
+│   ├── models/                     # Persisted joblib models, cluster JSONs & model_metrics.json
+│   ├── main.py                     # Vercel ASGI entrypoint
 │   └── requirements.txt
-│
 ├── data/
-│   ├── raw/                                 # Target for original Kaggle CSV (US_Accidents_March23.csv)
-│   ├── processed/                           # Cleaned, deduplicated, and feature-engineered datasets
-│   └── samples/                             # Labeled development fixture (Moosavi schema compliant)
-│
-├── notebooks/                               # Lab Experimentation Notebooks (Day 1 - Day 4)
-│   ├── 01_data_exploration.ipynb
-│   ├── 02_hotspot_clustering.ipynb
-│   └── 03_severity_classification.ipynb
-│
-├── models/                                  # Persisted Joblib Pipelines & JSON Evaluation Metrics
-├── scripts/                                 # Reproducible Training & Preprocessing CLI Scripts
-├── tests/                                   # Pytest Unit & Integration Test Suite (14 Tests)
-├── docs/                                    # Academic Viva & Examination Guide (docs/viva_guide.md)
+│   ├── raw/                        # Original US_Accidents_March23.csv
+│   └── processed/                  # Cleaned Parquet, spatial sample, and summary JSONs
+├── models/                         # Trained model artifacts & evaluation JSONs
+├── notebooks/                      # Exploratory notebooks
+├── scripts/                        # Reproducible preprocessing, clustering & training scripts
+├── tests/                          # Pytest suite (test_api.py, test_clustering.py, test_preprocessor.py)
+├── vercel.json
 └── README.md
 ```
 
 ---
 
-## 3. Machine Learning Methodology
+## Setup & Running Locally
 
-### A. Spatial Hotspot Clustering
-1. **Haversine Distance Formulation:**  
-   Latitude and longitude are spherical angular coordinates. Using raw Euclidean distance introduces severe distortion. We utilize the Haversine great-circle formula:
-   $$d = 2R \arcsin\left(\sqrt{\sin^2\left(\frac{\Delta \phi}{2}\right) + \cos(\phi_1)\cos(\phi_2)\sin^2\left(\frac{\Delta \lambda}{2}\right)}\right)$$
-2. **K-Means Clustering:**  
-   Evaluated for $K \in [5, 8, 10, 15, 20]$ to analyze inertia and identify regional partition centroids.
-3. **DBSCAN (Density-Based Spatial Clustering):**  
-   Implemented using Scikit-Learn `BallTree` with spherical Haversine metric ($\epsilon = 7.5\text{ km} = 0.001177\text{ rad}$, $\text{MinPts} = 35$). Isolates dense freeway chains (I-5, I-405, US-101) while separating low-density rural incidents as noise.
+### 1. Install Dependencies
 
-### B. Severity Classification Pipeline
-1. **Zero Data Leakage Policy:**  
-   Outcome variables such as `End_Time`, `Duration_Minutes`, `Distance(mi)`, and `Description` are strictly omitted.
-2. **Feature Engineering:**  
-   Extracted `Hour`, `Day_OfWeek`, `Is_Rush_Hour` (7-9 AM & 4-6 PM), and `Is_Weekend`.
-3. **Preprocessing Pipeline (`ColumnTransformer`):**  
-   - Numerical (`Temperature`, `Humidity`, `Visibility`, `Wind_Speed`, `Hour`): Median Imputer + `StandardScaler`
-   - Categorical (`Weather_Condition`, `Day_OfWeek`): Constant Imputer + `OneHotEncoder(handle_unknown='ignore')`
-   - Boolean (`Junction`, `Crossing`, `Traffic_Signal`, `Stop`): Passthrough binary flags
-4. **Candidate Classifiers:**  
-   - Logistic Regression (`class_weight='balanced'`)
-   - Decision Tree Classifier (`max_depth=12`, `min_samples_split=20`)
-   - Random Forest Classifier (`n_estimators=100`, `max_depth=16`, `n_jobs=-1`)
-5. **Evaluation Against Class Imbalance:**  
-   Because Severity 2 makes up ~72% of incidents, **Macro F1-Score** and **Balanced Accuracy** are the primary benchmarks. Random Forest proved superior by capturing non-linear interactions between weather factors and road features.
-
----
-
-## 4. Empirical Evaluation Results
-
-Evaluated on an 80/20 stratified test split ($N = 7,000$ test records):
-
-| Model | Accuracy | Balanced Accuracy | Macro F1 | Weighted F1 | Primary Strength |
-| :--- | :---: | :---: | :---: | :---: | :--- |
-| **Logistic Regression** | 21.47% | 25.15% | 16.92% | 27.71% | Fast linear baseline |
-| **Decision Tree** | 23.24% | 23.97% | 17.68% | 29.52% | Interpretable rule branching |
-| **Random Forest** | **59.91%** | **25.23%** | **24.99%** | **57.49%** | **Selected Primary Model** (ensemble bagging) |
-
-*Artifacts persisted via Joblib: `models/severity_random_forest.joblib` and `models/preprocessor_pipeline.joblib`.*
-
----
-
-## 5. API Endpoints Specification
-
-FastAPI automatically generates interactive Swagger documentation at `http://127.0.0.1:8000/docs`:
-
-| Method | Endpoint | Description |
-| :--- | :--- | :--- |
-| `GET` | `/api/health` | Health status and preloaded model verification |
-| `GET` | `/api/dashboard/summary` | Top-level counts, averages, and distribution charts |
-| `GET` | `/api/accidents?limit=150` | Filtered accident records for map points |
-| `GET` | `/api/hotspots?k=10` | K-Means cluster centers, densities, and radii |
-| `GET` | `/api/hotspots/dbscan` | DBSCAN Haversine density clusters and noise count |
-| `GET` | `/api/hotspots/comparison` | Empirical K-Means vs DBSCAN comparison table |
-| `GET` | `/api/models/metrics` | Evaluated metrics, confusion matrices, and feature importances |
-| `POST` | `/api/predict/severity` | Real-time severity inference with class probabilities |
-| `GET` | `/api/analytics/time` | 24-hour commute trends and weekday breakdown |
-| `GET` | `/api/analytics/weather` | Weather condition frequencies and temperature bins |
-| `GET` | `/api/analytics/infrastructure` | Impact of junctions, signals, crossings, and stops |
-
----
-
-## 6. Installation & Execution Guide
-
-### Prerequisites
-- Python 3.12+ (Anaconda or standalone)
-- Node.js v18+ & npm
-
-### Step 1: Install Python Dependencies
+**Backend:**
 ```bash
 pip install -r server/requirements.txt
 ```
 
-### Step 2: Run Data Preprocessing & Model Training
+**Frontend:**
 ```bash
-# 1. Generate development fixture (if raw Kaggle dataset is not yet downloaded)
-python scripts/generate_dev_fixture.py
-
-# 2. Run reproducible preprocessing pipeline
-python scripts/preprocess.py
-
-# 3. Train geospatial clustering models (K-Means & DBSCAN with Haversine)
-python scripts/train_clustering.py
-
-# 4. Train and persist classification models (Logistic Reg, Decision Tree, Random Forest)
-python scripts/train_classification.py
-
-# 5. Run test suite to verify pipeline integrity
-python -m pytest tests/ -v
+npm --prefix client install
 ```
 
-### Step 3: Start FastAPI Backend
-```bash
-python -m uvicorn server.app.main:app --reload --port 8000
-```
-*API Swagger UI available at:* `http://127.0.0.1:8000/docs`
+### 2. Run the Backend
 
-### Step 4: Start React Frontend
 ```bash
-cd client
-npm install
-npm run dev
+uvicorn server.app.main:app --reload --port 8000
 ```
-*Frontend UI accessible at:* `http://localhost:5173`
+
+API docs are available at `http://127.0.0.1:8000/docs`.
+
+### 3. Run the Frontend
+
+```bash
+npm --prefix client run dev
+```
+
+The Vite dev server runs at `http://localhost:5173` and proxies `/api` requests to the FastAPI backend.
 
 ---
 
-## 7. Seven-Day Project Roadmap Summary
+## Machine Learning & Hotspot Detection
 
-- **Day 1 (Dataset & Preprocessing):** Cleaned deduplicated records, continental US coordinate filtering, temporal feature engineering (`Hour`, `Weekday`, `Is_Rush_Hour`).
-- **Day 2 (Clustering Pipeline):** Haversine distance implementation, K-Means ($K=5..20$), DBSCAN density blackspot identification, and noise separation.
-- **Day 3 (Classification Models):** Scikit-Learn `ColumnTransformer` (median imputation, scaling, one-hot encoding), leak-free feature selection.
-- **Day 4 (Model Evaluation & Persistence):** Stratified test benchmarking, confusion matrices, Random Forest Gini feature importances, Joblib serialization.
-- **Day 5 (FastAPI Backend):** REST API endpoints with Pydantic schemas, service layer caching, sub-50ms inference.
-- **Day 6 (React 19 Frontend):** Dark navy dashboard theme, Leaflet OpenStreetMap integration, Recharts analytics, and live severity simulation form.
-- **Day 7 (Testing & Documentation):** 14 Pytest tests, interactive Jupyter notebooks (`notebooks/`), and comprehensive Viva preparation guide (`docs/viva_guide.md`).
+- **Accident Severity Classification (`scripts/train_classification.py`):**
+  - Uses **28 pre-incident features** (`Start_Lat`, `Start_Lng`, `State`, cyclical `Hour_Sin`/`Hour_Cos` and `Month_Sin`/`Month_Cos`, weather measurements/flags, and roadway infrastructure indicators). Post-incident fields (`End_Time`, `Distance(mi)`) are excluded to prevent data leakage.
+  - Trained on a `500,000`-record stratified sample (`400,000` train / `100,000` un-resampled holdout test) using `HistGradientBoostingClassifier` with smoothed inverse-frequency weights ($\alpha = 0.35$).
+  - Evaluated metrics on the `100,000`-record test set: **80.75% Accuracy**, **43.61% Macro F1**, **41.13% Balanced Accuracy**, **79.27% Weighted F1** (vs. Majority-Class Baseline: `79.67%` Accuracy, `25.00%` Balanced Accuracy, `22.17%` Macro F1).
+  - Secondary binary `HistGradientBoostingClassifier` (Level 3–4 vs. 1–2) achieves **81.52% Accuracy**, **70.05% Balanced Accuracy**, **70.24% Macro F1**, and **81.96% ROC-AUC**.
+- **Spatial Hotspot Detection (`scripts/train_clustering_all_states.py`):**
+  - Precomputes and dynamically serves **DBSCAN** (`BallTree` with Haversine spherical distance, $\epsilon = 7.5\text{ km}$) and **K-Means** centroids across all 49 states + DC.
 
 ---
 
-## 8. Limitations & Future Enhancements
+## Testing & Build
 
-- **Vehicle Miles Traveled (VMT) Normalization:** High accident counts in fair weather reflect exposure rather than hazard. Integrating traffic sensor volume (Caltrans PeMS) would enable true crash rate normalization.
-- **Real-Time Weather API Integration:** Connecting live OpenWeatherMap API feeds to automatically populate inference parameters for active highway corridors.
-- **Deep Graph Neural Networks (GNN):** Modeling road networks as continuous graph nodes and edges to capture traffic wave propagation.
-
+```bash
+pytest tests/ -v
+npm --prefix client run build
+```

@@ -45,8 +45,6 @@ SPATIAL_PARQUET_PATH = PROCESSED_DATA_DIR / "spatial_accidents.parquet"
 SPATIAL_CSV_PATH = PROCESSED_DATA_DIR / "spatial_accidents.csv"
 ML_SAMPLE_PARQUET_PATH = PROCESSED_DATA_DIR / "ml_sample.parquet"
 GEO_SUMMARY_PATH = PROCESSED_DATA_DIR / "geographic_summary.json"
-CALIFORNIA_DATA_PATH = PROCESSED_DATA_DIR / "california_accidents.csv"
-DEV_FIXTURE_PATH = SAMPLES_DATA_DIR / "us_accidents_dev_fixture.csv"
 PREPROCESSING_SUMMARY_PATH = PROCESSED_DATA_DIR / "preprocessing_summary.json"
 
 # ML Artifact paths
