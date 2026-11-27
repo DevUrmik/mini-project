@@ -97,7 +97,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
 
         <div className="p-4 border-t border-[#E5E7E1]">
           <div className="text-[11px] text-[#777D78] leading-relaxed">
-            Severity levels (1–4) classify accidents from Minor (1) to Critical (4).
+            Severity: Level 1 (Minor) – Level 4 (Critical)
           </div>
         </div>
       </aside>

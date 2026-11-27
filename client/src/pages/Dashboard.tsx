@@ -11,7 +11,6 @@ import {
   Line,
   Cell
 } from 'recharts';
-import { Info } from 'lucide-react';
 
 import { StatCard } from '../components/StatCard';
 import { CardSkeleton, ChartSkeleton } from '../components/LoadingSkeleton';
@@ -41,6 +40,12 @@ const US_STATE_NAMES: Record<string, string> = {
   SD: 'South Dakota', TN: 'Tennessee', TX: 'Texas', UT: 'Utah', VT: 'Vermont',
   VA: 'Virginia', WA: 'Washington', WV: 'West Virginia', WI: 'Wisconsin', WY: 'Wyoming',
   DC: 'District of Columbia'
+};
+
+const formatCompactCount = (val: number) => {
+  if (val >= 1_000_000) return `${(val / 1_000_000).toFixed(1)}M`;
+  if (val >= 1_000) return `${Math.round(val / 1_000)}k`;
+  return String(val);
 };
 
 export const Dashboard: React.FC = () => {
@@ -89,7 +94,6 @@ export const Dashboard: React.FC = () => {
     return <ErrorBanner message={error || undefined} onRetry={fetchData} />;
   }
 
-  // Discrete severity levels (1, 2, 3, 4) from dataset
   const severityLabels: Record<string, string> = {
     '1': 'Level 1 — Minor Accident',
     '2': 'Level 2 — Moderate Accident',
@@ -104,7 +108,6 @@ export const Dashboard: React.FC = () => {
     pct: ((val / summary.total_accidents) * 100).toFixed(1)
   }));
 
-  // Geographic distribution by State
   const stateData = Object.entries(summary.top_states).map(([st, count]) => ({
     stateCode: st,
     stateName: US_STATE_NAMES[st] || st,
@@ -112,14 +115,12 @@ export const Dashboard: React.FC = () => {
     pct: ((count / summary.total_accidents) * 100).toFixed(1)
   }));
 
-  // Weather conditions
   const weatherData = Object.entries(summary.top_weather_conditions).slice(0, 6).map(([condition, count]) => ({
     condition,
     count
   }));
 
-  // Peak hour computation
-  let peakHourStr = '17:00 (5 PM)';
+  let peakHourStr = '17:00';
   if (timeData?.hourly && timeData.hourly.length > 0) {
     const maxHourObj = [...timeData.hourly].sort((a, b) => b.count - a.count)[0];
     if (maxHourObj) {
@@ -129,71 +130,52 @@ export const Dashboard: React.FC = () => {
 
   const earliestDate = summary.temporal_range?.earliest?.slice(0, 10) || '2016';
   const latestDate = summary.temporal_range?.latest?.slice(0, 10) || '2023';
+  const level2Pct = severityData.find((s) => s.levelKey === '2')?.pct ?? '79.7';
 
   return (
-    <div className="space-y-6">
-      {/* Editorial Header */}
-      <div className="pb-1 border-b border-[#E5E7E1]">
-        <h1 className="text-xl font-bold tracking-tight text-[#252923]">
-          Accident Overview
+    <div className="space-y-7">
+      {/* Header & Compact Dataset Scope */}
+      <div className="flex flex-col sm:flex-row sm:items-baseline justify-between gap-2">
+        <h1 className="text-xl font-semibold tracking-tight text-[#252923]">
+          Overview
         </h1>
-        <p className="text-xs text-[#777D78] mt-1">
-          Empirical patterns across recorded US traffic incidents, temporal distributions, and road impact severities.
+        <p className="text-xs text-[#777D78]">
+          {summary.data_source} · {earliestDate} to {latestDate} · {summary.total_states || 49} states ·{' '}
+          {summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} cities
         </p>
       </div>
 
-      {/* Dataset Scope & Severity Meaning Banner */}
-      <div className="bg-[#F0F2ED] border border-[#E5E7E1] rounded-lg p-3 text-xs text-[#252923] flex items-start gap-2.5">
-        <Info className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
-        <div className="space-y-0.5 text-[11px] leading-relaxed">
-          <span className="font-semibold text-[#252923]">Dataset Information: </span>
-          Source: {summary.data_source} ({earliestDate} to {latestDate}) · 
-          <strong> {summary.total_accidents.toLocaleString()} records</strong> across {summary.total_states || 49} states ({summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} unique cities).
-          Severity is an integer score (1–4) classifying accident impact from Level 1 (Minor Accident) to Level 4 (Critical Accident).
-        </div>
-      </div>
-
-      {/* 4 Focused KPI Cards */}
+      {/* 4 Key Metrics */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <StatCard
-          label="Total accident records"
+          label="Total accidents"
           value={summary.total_accidents.toLocaleString()}
-          description={`${earliestDate} to ${latestDate}`}
         />
         <StatCard
-          label="Average recorded severity"
-          value={`${summary.average_severity.toFixed(2)}`}
-          detail="out of 4.0"
-          description="Accident severity scale (1–4)"
+          label="Average severity"
+          value={summary.average_severity.toFixed(2)}
+          detail="/ 4.0"
         />
         <StatCard
-          label="Serious & critical rate"
+          label="Serious & critical (3–4)"
           value={`${summary.high_impact_percentage}%`}
-          description="Level 3 (Serious) & Level 4 (Critical) accidents"
         />
         <StatCard
-          label="Peak accident hour"
+          label="Peak hour"
           value={peakHourStr}
-          description="Highest incident frequency window"
         />
       </div>
 
-      {/* Primary Charts Row: Hourly Volume & Severity Distribution */}
+      {/* Primary Charts: Hourly Volume & Severity Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Hourly Volume (Line Chart) */}
-        <div className="lg:col-span-2 bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
-          <div className="mb-4">
-            <h2 className="text-sm font-semibold text-[#252923]">
-              Accident frequency by hour
-            </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Incident count plotted across 24 hours showing morning (07:00–09:00) and evening (16:00–18:00) commute peaks
-            </p>
-          </div>
+        <div className="lg:col-span-2 bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <h2 className="text-sm font-semibold text-[#252923] mb-4">
+            Accidents by hour
+          </h2>
 
-          <div className="h-64 w-full">
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={timeData?.hourly || []} margin={{ top: 10, right: 15, left: -20, bottom: 0 }}>
+              <LineChart data={timeData?.hourly || []} margin={{ top: 8, right: 12, left: -10, bottom: 0 }}>
                 <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" vertical={false} />
                 <XAxis
                   dataKey="hour"
@@ -201,7 +183,7 @@ export const Dashboard: React.FC = () => {
                   fontSize={11}
                   tickFormatter={(val) => `${val}:00`}
                 />
-                <YAxis stroke="#777D78" fontSize={11} />
+                <YAxis stroke="#777D78" fontSize={11} tickFormatter={formatCompactCount} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#FFFFFF',
@@ -211,7 +193,7 @@ export const Dashboard: React.FC = () => {
                     color: '#252923',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
                   }}
-                  labelFormatter={(val) => `${val}:00`}
+                  labelFormatter={(val) => `${String(val).padStart(2, '0')}:00`}
                   formatter={(val: any) => [`${Number(val).toLocaleString()} records`, 'Accidents']}
                 />
                 <Line
@@ -227,23 +209,20 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Severity Distribution (Bar Chart with Discrete 1 to 4) */}
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
-          <div className="mb-4">
+        <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <div className="flex items-baseline justify-between mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Accident severity distribution
+              Severity distribution
             </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Level 2 (Moderate Accident) represents {severityData.find((s) => s.levelKey === '2')?.pct ?? '79.7'}% of recorded incidents
-            </p>
+            <span className="text-xs text-[#777D78]">Level 2: {level2Pct}%</span>
           </div>
 
-          <div className="h-64 w-full">
+          <div className="h-72 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={severityData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
+              <BarChart data={severityData} margin={{ top: 8, right: 8, left: -10, bottom: 0 }}>
                 <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="levelKey" stroke="#777D78" fontSize={11} tickFormatter={(val) => `Level ${val}`} />
-                <YAxis stroke="#777D78" fontSize={11} />
+                <YAxis stroke="#777D78" fontSize={11} tickFormatter={formatCompactCount} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#FFFFFF',
@@ -254,7 +233,7 @@ export const Dashboard: React.FC = () => {
                     boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
                   }}
                   formatter={(val: any, _name: any, item: any) => [
-                    `${Number(val).toLocaleString()} records (${item.payload.pct}%)`,
+                    `${Number(val).toLocaleString()} (${item.payload.pct}%)`,
                     item.payload.severity
                   ]}
                 />
@@ -269,25 +248,19 @@ export const Dashboard: React.FC = () => {
         </div>
       </div>
 
-      {/* Secondary Charts: Weather Distribution & Geographic Distribution by State */}
+      {/* Secondary Charts: Weather Conditions & Accidents by State */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Weather Conditions Distribution */}
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-          <div className="mb-4">
-            <h2 className="text-sm font-semibold text-[#252923]">
-              Weather distribution
-            </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Incident count by dominant recorded weather condition
-            </p>
-          </div>
+        <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <h2 className="text-sm font-semibold text-[#252923] mb-4">
+            Weather conditions
+          </h2>
 
-          <div className="h-60 w-full">
+          <div className="h-64 w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={weatherData} margin={{ top: 10, right: 10, left: -15, bottom: 20 }}>
+              <BarChart data={weatherData} margin={{ top: 8, right: 12, left: -10, bottom: 20 }}>
                 <CartesianGrid stroke="#E5E7E1" strokeDasharray="3 3" vertical={false} />
                 <XAxis dataKey="condition" stroke="#777D78" fontSize={11} angle={-20} textAnchor="end" />
-                <YAxis stroke="#777D78" fontSize={11} />
+                <YAxis stroke="#777D78" fontSize={11} tickFormatter={formatCompactCount} />
                 <Tooltip
                   contentStyle={{
                     backgroundColor: '#FFFFFF',
@@ -297,7 +270,7 @@ export const Dashboard: React.FC = () => {
                     color: '#252923',
                     boxShadow: '0 2px 6px rgba(0,0,0,0.06)'
                   }}
-                  formatter={(val: any) => [`${Number(val).toLocaleString()} records`, 'Count']}
+                  formatter={(val: any) => [`${Number(val).toLocaleString()}`, 'Accidents']}
                 />
                 <Bar dataKey="count" fill="#28634D" radius={[3, 3, 0, 0]} />
               </BarChart>
@@ -305,70 +278,56 @@ export const Dashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Geographic Distribution by State */}
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
-          <div className="mb-4">
+        <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <div className="flex items-baseline justify-between mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Geographic distribution by state
+              Accidents by state
             </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Top states by incident count across all {summary.total_states || 49} states + DC
-            </p>
+            <span className="text-xs text-[#777D78]">Top {stateData.length} of {summary.total_states || 49}</span>
           </div>
 
-          <div className="space-y-3.5 my-auto">
+          <div className="space-y-3">
             {stateData.map((st) => (
               <div key={st.stateCode} className="space-y-1">
                 <div className="flex justify-between items-baseline text-xs">
-                  <span className="font-semibold text-[#252923]">
+                  <span className="font-medium text-[#252923]">
                     {st.stateName} ({st.stateCode})
                   </span>
-                  <span className="text-[#777D78]">
-                    <span className="font-bold text-[#252923]">{st.count.toLocaleString()}</span> records ({st.pct}%)
+                  <span className="text-[#777D78] tabular-nums">
+                    <span className="font-semibold text-[#252923]">{st.count.toLocaleString()}</span> ({st.pct}%)
                   </span>
                 </div>
-                <div className="w-full bg-[#F0F2ED] h-2 rounded-full overflow-hidden">
+                <div className="w-full bg-[#F0F2ED] h-1.5 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#28634D] rounded-full transition-all duration-500"
+                    className="h-full bg-[#28634D] rounded-full"
                     style={{ width: `${Math.max(Number(st.pct), 2)}%` }}
                   />
                 </div>
               </div>
             ))}
-
-            <div className="pt-2 border-t border-[#E5E7E1] text-[11px] text-[#777D78] leading-tight">
-              Dynamic multi-state distribution across all {summary.total_states || 49} US states and {summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} unique cities.
-            </div>
           </div>
         </div>
       </div>
 
-      {/* Road Features Infrastructure Impact */}
+      {/* Road Infrastructure */}
       {infraData && infraData.features.length > 0 && (
-        <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-          <div className="mb-3">
-            <h2 className="text-sm font-semibold text-[#252923]">
-              Roadway features in recorded incidents
-            </h2>
-            <p className="text-xs text-[#777D78] mt-0.5">
-              Prevalence and average accident severity near road infrastructure
-            </p>
-          </div>
+        <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <h2 className="text-sm font-semibold text-[#252923] mb-4">
+            Road infrastructure
+          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mt-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {infraData.features.map((item) => (
-              <div key={item.feature} className="p-3.5 bg-[#F7F7F4] border border-[#E5E7E1] rounded-md">
-                <div className="flex justify-between items-baseline mb-1">
-                  <span className="font-semibold text-xs text-[#252923]">{item.feature}</span>
+              <div key={item.feature} className="p-3.5 bg-[#F7F7F4] rounded-md">
+                <div className="flex justify-between items-baseline">
+                  <span className="font-medium text-xs text-[#252923]">{item.feature}</span>
                   <span className="text-xs text-[#777D78] font-mono">{item.present_percentage}%</span>
                 </div>
-                <div className="text-sm font-bold text-[#252923] mt-1">
+                <div className="text-base font-semibold text-[#252923] mt-1 tabular-nums">
                   {item.present_count.toLocaleString()}
-                  <span className="text-xs font-normal text-[#777D78] ml-1">incidents</span>
                 </div>
-                <div className="mt-2 pt-2 border-t border-[#E5E7E1] flex justify-between text-xs text-[#777D78]">
-                  <span>Avg severity:</span>
-                  <span className="font-medium text-[#28634D]">Level {item.present_avg_severity}</span>
+                <div className="mt-1 text-xs text-[#777D78]">
+                  Avg severity: <span className="font-medium text-[#28634D]">Level {item.present_avg_severity}</span>
                 </div>
               </div>
             ))}

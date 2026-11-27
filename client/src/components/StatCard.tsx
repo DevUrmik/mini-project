@@ -14,24 +14,22 @@ export const StatCard: React.FC<StatCardProps> = ({
   detail
 }) => {
   return (
-    <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 shadow-subtle flex flex-col justify-between">
-      <div>
-        <span className="text-xs font-medium text-[#777D78] block">
-          {label}
+    <div className="bg-white border border-[#E5E7E1] rounded-md px-4 py-3.5 shadow-subtle">
+      <span className="text-xs font-medium text-[#777D78] block">
+        {label}
+      </span>
+      <div className="mt-1 flex items-baseline gap-1.5">
+        <span className="text-2xl font-semibold tracking-tight text-[#252923] tabular-nums">
+          {value}
         </span>
-        <div className="mt-1.5 flex items-baseline gap-2">
-          <span className="text-2xl font-bold tracking-tight text-[#252923]">
-            {value}
+        {detail && (
+          <span className="text-xs text-[#777D78] font-medium">
+            {detail}
           </span>
-          {detail && (
-            <span className="text-xs text-[#28634D] font-medium">
-              {detail}
-            </span>
-          )}
-        </div>
+        )}
       </div>
       {description && (
-        <p className="mt-2 text-xs text-[#777D78] leading-normal border-t border-[#F0F2ED] pt-2">
+        <p className="mt-1 text-[11px] text-[#777D78]">
           {description}
         </p>
       )}

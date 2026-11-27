@@ -170,27 +170,22 @@ export const SeverityPredictor: React.FC = () => {
     'w-full bg-[#F7F7F4] border border-[#E5E7E1] rounded-md px-3 py-2 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D] focus:bg-white transition-colors';
 
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="pb-2 border-b border-[#E5E7E1] flex flex-col lg:flex-row lg:items-center justify-between gap-3">
-        <div>
-          <h1 className="text-xl font-bold tracking-tight text-[#252923]">
-            Accident Severity Prediction
-          </h1>
-          <p className="text-xs text-[#777D78] mt-0.5">
-            Predict accident severity (Level 1 — Minor Accident to Level 4 — Critical Accident) from pre-incident weather, time, state, and road features using the trained HistGradientBoosting model.
-          </p>
-        </div>
+      <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-3">
+        <h1 className="text-xl font-semibold tracking-tight text-[#252923]">
+          Accident Severity Prediction
+        </h1>
 
-        {/* Compact Scenario Presets */}
+        {/* Scenario Presets */}
         <div className="flex flex-wrap items-center gap-1.5 shrink-0">
-          <span className="text-[11px] text-[#777D78] mr-1">Presets:</span>
+          <span className="text-xs text-[#777D78] mr-1">Presets:</span>
           {Object.entries(PRESETS).map(([key, preset]) => (
             <button
               key={key}
               type="button"
               onClick={() => setFormData(preset.data)}
-              className="text-[11px] font-medium px-2.5 py-1 rounded border border-[#E5E7E1] bg-white hover:bg-[#F0F2ED] text-[#252923] whitespace-nowrap transition-colors"
+              className="text-xs font-medium px-2.5 py-1 rounded border border-[#E5E7E1] bg-white hover:bg-[#F0F2ED] text-[#252923] whitespace-nowrap transition-colors"
             >
               {preset.label}
             </button>
@@ -198,14 +193,14 @@ export const SeverityPredictor: React.FC = () => {
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
         {/* Input Form (7 cols) */}
-        <div className="lg:col-span-7 bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle">
-          <form onSubmit={handleSubmit} className="space-y-5">
-            {/* Section 1: Weather & Atmosphere */}
+        <div className="lg:col-span-7 bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle">
+          <form onSubmit={handleSubmit} className="space-y-6">
+            {/* Weather */}
             <div>
-              <h2 className="text-[11px] font-semibold uppercase tracking-wider text-[#777D78] mb-3">
-                Weather & Atmosphere
+              <h2 className="text-xs font-semibold text-[#777D78] mb-3">
+                Weather
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
                 <div className="sm:col-span-2 lg:col-span-1">
@@ -317,9 +312,9 @@ export const SeverityPredictor: React.FC = () => {
               </div>
             </div>
 
-            {/* Section 2: Time & Location */}
-            <div className="pt-4 border-t border-[#E5E7E1]">
-              <h2 className="text-[11px] font-semibold uppercase tracking-wider text-[#777D78] mb-3">
+            {/* Time & Location */}
+            <div>
+              <h2 className="text-xs font-semibold text-[#777D78] mb-3">
                 Time & Location
               </h2>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
@@ -402,9 +397,9 @@ export const SeverityPredictor: React.FC = () => {
               </div>
             </div>
 
-            {/* Section 3: Road Infrastructure */}
-            <div className="pt-4 border-t border-[#E5E7E1]">
-              <h2 className="text-[11px] font-semibold uppercase tracking-wider text-[#777D78] mb-3">
+            {/* Road Infrastructure */}
+            <div>
+              <h2 className="text-xs font-semibold text-[#777D78] mb-3">
                 Road Infrastructure
               </h2>
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
@@ -455,38 +450,26 @@ export const SeverityPredictor: React.FC = () => {
         {/* Output Column (5 cols) */}
         <div className="lg:col-span-5 space-y-4 min-w-0">
           {response ? (
-            <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle space-y-4">
-              <div className="border-b border-[#E5E7E1] pb-2 flex items-center justify-between">
-                <span className="text-[11px] font-semibold uppercase tracking-wider text-[#777D78]">
-                  Prediction Output
-                </span>
-                <span className="text-[11px] text-[#777D78] font-mono">
-                  Levels 1–4
-                </span>
-              </div>
-
+            <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle space-y-5">
               {/* Predicted Severity Summary */}
-              <div className="p-4 rounded-md bg-[#F7F7F4] border border-[#E5E7E1] space-y-2.5">
+              <div className="p-4 rounded-md bg-[#F7F7F4] space-y-2">
                 <div className="flex items-center justify-between gap-2">
-                  <span className="text-xs text-[#777D78]">Predicted Accident Severity</span>
+                  <span className="text-xs text-[#777D78]">Predicted severity</span>
                   <span
-                    className={`text-sm font-bold px-2.5 py-0.5 rounded border ${getSeverityBadgeClass(
+                    className={`text-sm font-semibold px-2.5 py-0.5 rounded border ${getSeverityBadgeClass(
                       response.predicted_severity
                     )}`}
                   >
-                    Level {response.predicted_severity}
+                    Level {response.predicted_severity} — {response.severity_category}
                   </span>
-                </div>
-                <div className="text-sm font-semibold text-[#252923]">
-                  {response.severity_category}
                 </div>
                 <p className="text-xs text-[#777D78] leading-relaxed">
                   {response.traffic_impact_description}
                 </p>
 
                 {response.high_impact_risk && (
-                  <div className="pt-2.5 border-t border-[#E5E7E1] flex items-center justify-between gap-2 text-xs">
-                    <span className="text-[#777D78]">Serious/Critical Risk (3–4):</span>
+                  <div className="pt-2 flex items-center justify-between gap-2 text-xs">
+                    <span className="text-[#777D78]">Serious/Critical risk (3–4)</span>
                     <span
                       className={`font-semibold px-2 py-0.5 rounded border text-[11px] ${
                         response.high_impact_risk.high_impact_percentage >= 50
@@ -494,31 +477,16 @@ export const SeverityPredictor: React.FC = () => {
                           : 'bg-[#EBF2EE] text-[#28634D] border-[#28634D]/30'
                       }`}
                     >
-                      {response.high_impact_risk.high_impact_percentage}% —{' '}
-                      {response.high_impact_risk.classification}
+                      {response.high_impact_risk.high_impact_percentage}% · {response.high_impact_risk.classification}
                     </span>
                   </div>
                 )}
               </div>
 
-              {/* Concise Explanation */}
-              <div className="p-3 rounded-md bg-[#F0F2ED] border border-[#E5E7E1] text-[11px] text-[#252923] leading-relaxed">
-                <span className="font-semibold">Inference Summary: </span>
-                Computed by <span className="font-medium">{response.model_used}</span> for{' '}
-                <span className="font-medium">{formData.state || 'CA'}</span> at{' '}
-                <span className="font-medium">
-                  {String(formData.hour).padStart(2, '0')}:
-                  {String(formData.minute ?? 0).padStart(2, '0')}
-                </span>{' '}
-                ({formData.day_of_week}) under{' '}
-                <span className="font-medium">{formData.weather_condition}</span> (
-                {formData.temperature}°F, {formData.visibility} mi visibility).
-              </div>
-
               {/* Class Probability Breakdown */}
-              <div className="space-y-2">
+              <div className="space-y-2.5">
                 <span className="text-xs font-semibold text-[#252923] block">
-                  Class Probabilities
+                  Probability distribution
                 </span>
                 {response.class_probabilities.map((prob) => {
                   const isWinner =
@@ -535,7 +503,7 @@ export const SeverityPredictor: React.FC = () => {
                         >
                           Level {prob.severity_class} — {prob.label}
                         </span>
-                        <span className="font-mono text-[#252923] text-xs">
+                        <span className="font-mono text-[#252923] text-xs tabular-nums">
                           {prob.percentage}%
                         </span>
                       </div>
@@ -552,20 +520,19 @@ export const SeverityPredictor: React.FC = () => {
                 })}
               </div>
 
-              {/* Scope Note */}
-              <div className="pt-2 border-t border-[#E5E7E1] text-[11px] text-[#777D78] leading-relaxed">
-                Accident severity levels classify recorded incidents from Level 1 (Minor Accident) to Level 4 (Critical Accident).
-              </div>
+              <p className="text-[11px] text-[#777D78]">
+                {response.model_used} · {formData.state || 'CA'} ·{' '}
+                {String(formData.hour).padStart(2, '0')}:{String(formData.minute ?? 0).padStart(2, '0')} ·{' '}
+                {formData.weather_condition}
+              </p>
             </div>
           ) : (
-            <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle space-y-2">
+            <div className="bg-white border border-[#E5E7E1] rounded-md p-5 shadow-subtle space-y-1.5">
               <h3 className="text-sm font-semibold text-[#252923]">
-                Accident Severity Output
+                Prediction output
               </h3>
               <p className="text-xs text-[#777D78] leading-relaxed">
-                Enter pre-incident weather, time, state, and road infrastructure parameters on the left, then select{' '}
-                <strong className="text-[#252923]">Predict Accident Severity</strong>{' '}
-                to run live inference via the backend model.
+                Submit the form to predict accident severity (Level 1 — Minor Accident to Level 4 — Critical Accident).
               </p>
             </div>
           )}
