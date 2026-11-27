@@ -12,6 +12,7 @@ class SeverityPredictionRequest(BaseModel):
     wind_speed: float = Field(..., ge=0.0, le=120.0, description="Wind speed in mph (0 to 120)")
     weather_condition: str = Field("Fair", description="Recorded weather condition e.g. Fair, Rain, Fog, Clear")
     hour: int = Field(..., ge=0, le=23, description="Hour of the incident (0 to 23)")
+    minute: int = Field(0, ge=0, le=59, description="Minute of the hour (0 to 59)")
     day_of_week: str = Field("Monday", description="Day of the week e.g. Monday, Friday, Saturday")
     junction: bool = Field(False, description="Whether incident occurred near a highway junction")
     crossing: bool = Field(False, description="Whether incident occurred near a pedestrian/road crossing")
@@ -41,7 +42,7 @@ class SeverityPredictionResponse(BaseModel):
     high_impact_risk: Optional[Dict[str, Any]] = None
     input_summary: Dict[str, Any]
     disclaimer: str = (
-        "This prediction estimates historical traffic delay impact (Severity 1-4) "
-        "derived from past incident data. It does not predict injury or fatality outcomes."
+        "This prediction estimates accident severity (Level 1–4: Minor to Critical) "
+        "from historical incident patterns."
     )
 

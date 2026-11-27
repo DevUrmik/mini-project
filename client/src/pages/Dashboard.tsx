@@ -91,10 +91,10 @@ export const Dashboard: React.FC = () => {
 
   // Discrete severity levels (1, 2, 3, 4) from dataset
   const severityLabels: Record<string, string> = {
-    '1': 'Level 1 (Minimal)',
-    '2': 'Level 2 (Moderate)',
-    '3': 'Level 3 (High)',
-    '4': 'Level 4 (Severe)'
+    '1': 'Level 1 — Minor Accident',
+    '2': 'Level 2 — Moderate Accident',
+    '3': 'Level 3 — Serious Accident',
+    '4': 'Level 4 — Critical Accident'
   };
 
   const severityData = Object.entries(summary.severity_distribution).map(([key, val]) => ({
@@ -149,7 +149,7 @@ export const Dashboard: React.FC = () => {
           <span className="font-semibold text-[#252923]">Dataset Information: </span>
           Source: {summary.data_source} ({earliestDate} to {latestDate}) · 
           <strong> {summary.total_accidents.toLocaleString()} records</strong> across {summary.total_states || 49} states ({summary.total_cities ? summary.total_cities.toLocaleString() : '20,281'} unique cities).
-          Severity is an integer score (1–4) representing the extent of vehicular traffic disruption and delay caused by the incident; it does not measure injuries or fatalities.
+          Severity is an integer score (1–4) classifying accident impact from Level 1 (Minor Accident) to Level 4 (Critical Accident).
         </div>
       </div>
 
@@ -164,12 +164,12 @@ export const Dashboard: React.FC = () => {
           label="Average recorded severity"
           value={`${summary.average_severity.toFixed(2)}`}
           detail="out of 4.0"
-          description="Traffic delay impact scale"
+          description="Accident severity scale (1–4)"
         />
         <StatCard
-          label="Higher-impact incident rate"
+          label="Serious & critical rate"
           value={`${summary.high_impact_percentage}%`}
-          description="Severity 3 & 4 prolonged road disruptions"
+          description="Level 3 (Serious) & Level 4 (Critical) accidents"
         />
         <StatCard
           label="Peak accident hour"
@@ -231,10 +231,10 @@ export const Dashboard: React.FC = () => {
         <div className="bg-white border border-[#E5E7E1] rounded-lg p-5 shadow-subtle flex flex-col justify-between">
           <div className="mb-4">
             <h2 className="text-sm font-semibold text-[#252923]">
-              Traffic severity distribution
+              Accident severity distribution
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Level 2 (moderate delay) represents {severityData.find((s) => s.levelKey === '2')?.pct ?? '79.7'}% of recorded incidents
+              Level 2 (Moderate Accident) represents {severityData.find((s) => s.levelKey === '2')?.pct ?? '79.7'}% of recorded incidents
             </p>
           </div>
 
@@ -351,7 +351,7 @@ export const Dashboard: React.FC = () => {
               Roadway features in recorded incidents
             </h2>
             <p className="text-xs text-[#777D78] mt-0.5">
-              Prevalence and average traffic delay severity near road infrastructure
+              Prevalence and average accident severity near road infrastructure
             </p>
           </div>
 
@@ -367,7 +367,7 @@ export const Dashboard: React.FC = () => {
                   <span className="text-xs font-normal text-[#777D78] ml-1">incidents</span>
                 </div>
                 <div className="mt-2 pt-2 border-t border-[#E5E7E1] flex justify-between text-xs text-[#777D78]">
-                  <span>Avg delay severity:</span>
+                  <span>Avg severity:</span>
                   <span className="font-medium text-[#28634D]">Level {item.present_avg_severity}</span>
                 </div>
               </div>

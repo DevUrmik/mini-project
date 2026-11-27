@@ -14,8 +14,8 @@ router = APIRouter(prefix="/predict", tags=["Prediction"])
 @router.post("/severity", response_model=SeverityPredictionResponse)
 def predict_accident_severity(request: SeverityPredictionRequest):
     """
-    Predicts accident traffic delay severity (Scale 1-4) using the trained
-    Random Forest pipeline with Scikit-learn ColumnTransformer.
+    Predicts accident severity (Level 1–4: Minor to Critical) using the trained
+    HistGradientBoosting pipeline with Scikit-learn ColumnTransformer.
     """
     ps = PredictionService.get_instance()
     try:

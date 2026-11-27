@@ -60,10 +60,10 @@ export const ModelComparison: React.FC = () => {
   const maxCellValue = Math.max(...activeCM.flat());
 
   const severityDefinitions: Record<string, { title: string; desc: string }> = {
-    '1': { title: 'Level 1 — Minimal Delay', desc: 'Short traffic disruption (< 15 min delay)' },
-    '2': { title: 'Level 2 — Moderate Delay', desc: 'Standard incident with localized slowdown' },
-    '3': { title: 'Level 3 — High Delay', desc: 'Multi-lane blockage or significant corridor delay' },
-    '4': { title: 'Level 4 — Severe Disruption', desc: 'Prolonged road closure or major arterial impact' }
+    '1': { title: 'Level 1 — Minor Accident', desc: 'Minor accident severity' },
+    '2': { title: 'Level 2 — Moderate Accident', desc: 'Moderate accident severity' },
+    '3': { title: 'Level 3 — Serious Accident', desc: 'Serious accident severity' },
+    '4': { title: 'Level 4 — Critical Accident', desc: 'Critical accident severity' }
   };
 
   const classDistData = Object.entries(metrics.target_info.class_distribution).map(([cls, count]) => {
@@ -163,7 +163,7 @@ export const ModelComparison: React.FC = () => {
             <thead className="bg-[#F7F7F4] border-b border-[#E5E7E1] text-[11px] uppercase tracking-wider text-[#777D78] font-medium">
               <tr>
                 <th className="py-2.5 px-3">Class</th>
-                <th className="py-2.5 px-3">Traffic Impact Definition</th>
+                <th className="py-2.5 px-3">Accident Severity Level</th>
                 <th className="py-2.5 px-3 text-right">Test Support</th>
                 <th className="py-2.5 px-3 text-right">Share</th>
                 <th className="py-2.5 px-3 text-right">Precision</th>
@@ -211,7 +211,7 @@ export const ModelComparison: React.FC = () => {
           <div className="overflow-x-auto my-2">
             <div className="inline-block min-w-full text-center">
               <div className="text-[11px] text-[#777D78] mb-1.5 font-medium">
-                Predicted Traffic Severity
+                Predicted Accident Severity
               </div>
               <div className="grid grid-cols-5 gap-1.5 text-xs">
                 <div className="text-[#777D78] p-2 text-right text-[11px] font-medium">Actual</div>
@@ -302,10 +302,10 @@ export const ModelComparison: React.FC = () => {
             <div className="flex items-start justify-between gap-2 border-b border-[#E5E7E1] pb-2">
               <div>
                 <h2 className="text-sm font-semibold text-[#252923]">
-                  Binary High-Impact (Level 3–4 vs. 1–2)
+                  Binary Serious/Critical (Level 3–4 vs. 1–2)
                 </h2>
                 <p className="text-xs text-[#777D78] mt-0.5">
-                  Secondary operational classifier for severe corridor disruption risk
+                  Secondary operational classifier for Serious and Critical accidents (Levels 3–4)
                 </p>
               </div>
               <span className="text-[11px] font-semibold px-2 py-0.5 rounded bg-[#EBF2EE] text-[#28634D] border border-[#28634D]/20 shrink-0">
@@ -327,11 +327,11 @@ export const ModelComparison: React.FC = () => {
                 <div className="text-base font-bold text-[#28634D] mt-0.5">{metrics.binary_high_impact.macro_f1}%</div>
               </div>
               <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1]">
-                <div className="text-[11px] text-[#777D78]">High-Impact F1</div>
+                <div className="text-[11px] text-[#777D78]">Serious/Critical F1</div>
                 <div className="text-base font-bold text-[#252923] mt-0.5">{metrics.binary_high_impact.high_impact_f1}%</div>
               </div>
               <div className="p-3 rounded bg-[#F7F7F4] border border-[#E5E7E1] col-span-2">
-                <div className="text-[11px] text-[#777D78]">High-Impact Precision / Recall</div>
+                <div className="text-[11px] text-[#777D78]">Serious/Critical Precision / Recall</div>
                 <div className="text-base font-bold text-[#252923] mt-0.5">
                   {metrics.binary_high_impact.high_impact_precision}% / {metrics.binary_high_impact.high_impact_recall}%
                 </div>
@@ -339,7 +339,7 @@ export const ModelComparison: React.FC = () => {
             </div>
 
             <div className="text-[11px] text-[#777D78] pt-2 border-t border-[#E5E7E1]">
-              Grouping Levels 1–2 vs. 3–4 reduces ambiguity between adjacent delay tiers using pre-incident inputs only.
+              Grouping Levels 1–2 (Minor/Moderate) vs. Levels 3–4 (Serious/Critical) reduces ambiguity between adjacent tiers using pre-incident inputs only.
             </div>
           </div>
         )}
@@ -386,7 +386,7 @@ export const ModelComparison: React.FC = () => {
       <div className="bg-white border border-[#E5E7E1] rounded-lg p-4 text-xs text-[#777D78] flex items-start gap-2.5 shadow-subtle">
         <ShieldCheck className="w-4 h-4 text-[#28634D] shrink-0 mt-0.5" />
         <p className="leading-relaxed">
-          <strong className="text-[#252923]">Target & Zero-Leakage Protocol:</strong> The model predicts <strong>traffic-impact severity</strong> (delay duration and road blockage from 1 to 4, not physical injury severity) using only pre-incident environmental, temporal, spatial, and roadway features. Post-incident fields (<code className="text-[#252923]">End_Time</code>, <code className="text-[#252923]">Distance(mi)</code>) are excluded.
+          <strong className="text-[#252923]">Target & Zero-Leakage Protocol:</strong> The model predicts <strong>accident severity</strong> (Level 1 — Minor Accident to Level 4 — Critical Accident) using only pre-incident environmental, temporal, spatial, and roadway features. Post-incident fields (<code className="text-[#252923]">End_Time</code>, <code className="text-[#252923]">Distance(mi)</code>) are excluded.
         </p>
       </div>
     </div>

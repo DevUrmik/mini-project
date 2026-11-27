@@ -107,13 +107,15 @@ def engineer_extended_features(df: pd.DataFrame) -> pd.DataFrame:
     """
     out = df.copy()
     hour = pd.to_numeric(out.get("Hour", 12), errors="coerce").fillna(12.0)
+    minute = pd.to_numeric(out.get("Minute", 0), errors="coerce").fillna(0.0)
+    exact_hour = hour + (minute / 60.0)
     month = pd.to_numeric(out.get("Month", 6), errors="coerce").fillna(6.0)
     vis = pd.to_numeric(out.get("Visibility(mi)", 10.0), errors="coerce").fillna(10.0)
     temp = pd.to_numeric(out.get("Temperature(F)", 65.0), errors="coerce").fillna(65.0)
     wind = pd.to_numeric(out.get("Wind_Speed(mph)", 5.0), errors="coerce").fillna(5.0)
 
-    out["Hour_Sin"] = np.sin(2.0 * np.pi * hour / 24.0)
-    out["Hour_Cos"] = np.cos(2.0 * np.pi * hour / 24.0)
+    out["Hour_Sin"] = np.sin(2.0 * np.pi * exact_hour / 24.0)
+    out["Hour_Cos"] = np.cos(2.0 * np.pi * exact_hour / 24.0)
     out["Month_Sin"] = np.sin(2.0 * np.pi * month / 12.0)
     out["Month_Cos"] = np.cos(2.0 * np.pi * month / 12.0)
     out["Low_Visibility"] = (vis <= 3.0).astype(float)
@@ -216,6 +218,7 @@ def prepare_inference_features(data: dict) -> pd.DataFrame:
     DataFrame with all canonical and extended engineered features.
     """
     hour = int(data.get("hour", 12))
+    minute = max(0, min(59, int(data.get("minute", 0))))
     month = int(data.get("month", 6))
     day_of_week = str(data.get("day_of_week", "Monday"))
     state = str(data.get("state", "CA")).upper()
@@ -235,6 +238,7 @@ def prepare_inference_features(data: dict) -> pd.DataFrame:
         "Visibility(mi)": float(data.get("visibility", 10.0)),
         "Wind_Speed(mph)": float(data.get("wind_speed", 5.0)),
         "Hour": hour,
+        "Minute": minute,
         "Month": month,
         "State": state,
         "Weather_Condition": str(data.get("weather_condition", "Fair")),

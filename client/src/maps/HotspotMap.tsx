@@ -59,20 +59,20 @@ const ViewportListener: React.FC<{
   return null;
 };
 
-// Authentic severity descriptions according to dataset documentation
+// Standardized accident severity labels (Levels 1-4)
 const getSeverityLabel = (sev: number): string => {
   const rounded = Math.round(sev);
   switch (rounded) {
     case 1:
-      return 'Level 1 — Minimal traffic impact';
+      return 'Level 1 — Minor Accident';
     case 2:
-      return 'Level 2 — Moderate traffic impact';
+      return 'Level 2 — Moderate Accident';
     case 3:
-      return 'Level 3 — High traffic impact';
+      return 'Level 3 — Serious Accident';
     case 4:
-      return 'Level 4 — Significant traffic disruption';
+      return 'Level 4 — Critical Accident';
     default:
-      return `Level ${sev.toFixed(1)} traffic impact`;
+      return `Level ${sev.toFixed(1)} — Accident Severity`;
   }
 };
 
@@ -281,7 +281,7 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
                     </div>
 
                     <div className="pt-1.5 border-t border-[#E5E7E1] text-[10px] text-[#777D78] leading-tight">
-                      Severity reflects recorded vehicular traffic delay, not injuries or fatalities.
+                      Accident severity is classified from Level 1 (Minor Accident) to Level 4 (Critical Accident).
                     </div>
                   </div>
                 </Popup>
@@ -302,19 +302,19 @@ export const HotspotMap: React.FC<HotspotMapProps> = ({
         <div className="space-y-1 text-[11px] text-[#252923]">
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#C24E42]"></span>
-            <span>Level 4 — Significant traffic disruption</span>
+            <span>Level 4 — Critical Accident</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#D69A43]"></span>
-            <span>Level 3 — High traffic impact</span>
+            <span>Level 3 — Serious Accident</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#28634D]"></span>
-            <span>Level 2 — Moderate traffic impact</span>
+            <span>Level 2 — Moderate Accident</span>
           </div>
           <div className="flex items-center gap-2">
             <span className="w-2.5 h-2.5 rounded-full bg-[#529871]"></span>
-            <span>Level 1 — Minimal traffic impact</span>
+            <span>Level 1 — Minor Accident</span>
           </div>
         </div>
         <div className="mt-2 pt-1.5 border-t border-[#E5E7E1] text-[10px] text-[#777D78] leading-tight">

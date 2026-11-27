@@ -402,10 +402,10 @@ export const HotspotExplorer: React.FC = () => {
                 className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-2 py-1 text-xs text-[#252923] font-medium focus:outline-none focus:border-[#28634D]"
               >
                 <option value="ALL">All Severities (1–4)</option>
-                <option value="1">Level 1 (Minimal impact)</option>
-                <option value="2">Level 2 (Moderate impact)</option>
-                <option value="3">Level 3 (High impact)</option>
-                <option value="4">Level 4 (Significant disruption)</option>
+                <option value="1">Level 1 — Minor Accident</option>
+                <option value="2">Level 2 — Moderate Accident</option>
+                <option value="3">Level 3 — Serious Accident</option>
+                <option value="4">Level 4 — Critical Accident</option>
               </select>
             </div>
 

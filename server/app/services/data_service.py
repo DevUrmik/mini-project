@@ -466,9 +466,9 @@ class DataService:
                     {"temp_range": "> 85°F (Hot)", "accident_count": int(total * 0.08), "average_severity": 2.19}
                 ]
                 insights = [
-                    "Most accidents occur during clear and fair conditions simply because fair weather corresponds to higher overall Vehicle Miles Traveled (VMT).",
-                    "Adverse weather conditions like Fog and Heavy Rain exhibit a higher proportion of prolonged traffic delays (higher Severity).",
-                    "Cold and freezing temperatures show elevated severity indexes compared to moderate temperatures, reflecting icy road surface hazards."
+                    "Most accidents occur during clear and fair conditions because fair weather corresponds to higher overall Vehicle Miles Traveled (VMT).",
+                    "Adverse weather conditions like Fog and Heavy Rain exhibit a higher proportion of serious and critical accidents (higher Severity).",
+                    "Cold and freezing temperatures show elevated accident severity compared to moderate temperatures, reflecting icy road surface hazards."
                 ]
                 return {
                     "weather_conditions": weather_stats,
@@ -504,9 +504,9 @@ class DataService:
             })
 
         insights = [
-            "Most accidents occur during clear and fair conditions simply because fair weather corresponds to higher overall Vehicle Miles Traveled (VMT).",
-            "Adverse weather conditions like Fog and Heavy Rain exhibit a higher proportion of prolonged traffic delays (higher Severity).",
-            "Cold and freezing temperatures show elevated severity indexes compared to moderate temperatures, reflecting icy road surface hazards."
+            "Most accidents occur during clear and fair conditions because fair weather corresponds to higher overall Vehicle Miles Traveled (VMT).",
+            "Adverse weather conditions like Fog and Heavy Rain exhibit a higher proportion of serious and critical accidents (higher Severity).",
+            "Cold and freezing temperatures show elevated accident severity compared to moderate temperatures, reflecting icy road surface hazards."
         ]
 
         return {
@@ -538,9 +538,9 @@ class DataService:
                         "present_percentage": pct
                     })
                 insights = [
-                    "Accidents near highway junctions frequently result in higher average delay durations due to bottlenecking and complex merges.",
-                    "Traffic signals and pedestrian crossings correlate with frequent lower-speed collisions, resulting in lower traffic delay durations (Severity 1-2).",
-                    "Intersection safety interventions such as traffic calming and adaptive signaling show high promise in reducing multi-vehicle pileups."
+                    "Accidents near highway junctions frequently result in higher average accident severity.",
+                    "Traffic signals and pedestrian crossings correlate with frequent lower-speed collisions, resulting in lower accident severity (Severity 1-2).",
+                    "Intersection safety interventions such as traffic calming and adaptive signaling show promise in reducing serious multi-vehicle collisions."
                 ]
                 return {
                     "features": stats,
@@ -564,9 +564,9 @@ class DataService:
                 })
 
         insights = [
-            "Accidents near highway junctions frequently result in higher average delay durations due to bottlenecking and complex merges.",
-            "Traffic signals and pedestrian crossings correlate with frequent lower-speed collisions, resulting in lower traffic delay durations (Severity 1-2).",
-            "Intersection safety interventions such as traffic calming and adaptive signaling show high promise in reducing multi-vehicle pileups."
+            "Accidents near highway junctions frequently result in higher average accident severity.",
+            "Traffic signals and pedestrian crossings correlate with frequent lower-speed collisions, resulting in lower accident severity (Severity 1-2).",
+            "Intersection safety interventions such as traffic calming and adaptive signaling show promise in reducing serious multi-vehicle collisions."
         ]
 
         return {

@@ -181,6 +181,7 @@ export interface PredictionRequest {
   wind_speed: number;
   weather_condition: string;
   hour: number;
+  minute?: number;
   day_of_week: string;
   junction: boolean;
   crossing: boolean;
