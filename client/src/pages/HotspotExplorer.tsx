@@ -30,8 +30,6 @@ export const HotspotExplorer: React.FC = () => {
   const [selectedState, setSelectedState] = useState<string>('ALL');
   const [selectedCity, setSelectedCity] = useState<string>('All');
   const [selectedSeverity, setSelectedSeverity] = useState<number | undefined>(undefined);
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
 
   // Dynamically calculated bounds directly from actual accident GPS records
   const [mapBounds, setMapBounds] = useState<[[number, number], [number, number]]>([
@@ -94,8 +92,6 @@ export const HotspotExplorer: React.FC = () => {
           state: selectedState === 'ALL' ? undefined : selectedState,
           city: selectedCity === 'All' ? undefined : selectedCity,
           severity: selectedSeverity,
-          start_date: startDate || undefined,
-          end_date: endDate || undefined,
           page: 1,
           page_size: 1500
         })
@@ -113,7 +109,7 @@ export const HotspotExplorer: React.FC = () => {
 
   useEffect(() => {
     fetchData();
-  }, [kValue, selectedState, selectedCity, selectedSeverity, startDate, endDate]);
+  }, [kValue, selectedState, selectedCity, selectedSeverity]);
 
   // 4. Viewport-based fetching on pan/zoom (debounced)
   const handleViewportChange = useCallback((bounds: { min_lat: number; max_lat: number; min_lng: number; max_lng: number }) => {
@@ -133,8 +129,6 @@ export const HotspotExplorer: React.FC = () => {
           state: selectedState === 'ALL' ? undefined : selectedState,
           city: selectedCity === 'All' ? undefined : selectedCity,
           severity: selectedSeverity,
-          start_date: startDate || undefined,
-          end_date: endDate || undefined,
           page: 1,
           page_size: 1500
         });
@@ -146,7 +140,7 @@ export const HotspotExplorer: React.FC = () => {
         // Suppress transient drag errors
       }
     }, 350);
-  }, [viewMode, selectedState, selectedCity, selectedSeverity, startDate, endDate]);
+  }, [viewMode, selectedState, selectedCity, selectedSeverity]);
 
   // 5. Dynamic State Selection: Automatically computes and zooms to that state's exact bounds
   const handleStateChange = async (stateCode: string) => {
@@ -185,8 +179,6 @@ export const HotspotExplorer: React.FC = () => {
     setSelectedState('ALL');
     setSelectedCity('All');
     setSelectedSeverity(undefined);
-    setStartDate('');
-    setEndDate('');
     setSelectedCluster(null);
     try {
       const boundsData = await getDatasetBounds();
@@ -407,24 +399,6 @@ export const HotspotExplorer: React.FC = () => {
                 <option value="3">Level 3 — Serious Accident</option>
                 <option value="4">Level 4 — Critical Accident</option>
               </select>
-            </div>
-
-            {/* Date Range Filters */}
-            <div className="flex items-center gap-1 text-[11px]">
-              <span className="text-[#777D78]">From:</span>
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-1.5 py-0.5 text-xs text-[#252923] focus:outline-none focus:border-[#28634D]"
-              />
-              <span className="text-[#777D78]">To:</span>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="bg-[#F7F7F4] border border-[#E5E7E1] rounded px-1.5 py-0.5 text-xs text-[#252923] focus:outline-none focus:border-[#28634D]"
-              />
             </div>
           </div>
 
